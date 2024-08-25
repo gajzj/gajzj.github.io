@@ -23,10 +23,10 @@
     <loc>https://example.com/categories/%E6%B5%8B%E8%AF%95/</loc>
     <lastmod>2020-09-09T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://example.com/archives/</loc>
+    <loc>https://example.com/page/</loc>
     <lastmod>2019-05-28T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://example.com/page/</loc>
+    <loc>https://example.com/archives/</loc>
     <lastmod>2019-05-28T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://example.com/tags/css/</loc>
@@ -74,10 +74,6 @@
     <loc>https://example.com/p/emoji-support/</loc>
     <lastmod>2019-03-05T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://example.com/links/</loc>
-  </url><url>
     <loc>https://example.com/search/</loc>
-  </url><url>
-    <loc>https://example.com/%E5%85%B3%E4%BA%8E/</loc>
   </url>
 </urlset>
