@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Session on GAJ-Blog</title>
+        <link>http://localhost:1313/tags/session/</link>
+        <description>Recent content in Session on GAJ-Blog</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>gajzj</copyright>
+        <lastBuildDate>Sun, 25 Aug 2024 08:52:54 +0800</lastBuildDate><atom:link href="http://localhost:1313/tags/session/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>Session</title>
+        <link>http://localhost:1313/p/session/</link>
+        <pubDate>Sun, 25 Aug 2024 08:52:54 +0800</pubDate>
+        
+        <guid>http://localhost:1313/p/session/</guid>
+        <description>&lt;h1 id=&#34;session&#34;&gt;Session
+&lt;/h1&gt;&lt;p&gt;session用于指代服务器将数据存储在当前用户的会话中，这个session是由&lt;strong&gt;服务端&lt;/strong&gt;保存的，具体来说，它是一个HttpSession类，我们在获取的时候是由HttpServletRequest.getSession()这样获取到当前用户的session，通过唯一表示符JSESSIONID在服务端区分。&lt;/p&gt;
+&lt;p&gt;客户端只会保存JSESSIONID，服务端通过这个id查找到对应的session。&lt;/p&gt;
+&lt;p&gt;服务端通过setAttribute()和getAttribute()来读或写session存储的属性及其值&lt;/p&gt;
+&lt;p&gt;但是，HttpServletRequest在响应完请求后就会销毁，说明这个Session不是由HttpServletRequest，而是由tomcat的相关组件来处理的：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;&lt;code&gt;org.apache.catalina.session.StandardSession&lt;/code&gt;&lt;/strong&gt;:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;StandardSession&lt;/code&gt;是Tomcat中表示会话的类。每个会话对象都由这个类的一个实例表示，&lt;code&gt;StandardSession&lt;/code&gt;对象包含了会话的所有数据，包括会话ID、会话属性（如&lt;code&gt;user&lt;/code&gt;、&lt;code&gt;name&lt;/code&gt;）、创建时间、最后访问时间等。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;&lt;code&gt;org.apache.catalina.session.StandardManager&lt;/code&gt;&lt;/strong&gt;:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;StandardManager&lt;/code&gt;是Tomcat的默认会话管理器，它负责创建、查找、删除和持久化&lt;code&gt;StandardSession&lt;/code&gt;对象。&lt;/li&gt;
+&lt;li&gt;当你通过&lt;code&gt;HttpServletRequest.getSession()&lt;/code&gt;获取会话时，Tomcat实际上是通过&lt;code&gt;StandardManager&lt;/code&gt;查找或创建一个&lt;code&gt;StandardSession&lt;/code&gt;对象。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;&lt;code&gt;org.apache.catalina.Context&lt;/code&gt;&lt;/strong&gt;:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;Context&lt;/code&gt;对象代表一个Web应用的上下文。在每个&lt;code&gt;Context&lt;/code&gt;对象中，有一个&lt;code&gt;Manager&lt;/code&gt;（即&lt;code&gt;StandardManager&lt;/code&gt;）实例来管理该上下文的所有会话。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;工作流程概述&#34;&gt;工作流程概述
+&lt;/h3&gt;&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;创建会话&lt;/strong&gt;:
+&lt;ul&gt;
+&lt;li&gt;当客户端第一次请求并调用&lt;code&gt;HttpServletRequest.getSession()&lt;/code&gt;时，如果没有现有的会话，Tomcat会通过&lt;code&gt;StandardManager&lt;/code&gt;创建一个新的&lt;code&gt;StandardSession&lt;/code&gt;对象并返回。&lt;/li&gt;
+&lt;li&gt;这个新创建的会话对象会被&lt;code&gt;StandardManager&lt;/code&gt;保存，以便在后续请求中使用。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;管理会话生命周期&lt;/strong&gt;:
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;StandardManager&lt;/code&gt;会定期检查会话是否过期，并销毁过期的会话。&lt;/li&gt;
+&lt;li&gt;如果应用程序或服务器设置了持久化配置，&lt;code&gt;StandardManager&lt;/code&gt;还可以将会话数据序列化到文件系统中，以便在服务器重启后恢复。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;会话存储&lt;/strong&gt;:
+&lt;ul&gt;
+&lt;li&gt;默认情况下，&lt;code&gt;session&lt;/code&gt;数据存储在Tomcat服务器的内存中。&lt;code&gt;StandardManager&lt;/code&gt;会持有所有活动会话的引用，并在Tomcat运行期间负责管理它们。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&#34;会话在tomcat中的持有者&#34;&gt;会话在Tomcat中的持有者
+&lt;/h3&gt;&lt;p&gt;因此，在Tomcat中，&lt;code&gt;HttpSession&lt;/code&gt;对象是由&lt;code&gt;StandardSession&lt;/code&gt;类表示的，而这些会话对象由&lt;code&gt;StandardManager&lt;/code&gt;持有和管理。即使&lt;code&gt;HttpServletRequest&lt;/code&gt;对象被销毁，&lt;code&gt;StandardSession&lt;/code&gt;对象依然存在于&lt;code&gt;StandardManager&lt;/code&gt;中，直到会话超时或被显式销毁。&lt;/p&gt;
+&lt;p&gt;如果Tomcat重启，默认情况下，保存在内存中的&lt;code&gt;session&lt;/code&gt;会消失。这意味着如果没有特殊配置，当Tomcat重新启动时，所有活跃的&lt;code&gt;session&lt;/code&gt;数据都会丢失，用户会话将被中断，用户需要重新登录或重新建立会话。&lt;/p&gt;
+&lt;h3 id=&#34;持久化会话数据的方法&#34;&gt;持久化会话数据的方法
+&lt;/h3&gt;&lt;p&gt;为了在Tomcat重启后保留&lt;code&gt;session&lt;/code&gt;数据，可以使用以下方法：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;启用&lt;code&gt;session&lt;/code&gt;持久化&lt;/strong&gt;:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Tomcat提供了会话持久化的功能，可以将&lt;code&gt;session&lt;/code&gt;数据序列化到磁盘上，并在服务器重启时重新加载。&lt;/li&gt;
+&lt;li&gt;这通过&lt;code&gt;StandardManager&lt;/code&gt;的持久化机制来实现。你可以在&lt;code&gt;&amp;lt;Context&amp;gt;&lt;/code&gt;配置中启用&lt;code&gt;session&lt;/code&gt;持久化。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;示例配置（在&lt;code&gt;conf/context.xml&lt;/code&gt;或Web应用的&lt;code&gt;META-INF/context.xml&lt;/code&gt;中）：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&amp;lt;Manager pathname=&amp;#34;session.ser&amp;#34;/&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;ul&gt;
+&lt;li&gt;这里的&lt;code&gt;pathname&lt;/code&gt;属性指定了会话数据文件的路径。如果不指定路径，Tomcat将默认保存会话数据到&lt;code&gt;work&lt;/code&gt;目录下的&lt;code&gt;session.ser&lt;/code&gt;文件中。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;使用外部持久化存储&lt;/strong&gt;:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;可以将&lt;code&gt;session&lt;/code&gt;数据存储在外部数据库、Redis、Memcached等持久化存储中。通过这种方式，即使Tomcat重启，会话数据也能持久存在。&lt;/li&gt;
+&lt;li&gt;这需要自定义&lt;code&gt;Manager&lt;/code&gt;类或者使用第三方的解决方案，例如使用&lt;code&gt;RedisSessionManager&lt;/code&gt;来将&lt;code&gt;session&lt;/code&gt;数据保存在Redis中。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&#34;总结&#34;&gt;总结
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;默认情况下&lt;/strong&gt;，Tomcat重启后，&lt;code&gt;session&lt;/code&gt;数据会丢失，因为它们存储在内存中。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;启用持久化&lt;/strong&gt; 或 使用 &lt;strong&gt;外部存储&lt;/strong&gt; 是保留&lt;code&gt;session&lt;/code&gt;数据的两种常见方法。如果需要在重启后保持会话，建议配置持久化或者使用外部存储机制。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>

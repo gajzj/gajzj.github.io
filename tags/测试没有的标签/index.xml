@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>测试没有的标签 on GAJ-Blog</title>
+        <link>http://localhost:1313/tags/%E6%B5%8B%E8%AF%95%E6%B2%A1%E6%9C%89%E7%9A%84%E6%A0%87%E7%AD%BE/</link>
+        <description>Recent content in 测试没有的标签 on GAJ-Blog</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>gajzj</copyright>
+        <lastBuildDate>Sun, 25 Aug 2024 09:52:54 +0800</lastBuildDate><atom:link href="http://localhost:1313/tags/%E6%B5%8B%E8%AF%95%E6%B2%A1%E6%9C%89%E7%9A%84%E6%A0%87%E7%AD%BE/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>New</title>
+        <link>http://localhost:1313/p/new/</link>
+        <pubDate>Sun, 25 Aug 2024 09:52:54 +0800</pubDate>
+        
+        <guid>http://localhost:1313/p/new/</guid>
+        <description>&lt;h1 id=&#34;测试文章&#34;&gt;测试文章
+&lt;/h1&gt;&lt;p&gt;测试内容&lt;/p&gt;
+&lt;h2 id=&#34;测试-toc-自动生成目录1&#34;&gt;测试 toc 自动生成目录1
+&lt;/h2&gt;&lt;h3 id=&#34;测试-toc-自动生成多级目录二级目录&#34;&gt;测试 toc 自动生成多级目录（二级目录）
+&lt;/h3&gt;&lt;h4 id=&#34;测试-toc-自动生成多级目录三级目录&#34;&gt;测试 toc 自动生成多级目录（三级目录）
+&lt;/h4&gt;&lt;p&gt;多级目录最多三层&lt;/p&gt;
+&lt;h2 id=&#34;测试-toc-自动生成目录2&#34;&gt;测试 toc 自动生成目录2
+&lt;/h2&gt;&lt;p&gt;测试图片&lt;/p&gt;
+&lt;p&gt;![1](D:\hugo\hugo_extended_0.131.0_windows-amd64\hugopage\content\post\new\屏幕截图 2024-08-25 105141.png)&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; 测试图片上传方案&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>
