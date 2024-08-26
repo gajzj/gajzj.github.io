@@ -2,65 +2,65 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>Tags on GAJ-Blog</title>
-        <link>http://localhost:59818/tags/</link>
+        <link>https://example.com/tags/</link>
         <description>Recent content in Tags on GAJ-Blog</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>gajzj</copyright>
-        <lastBuildDate>Sun, 25 Aug 2024 08:52:54 +0800</lastBuildDate><atom:link href="http://localhost:59818/tags/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Sun, 25 Aug 2024 08:52:54 +0800</lastBuildDate><atom:link href="https://example.com/tags/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>Cookie</title>
-        <link>http://localhost:59818/tags/cookie/</link>
+        <link>https://example.com/tags/cookie/</link>
         <pubDate>Sun, 25 Aug 2024 08:52:54 +0800</pubDate>
         
-        <guid>http://localhost:59818/tags/cookie/</guid>
+        <guid>https://example.com/tags/cookie/</guid>
         <description></description>
         </item>
         <item>
         <title>MVC</title>
-        <link>http://localhost:59818/tags/mvc/</link>
+        <link>https://example.com/tags/mvc/</link>
         <pubDate>Sun, 25 Aug 2024 08:52:54 +0800</pubDate>
         
-        <guid>http://localhost:59818/tags/mvc/</guid>
+        <guid>https://example.com/tags/mvc/</guid>
         <description></description>
         </item>
         <item>
         <title>Session</title>
-        <link>http://localhost:59818/tags/session/</link>
+        <link>https://example.com/tags/session/</link>
         <pubDate>Sun, 25 Aug 2024 08:52:54 +0800</pubDate>
         
-        <guid>http://localhost:59818/tags/session/</guid>
+        <guid>https://example.com/tags/session/</guid>
         <description></description>
         </item>
         <item>
         <title>Spring</title>
-        <link>http://localhost:59818/tags/spring/</link>
+        <link>https://example.com/tags/spring/</link>
         <pubDate>Sun, 25 Aug 2024 08:52:54 +0800</pubDate>
         
-        <guid>http://localhost:59818/tags/spring/</guid>
+        <guid>https://example.com/tags/spring/</guid>
         <description></description>
         </item>
         <item>
         <title>Web</title>
-        <link>http://localhost:59818/tags/web/</link>
+        <link>https://example.com/tags/web/</link>
         <pubDate>Sun, 25 Aug 2024 08:52:54 +0800</pubDate>
         
-        <guid>http://localhost:59818/tags/web/</guid>
+        <guid>https://example.com/tags/web/</guid>
         <description></description>
         </item>
         <item>
         <title>Css</title>
-        <link>http://localhost:59818/tags/css/</link>
+        <link>https://example.com/tags/css/</link>
         <pubDate>Thu, 24 Aug 2023 09:52:54 +0800</pubDate>
         
-        <guid>http://localhost:59818/tags/css/</guid>
+        <guid>https://example.com/tags/css/</guid>
         <description></description>
         </item>
         <item>
         <title>测试标签</title>
-        <link>http://localhost:59818/tags/%E6%B5%8B%E8%AF%95%E6%A0%87%E7%AD%BE/</link>
+        <link>https://example.com/tags/%E6%B5%8B%E8%AF%95%E6%A0%87%E7%AD%BE/</link>
         <pubDate>Thu, 24 Aug 2023 09:52:54 +0800</pubDate>
         
-        <guid>http://localhost:59818/tags/%E6%B5%8B%E8%AF%95%E6%A0%87%E7%AD%BE/</guid>
+        <guid>https://example.com/tags/%E6%B5%8B%E8%AF%95%E6%A0%87%E7%AD%BE/</guid>
         <description></description>
         </item>
         

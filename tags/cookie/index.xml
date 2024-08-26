@@ -2,18 +2,18 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>Cookie on GAJ-Blog</title>
-        <link>http://localhost:59818/tags/cookie/</link>
+        <link>https://example.com/tags/cookie/</link>
         <description>Recent content in Cookie on GAJ-Blog</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>gajzj</copyright>
-        <lastBuildDate>Sun, 25 Aug 2024 08:52:54 +0800</lastBuildDate><atom:link href="http://localhost:59818/tags/cookie/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Sun, 25 Aug 2024 08:52:54 +0800</lastBuildDate><atom:link href="https://example.com/tags/cookie/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>Cookie</title>
-        <link>http://localhost:59818/p/cookie/</link>
+        <link>https://example.com/p/cookie/</link>
         <pubDate>Sun, 25 Aug 2024 08:52:54 +0800</pubDate>
         
-        <guid>http://localhost:59818/p/cookie/</guid>
-        <description>&lt;img src="http://localhost:59818/p/cookie/cookie.jpg" alt="Featured image of post Cookie" /&gt;&lt;h1 id=&#34;cookie&#34;&gt;Cookie
+        <guid>https://example.com/p/cookie/</guid>
+        <description>&lt;img src="https://example.com/p/cookie/cookie.jpg" alt="Featured image of post Cookie" /&gt;&lt;h1 id=&#34;cookie&#34;&gt;Cookie
 &lt;/h1&gt;&lt;p&gt;&lt;code&gt;Cookie&lt;/code&gt;是另一种在Web应用中保持状态的机制，但与&lt;code&gt;session&lt;/code&gt;不同的是，&lt;code&gt;cookie&lt;/code&gt;存储在客户端，而不是服务器端。以下是&lt;code&gt;cookie&lt;/code&gt;的详细介绍：&lt;/p&gt;
 &lt;h3 id=&#34;1-cookie的工作原理&#34;&gt;1. &lt;strong&gt;Cookie的工作原理&lt;/strong&gt;
 &lt;/h3&gt;&lt;ul&gt;
