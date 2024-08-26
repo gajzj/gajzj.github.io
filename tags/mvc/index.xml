@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>MVC on GAJ-Blog</title>
+        <link>https://example.com/tags/mvc/</link>
+        <description>Recent content in MVC on GAJ-Blog</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>gajzj</copyright>
+        <lastBuildDate>Sun, 25 Aug 2024 08:52:54 +0800</lastBuildDate><atom:link href="https://example.com/tags/mvc/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>Filter &amp; DispatcherServlet &amp; Interceptor</title>
+        <link>https://example.com/p/filter-dispatcherservlet-interceptor/</link>
+        <pubDate>Sun, 25 Aug 2024 08:52:54 +0800</pubDate>
+        
+        <guid>https://example.com/p/filter-dispatcherservlet-interceptor/</guid>
+        <description>&lt;h1 id=&#34;filter--dispatcherservlet--interceptor&#34;&gt;Filter &amp;amp; DispatcherServlet &amp;amp; Interceptor
+&lt;/h1&gt;&lt;blockquote&gt;
+&lt;p&gt;Filter 过滤器，它是 JavaEE 的 Servlet 规范提供的一种组件&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;strong&gt;作用&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;在 Http 请求到达 Servlet 之前&lt;/strong&gt;，可以被一个或多个 Filter 预处理，主要是做的一些代码的&lt;strong&gt;公共逻辑&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;调用链&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;多个 Filter 是具有&lt;strong&gt;调用链&lt;/strong&gt;的存在的，每个请求都会被链上的 Filter 依次处理，需要在 web.xml 中配置它们的顺序。&lt;/p&gt;
+&lt;p&gt;Filter 可以有针对性地&lt;strong&gt;拦截或者放行&lt;/strong&gt; HTTP 请求，如果在 Filter 内部直接发送重定向，且没有调用 chain.doFilter() ，后续的 Filter 就不会在处理这个请求了&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;DispatcherServlet 它是 MVC 框架中用来接收所有请求的 Servlet，总是映射到 /&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;DispatcherServlet 在接收到一个 Request 之后，会根据 Controller 的注解来决定调用哪个方法（需要先通过反射获取 Controller 的实例、get 或 post 方法、方法的参数类型、方法的参数名称），并获得方法返回的 ModelAndView ，或方法内部已经自行处理完毕，返回的就是 null&lt;/p&gt;
+&lt;p&gt;View 使用来给模板引擎指定渲染的模板的，而 Model 是一个 Map&amp;lt;String, Object&amp;gt;，model 会由渲染引擎（如 Pebble 这类引擎）在生成模板的时候通过反射来获取数据&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Interceptor 拦截器，它是 Spring MVC 框架用于拦截 HTTP 请求的逻辑&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;作用于请求到 controller 之前、controller 处理请求之后&lt;/p&gt;
+&lt;p&gt;作用范围比 Filter 更小，更加精细&lt;/p&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>

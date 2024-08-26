@@ -37,6 +37,11 @@
 &lt;td&gt;&lt;a class=&#34;link&#34; href=&#34;https://gajzj.github.io/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;https://gajzj.github.io/&lt;/a&gt;&lt;/td&gt;
 &lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;网站接入 giscus 评论&lt;/td&gt;
+&lt;td&gt;2024年8月26日&lt;/td&gt;
+&lt;td&gt;在文章的底部可以查看并发表评论&lt;/td&gt;
+&lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
 &lt;hr&gt;
@@ -50,8 +55,8 @@
 &lt;/thead&gt;
 &lt;tbody&gt;
 &lt;tr&gt;
-&lt;td&gt;加入文章评论功能&lt;/td&gt;
-&lt;td&gt;看着下面评论区报错很难受&lt;/td&gt;
+&lt;td&gt;&lt;del&gt;加入文章评论功能&lt;/del&gt;&lt;/td&gt;
+&lt;td&gt;&lt;del&gt;看着下面评论区报错很难受&lt;/del&gt;&lt;/td&gt;
 &lt;td&gt;&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
