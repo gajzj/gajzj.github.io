@@ -2,30 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>Session on GAJ-Blog</title>
-<<<<<<< HEAD
-        <link>http://localhost:1313/tags/session/</link>
-=======
-        <link>https://example.com/tags/session/</link>
->>>>>>> 900250989ae20ed15db613842660d31e671f0f9d
+        <link>http://localhost:59818/tags/session/</link>
         <description>Recent content in Session on GAJ-Blog</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>gajzj</copyright>
-<<<<<<< HEAD
-        <lastBuildDate>Sun, 25 Aug 2024 08:52:54 +0800</lastBuildDate><atom:link href="http://localhost:1313/tags/session/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Sun, 25 Aug 2024 08:52:54 +0800</lastBuildDate><atom:link href="http://localhost:59818/tags/session/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>Session</title>
-        <link>http://localhost:1313/p/session/</link>
+        <link>http://localhost:59818/p/session/</link>
         <pubDate>Sun, 25 Aug 2024 08:52:54 +0800</pubDate>
         
-        <guid>http://localhost:1313/p/session/</guid>
-=======
-        <lastBuildDate>Sun, 25 Aug 2024 08:52:54 +0800</lastBuildDate><atom:link href="https://example.com/tags/session/index.xml" rel="self" type="application/rss+xml" /><item>
-        <title>Session</title>
-        <link>https://example.com/p/session/</link>
-        <pubDate>Sun, 25 Aug 2024 08:52:54 +0800</pubDate>
-        
-        <guid>https://example.com/p/session/</guid>
->>>>>>> 900250989ae20ed15db613842660d31e671f0f9d
+        <guid>http://localhost:59818/p/session/</guid>
         <description>&lt;h1 id=&#34;session&#34;&gt;Session
 &lt;/h1&gt;&lt;p&gt;session用于指代服务器将数据存储在当前用户的会话中，这个session是由&lt;strong&gt;服务端&lt;/strong&gt;保存的，具体来说，它是一个HttpSession类，我们在获取的时候是由HttpServletRequest.getSession()这样获取到当前用户的session，通过唯一表示符JSESSIONID在服务端区分。&lt;/p&gt;
 &lt;p&gt;客户端只会保存JSESSIONID，服务端通过这个id查找到对应的session。&lt;/p&gt;
