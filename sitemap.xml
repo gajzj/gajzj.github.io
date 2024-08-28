@@ -3,10 +3,25 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://example.com/</loc>
-    <lastmod>2024-08-25T08:52:54+08:00</lastmod>
+    <lastmod>2024-08-26T09:52:54+08:00</lastmod>
+  </url><url>
+    <loc>https://example.com/tags/aop/</loc>
+    <lastmod>2024-08-26T09:52:54+08:00</lastmod>
+  </url><url>
+    <loc>https://example.com/p/aop/</loc>
+    <lastmod>2024-08-26T09:52:54+08:00</lastmod>
   </url><url>
     <loc>https://example.com/categories/</loc>
-    <lastmod>2024-08-25T08:52:54+08:00</lastmod>
+    <lastmod>2024-08-26T09:52:54+08:00</lastmod>
+  </url><url>
+    <loc>https://example.com/post/</loc>
+    <lastmod>2024-08-26T09:52:54+08:00</lastmod>
+  </url><url>
+    <loc>https://example.com/categories/spring-%E5%BC%80%E5%8F%91/</loc>
+    <lastmod>2024-08-26T09:52:54+08:00</lastmod>
+  </url><url>
+    <loc>https://example.com/tags/</loc>
+    <lastmod>2024-08-26T09:52:54+08:00</lastmod>
   </url><url>
     <loc>https://example.com/tags/cookie/</loc>
     <lastmod>2024-08-25T08:52:54+08:00</lastmod>
@@ -20,9 +35,6 @@
     <loc>https://example.com/tags/mvc/</loc>
     <lastmod>2024-08-25T08:52:54+08:00</lastmod>
   </url><url>
-    <loc>https://example.com/post/</loc>
-    <lastmod>2024-08-25T08:52:54+08:00</lastmod>
-  </url><url>
     <loc>https://example.com/tags/session/</loc>
     <lastmod>2024-08-25T08:52:54+08:00</lastmod>
   </url><url>
@@ -30,9 +42,6 @@
     <lastmod>2024-08-25T08:52:54+08:00</lastmod>
   </url><url>
     <loc>https://example.com/tags/spring/</loc>
-    <lastmod>2024-08-25T08:52:54+08:00</lastmod>
-  </url><url>
-    <loc>https://example.com/tags/</loc>
     <lastmod>2024-08-25T08:52:54+08:00</lastmod>
   </url><url>
     <loc>https://example.com/tags/web/</loc>
