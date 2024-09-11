@@ -7,7 +7,115 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>gajzj</copyright>
-        <lastBuildDate>Wed, 28 Aug 2024 20:40:00 +0800</lastBuildDate><atom:link href="https://example.com/post/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Wed, 11 Sep 2024 20:02:00 +0800</lastBuildDate><atom:link href="https://example.com/post/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>Git分支</title>
+        <link>https://example.com/p/git%E5%88%86%E6%94%AF/</link>
+        <pubDate>Wed, 11 Sep 2024 20:02:00 +0800</pubDate>
+        
+        <guid>https://example.com/p/git%E5%88%86%E6%94%AF/</guid>
+        <description>&lt;h3 id=&#34;1-main-分支&#34;&gt;1. &lt;code&gt;main&lt;/code&gt; 分支
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;用途&lt;/strong&gt;: &lt;code&gt;main&lt;/code&gt;（或 &lt;code&gt;master&lt;/code&gt;）是项目的主要分支，通常代表的是当前稳定和可发布的版本。它是用户和生产环境直接使用的分支。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;说明&lt;/strong&gt;: 代码合并到 &lt;code&gt;main&lt;/code&gt; 分支时，通常已经经过充分的测试，并且功能已经完全实现。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;2-build-分支&#34;&gt;2. &lt;code&gt;build&lt;/code&gt; 分支
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;用途&lt;/strong&gt;: 用于存储构建脚本、构建配置文件或持续集成和部署的代码。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;说明&lt;/strong&gt;: 该分支可能包含自动化构建系统所需的工具或配置文件，比如 Jenkinsfile、Dockerfile 或者 CI/CD 的脚本。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;3-exp-分支&#34;&gt;3. &lt;code&gt;exp&lt;/code&gt; 分支
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;用途&lt;/strong&gt;: &lt;code&gt;exp&lt;/code&gt; 是实验（experimental）的缩写。用于进行实验性的开发。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;说明&lt;/strong&gt;: 该分支可能包含尚未确定的功能或新技术的尝试，通常不保证稳定性，并且可能会在未来被删除或合并到其他分支。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;4-feat-分支&#34;&gt;4. &lt;code&gt;feat&lt;/code&gt; 分支
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;用途&lt;/strong&gt;: &lt;code&gt;feat&lt;/code&gt; 是 &lt;code&gt;feature&lt;/code&gt; 的缩写。用于开发新功能。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;说明&lt;/strong&gt;: 通常每个功能都会有一个单独的分支（如 &lt;code&gt;feat/feature-name&lt;/code&gt;），开发完成并通过测试后再合并到 &lt;code&gt;dev&lt;/code&gt; 或 &lt;code&gt;main&lt;/code&gt;。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;5-fix-分支&#34;&gt;5. &lt;code&gt;fix&lt;/code&gt; 分支
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;用途&lt;/strong&gt;: &lt;code&gt;fix&lt;/code&gt; 分支专门用于修复 bug。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;说明&lt;/strong&gt;: 修复特定问题或 bug 的代码会先提交到 &lt;code&gt;fix&lt;/code&gt; 分支，然后再合并到 &lt;code&gt;dev&lt;/code&gt; 或 &lt;code&gt;main&lt;/code&gt;，以确保问题修复后能立即进入下一步发布流程。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;6-issues-分支&#34;&gt;6. &lt;code&gt;issues&lt;/code&gt; 分支
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;用途&lt;/strong&gt;: 与项目的 issue 管理工具（如 GitHub Issues）相结合，专门用于处理特定的 issues（问题/任务）。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;说明&lt;/strong&gt;: 该分支通常用于实现特定问题的修复或功能改进，分支名称通常会包括 issue 的编号（如 &lt;code&gt;issues/#123&lt;/code&gt;）。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;7-perf-分支&#34;&gt;7. &lt;code&gt;perf&lt;/code&gt; 分支
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;用途&lt;/strong&gt;: &lt;code&gt;perf&lt;/code&gt; 是 &lt;code&gt;performance&lt;/code&gt; 的缩写。用于进行性能优化。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;说明&lt;/strong&gt;: 该分支会涉及到代码的性能改进，例如减少内存使用、优化算法等，然后这些改动会被测试和验证后合并回主分支。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;8-refactor-分支&#34;&gt;8. &lt;code&gt;refactor&lt;/code&gt; 分支
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;用途&lt;/strong&gt;: 用于重构代码。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;说明&lt;/strong&gt;: 该分支上的改动通常不影响功能，但会改善代码质量、结构和可维护性。这些改动通常需要经过充分的测试，以确保没有引入新的 bug。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;9-rework-分支&#34;&gt;9. &lt;code&gt;rework&lt;/code&gt; 分支
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;用途&lt;/strong&gt;: 专门用于重新开发或重写某部分代码。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;说明&lt;/strong&gt;: 当某个功能或模块需要大规模重写而不破坏现有版本时，&lt;code&gt;rework&lt;/code&gt; 分支会被创建。在完成后，这些改动可以被合并到 &lt;code&gt;dev&lt;/code&gt; 或其他相应的分支。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;10-dev-分支&#34;&gt;10. &lt;code&gt;dev&lt;/code&gt; 分支
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;用途&lt;/strong&gt;: &lt;code&gt;dev&lt;/code&gt; 是开发分支，通常是用于日常开发的主要分支。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;说明&lt;/strong&gt;: 这个分支包含尚在开发中的功能和改进，在合并到 &lt;code&gt;main&lt;/code&gt; 之前通常会在这个分支进行测试和 bug 修复。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;11-017_lts-分支&#34;&gt;11. &lt;code&gt;0.17_LTS&lt;/code&gt; 分支
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;用途&lt;/strong&gt;: 该分支代表一个长期支持（Long Term Support, LTS）的版本。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;说明&lt;/strong&gt;: 此版本通常比最新版本更稳定，且会定期接收安全更新和重要的 bug 修复。它可能用于需要长期支持的客户或产品环境。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;12-litecommand-分支&#34;&gt;12. &lt;code&gt;litecommand&lt;/code&gt; 分支
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;用途&lt;/strong&gt;: 可能用于开发一个名为 &lt;code&gt;litecommand&lt;/code&gt; 的特定功能或模块。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;说明&lt;/strong&gt;: 该分支上可能包含与 &lt;code&gt;litecommand&lt;/code&gt; 功能相关的代码，开发完成后再合并回主分支。&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        </item>
+        <item>
+        <title>多线程</title>
+        <link>https://example.com/p/%E5%A4%9A%E7%BA%BF%E7%A8%8B/</link>
+        <pubDate>Sun, 01 Sep 2024 21:52:54 +0800</pubDate>
+        
+        <guid>https://example.com/p/%E5%A4%9A%E7%BA%BF%E7%A8%8B/</guid>
+        <description>&lt;h1 id=&#34;多线程&#34;&gt;多线程
+&lt;/h1&gt;&lt;h2 id=&#34;线程&#34;&gt;线程
+&lt;/h2&gt;&lt;h3 id=&#34;创建线程&#34;&gt;创建线程
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;继承 Thread 类，重写 run 方法，然后创建子类对象调用 start() 方法&lt;/li&gt;
+&lt;li&gt;实现 Runnable 接口，重写 run 方法，然后创建实现类对象并传递给一个 Thread，调用 start()&lt;/li&gt;
+&lt;li&gt;实现 Callable 接口，重写 call 方法，然后创建实现类对象并传递给一个 FutureTask 类对象，最后传递给一个 Thread 对象调用 start()&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;线程的六种状态&#34;&gt;线程的六种状态
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;NEW 新建状态&lt;/li&gt;
+&lt;li&gt;RUNNABLE 可运行状态，线程调用 start() 方法后即处于这个状态&lt;/li&gt;
+&lt;li&gt;BLOCKED 锁阻塞状态，没有获取到锁即处于这个状态&lt;/li&gt;
+&lt;li&gt;WAITING 无线等待状态，线程执行时被调用了 wait() 方法处于这个状态&lt;/li&gt;
+&lt;li&gt;TIMED_WAITING 计时等待状态，线程执行时被调用了 sleep(ms) 或 wait(ms) 方法即处于这个状态&lt;/li&gt;
+&lt;li&gt;TERMINATED 终止状态，线程执行完毕或遇到异常即处于这个状态&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;线程池&#34;&gt;线程池
+&lt;/h2&gt;&lt;h3 id=&#34;threadpoolexcutor&#34;&gt;ThreadPoolExcutor
+&lt;/h3&gt;&lt;p&gt;线程池内部使用 AtomicTnteger 来维护 runState(运行状态) 和 workerCount(线程数量)
+&lt;strong&gt;用一个变量去存储两个值，可避免在做相关决策时，出现不一致的情况，不必为了维护两者的一致，而占用锁资源。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;顶层接口是 Excutor&lt;/p&gt;
+&lt;h3 id=&#34;线程池的五种运行状态&#34;&gt;线程池的五种运行状态
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;RUNNING 能接受新提交的任务，并且也能处理阻塞队列中的任务&lt;/li&gt;
+&lt;li&gt;SHUTDOWN 关闭状态，不再接受新提交的任务，但可以继续处理阻塞队列中保存的任务&lt;/li&gt;
+&lt;li&gt;STOP 不能接受新任务，也不处理队列中的任务，会中断正在处理任务的线程&lt;/li&gt;
+&lt;li&gt;TIDYING 所有的任务都终止了，workerCount(有效线程数)为0&lt;/li&gt;
+&lt;li&gt;TERMINATED 在 terminated() 方法执行完后加入该状态&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://tech.meituan.com/2020/04/02/java-pooling-pratice-in-meituan.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Java线程池实现原理及其在美团业务中的实践 - 美团技术团队 (meituan.com)&lt;/a&gt;&lt;/p&gt;
+</description>
+        </item>
+        <item>
         <title>Spring访问数据库</title>
         <link>https://example.com/p/spring%E8%AE%BF%E9%97%AE%E6%95%B0%E6%8D%AE%E5%BA%93/</link>
         <pubDate>Wed, 28 Aug 2024 20:40:00 +0800</pubDate>

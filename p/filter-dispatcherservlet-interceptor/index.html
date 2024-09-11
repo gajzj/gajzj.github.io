@@ -1,22 +1,19 @@
 <!DOCTYPE html>
 <html lang="zh-cn" dir="ltr">
     <head><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="Filter &amp; DispatcherServlet &amp; Interceptor Filter 过滤器，它是 JavaEE 的 Servlet 规范提供的一种组件 作用 在 Http 请求到达 Servlet 之前，可以被一个或多个 Filter 预处理，主要是做的一些代码的公共逻辑。 调用链 多个 Filter">
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="Filter &amp; DispatcherServlet &amp; Interceptor Filter 过滤器，它是 JavaEE 的 Servlet 规范提供的一种组件\n作用\n在 Http 请求到达 Servlet 之前，可以被一个或多个 Filter 预处理，主要是做的一些代码的公共逻辑。\n调用链\n多个 Filter 是具有调用链的存在的，每个请求都会被链上的 Filter 依次处理，需要在 web.xml 中配置它们的顺序。\n">
 <title>Filter &amp; DispatcherServlet &amp; Interceptor</title>
 
 <link rel='canonical' href='https://example.com/p/filter-dispatcherservlet-interceptor/'>
 
 <link rel="stylesheet" href="/scss/style.min.0304c6baf04e01a8fe70693791cb744d56a3578a3120a8796cefc66825aa39c7.css"><meta property='og:title' content="Filter & DispatcherServlet & Interceptor">
-<meta property='og:description' content="Filter &amp; DispatcherServlet &amp; Interceptor Filter 过滤器，它是 JavaEE 的 Servlet 规范提供的一种组件 作用 在 Http 请求到达 Servlet 之前，可以被一个或多个 Filter 预处理，主要是做的一些代码的公共逻辑。 调用链 多个 Filter">
+<meta property='og:description' content="Filter &amp; DispatcherServlet &amp; Interceptor Filter 过滤器，它是 JavaEE 的 Servlet 规范提供的一种组件\n作用\n在 Http 请求到达 Servlet 之前，可以被一个或多个 Filter 预处理，主要是做的一些代码的公共逻辑。\n调用链\n多个 Filter 是具有调用链的存在的，每个请求都会被链上的 Filter 依次处理，需要在 web.xml 中配置它们的顺序。\n">
 <meta property='og:url' content='https://example.com/p/filter-dispatcherservlet-interceptor/'>
 <meta property='og:site_name' content='GAJ-Blog'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='spring' /><meta property='article:tag' content='MVC' /><meta property='article:published_time' content='2024-08-25T08:52:54&#43;08:00'/><meta property='article:modified_time' content='2024-08-25T08:52:54&#43;08:00'/>
 <meta name="twitter:title" content="Filter & DispatcherServlet & Interceptor">
-<meta name="twitter:description" content="Filter &amp; DispatcherServlet &amp; Interceptor Filter 过滤器，它是 JavaEE 的 Servlet 规范提供的一种组件 作用 在 Http 请求到达 Servlet 之前，可以被一个或多个 Filter 预处理，主要是做的一些代码的公共逻辑。 调用链 多个 Filter">
+<meta name="twitter:description" content="Filter &amp; DispatcherServlet &amp; Interceptor Filter 过滤器，它是 JavaEE 的 Servlet 规范提供的一种组件\n作用\n在 Http 请求到达 Servlet 之前，可以被一个或多个 Filter 预处理，主要是做的一些代码的公共逻辑。\n调用链\n多个 Filter 是具有调用链的存在的，每个请求都会被链上的 Filter 依次处理，需要在 web.xml 中配置它们的顺序。\n">
     <link rel="shortcut icon" href="/favicon.ico" />
-
-  
-
 
     </head>
     <body class="

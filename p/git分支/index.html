@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="1. main 分支 用途: main（或 master）是项目的主要分支，通常代表的是当前稳定和可发布的版本。它是用户和生产环境直接使用的分支。 说明: 代码合并到 main 分支时，通常已经经过充分的测试，并且功能已经完全实现。 2. build 分支 用途: 用于存储构建脚本、构建配置文件或持续集成和部署的代码。 说明: 该分支可能包含自动化构建系统所需的工具或配置文件，比如 Jenkinsfile、Dockerfile 或者 CI/CD 的脚本。 3. exp 分支 用途: exp 是实验（experimental）的缩写。用于进行实验性的开发。 说明: 该分支可能包含尚未确定的功能或新技术的尝试，通常不保证稳定性，并且可能会在未来被删除或合并到其他分支。 4. feat 分支 用途: feat 是 feature 的缩写。用于开发新功能。 说明: 通常每个功能都会有一个单独的分支（如 feat/feature-name），开发完成并通过测试后再合并到 dev 或 main。 5. fix 分支 用途: fix 分支专门用于修复 bug。 说明: 修复特定问题或 bug 的代码会先提交到 fix 分支，然后再合并到 dev 或 main，以确保问题修复后能立即进入下一步发布流程。 6. issues 分支 用途: 与项目的 issue 管理工具（如 GitHub Issues）相结合，专门用于处理特定的 issues（问题/任务）。 说明: 该分支通常用于实现特定问题的修复或功能改进，分支名称通常会包括 issue 的编号（如 issues/#123）。 7. perf 分支 用途: perf 是 performance 的缩写。用于进行性能优化。 说明: 该分支会涉及到代码的性能改进，例如减少内存使用、优化算法等，然后这些改动会被测试和验证后合并回主分支。 8. refactor 分支 用途: 用于重构代码。 说明: 该分支上的改动通常不影响功能，但会改善代码质量、结构和可维护性。这些改动通常需要经过充分的测试，以确保没有引入新的 bug。 9. rework 分支 用途: 专门用于重新开发或重写某部分代码。 说明: 当某个功能或模块需要大规模重写而不破坏现有版本时，rework 分支会被创建。在完成后，这些改动可以被合并到 dev 或其他相应的分支。 10. dev 分支 用途: dev 是开发分支，通常是用于日常开发的主要分支。 说明: 这个分支包含尚在开发中的功能和改进，在合并到 main 之前通常会在这个分支进行测试和 bug 修复。 11. 0.17_LTS 分支 用途: 该分支代表一个长期支持（Long Term Support, LTS）的版本。 说明: 此版本通常比最新版本更稳定，且会定期接收安全更新和重要的 bug 修复。它可能用于需要长期支持的客户或产品环境。 12. litecommand 分支 用途: 可能用于开发一个名为 litecommand 的特定功能或模块。 说明: 该分支上可能包含与 litecommand 功能相关的代码，开发完成后再合并回主分支。 ">
+<title>Git分支</title>
+
+<link rel='canonical' href='https://example.com/p/git%E5%88%86%E6%94%AF/'>
+
+<link rel="stylesheet" href="/scss/style.min.0304c6baf04e01a8fe70693791cb744d56a3578a3120a8796cefc66825aa39c7.css"><meta property='og:title' content="Git分支">
+<meta property='og:description' content="1. main 分支 用途: main（或 master）是项目的主要分支，通常代表的是当前稳定和可发布的版本。它是用户和生产环境直接使用的分支。 说明: 代码合并到 main 分支时，通常已经经过充分的测试，并且功能已经完全实现。 2. build 分支 用途: 用于存储构建脚本、构建配置文件或持续集成和部署的代码。 说明: 该分支可能包含自动化构建系统所需的工具或配置文件，比如 Jenkinsfile、Dockerfile 或者 CI/CD 的脚本。 3. exp 分支 用途: exp 是实验（experimental）的缩写。用于进行实验性的开发。 说明: 该分支可能包含尚未确定的功能或新技术的尝试，通常不保证稳定性，并且可能会在未来被删除或合并到其他分支。 4. feat 分支 用途: feat 是 feature 的缩写。用于开发新功能。 说明: 通常每个功能都会有一个单独的分支（如 feat/feature-name），开发完成并通过测试后再合并到 dev 或 main。 5. fix 分支 用途: fix 分支专门用于修复 bug。 说明: 修复特定问题或 bug 的代码会先提交到 fix 分支，然后再合并到 dev 或 main，以确保问题修复后能立即进入下一步发布流程。 6. issues 分支 用途: 与项目的 issue 管理工具（如 GitHub Issues）相结合，专门用于处理特定的 issues（问题/任务）。 说明: 该分支通常用于实现特定问题的修复或功能改进，分支名称通常会包括 issue 的编号（如 issues/#123）。 7. perf 分支 用途: perf 是 performance 的缩写。用于进行性能优化。 说明: 该分支会涉及到代码的性能改进，例如减少内存使用、优化算法等，然后这些改动会被测试和验证后合并回主分支。 8. refactor 分支 用途: 用于重构代码。 说明: 该分支上的改动通常不影响功能，但会改善代码质量、结构和可维护性。这些改动通常需要经过充分的测试，以确保没有引入新的 bug。 9. rework 分支 用途: 专门用于重新开发或重写某部分代码。 说明: 当某个功能或模块需要大规模重写而不破坏现有版本时，rework 分支会被创建。在完成后，这些改动可以被合并到 dev 或其他相应的分支。 10. dev 分支 用途: dev 是开发分支，通常是用于日常开发的主要分支。 说明: 这个分支包含尚在开发中的功能和改进，在合并到 main 之前通常会在这个分支进行测试和 bug 修复。 11. 0.17_LTS 分支 用途: 该分支代表一个长期支持（Long Term Support, LTS）的版本。 说明: 此版本通常比最新版本更稳定，且会定期接收安全更新和重要的 bug 修复。它可能用于需要长期支持的客户或产品环境。 12. litecommand 分支 用途: 可能用于开发一个名为 litecommand 的特定功能或模块。 说明: 该分支上可能包含与 litecommand 功能相关的代码，开发完成后再合并回主分支。 ">
+<meta property='og:url' content='https://example.com/p/git%E5%88%86%E6%94%AF/'>
+<meta property='og:site_name' content='GAJ-Blog'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='git' /><meta property='article:published_time' content='2024-09-11T20:02:00&#43;08:00'/><meta property='article:modified_time' content='2024-09-11T20:02:00&#43;08:00'/>
+<meta name="twitter:title" content="Git分支">
+<meta name="twitter:description" content="1. main 分支 用途: main（或 master）是项目的主要分支，通常代表的是当前稳定和可发布的版本。它是用户和生产环境直接使用的分支。 说明: 代码合并到 main 分支时，通常已经经过充分的测试，并且功能已经完全实现。 2. build 分支 用途: 用于存储构建脚本、构建配置文件或持续集成和部署的代码。 说明: 该分支可能包含自动化构建系统所需的工具或配置文件，比如 Jenkinsfile、Dockerfile 或者 CI/CD 的脚本。 3. exp 分支 用途: exp 是实验（experimental）的缩写。用于进行实验性的开发。 说明: 该分支可能包含尚未确定的功能或新技术的尝试，通常不保证稳定性，并且可能会在未来被删除或合并到其他分支。 4. feat 分支 用途: feat 是 feature 的缩写。用于开发新功能。 说明: 通常每个功能都会有一个单独的分支（如 feat/feature-name），开发完成并通过测试后再合并到 dev 或 main。 5. fix 分支 用途: fix 分支专门用于修复 bug。 说明: 修复特定问题或 bug 的代码会先提交到 fix 分支，然后再合并到 dev 或 main，以确保问题修复后能立即进入下一步发布流程。 6. issues 分支 用途: 与项目的 issue 管理工具（如 GitHub Issues）相结合，专门用于处理特定的 issues（问题/任务）。 说明: 该分支通常用于实现特定问题的修复或功能改进，分支名称通常会包括 issue 的编号（如 issues/#123）。 7. perf 分支 用途: perf 是 performance 的缩写。用于进行性能优化。 说明: 该分支会涉及到代码的性能改进，例如减少内存使用、优化算法等，然后这些改动会被测试和验证后合并回主分支。 8. refactor 分支 用途: 用于重构代码。 说明: 该分支上的改动通常不影响功能，但会改善代码质量、结构和可维护性。这些改动通常需要经过充分的测试，以确保没有引入新的 bug。 9. rework 分支 用途: 专门用于重新开发或重写某部分代码。 说明: 当某个功能或模块需要大规模重写而不破坏现有版本时，rework 分支会被创建。在完成后，这些改动可以被合并到 dev 或其他相应的分支。 10. dev 分支 用途: dev 是开发分支，通常是用于日常开发的主要分支。 说明: 这个分支包含尚在开发中的功能和改进，在合并到 main 之前通常会在这个分支进行测试和 bug 修复。 11. 0.17_LTS 分支 用途: 该分支代表一个长期支持（Long Term Support, LTS）的版本。 说明: 此版本通常比最新版本更稳定，且会定期接收安全更新和重要的 bug 修复。它可能用于需要长期支持的客户或产品环境。 12. litecommand 分支 用途: 可能用于开发一个名为 litecommand 的特定功能或模块。 说明: 该分支上可能包含与 litecommand 功能相关的代码，开发完成后再合并回主分支。 ">
+    <link rel="shortcut icon" href="/favicon.ico" />
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu9246200855298101108.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🤔</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">GAJ-Blog</a></h1>
+            <h2 class="site-description">步履不停，一往无前。</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/gajzj'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>归档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/update/' >
+                
+                
+                
+                    <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-timeline-event"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 20m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" /><path d="M10 20h-6" /><path d="M14 20h6" /><path d="M12 15l-2 -2h-3a1 1 0 0 1 -1 -1v-8a1 1 0 0 1 1 -1h10a1 1 0 0 1 1 1v8a1 1 0 0 1 -1 1h-3l-2 2z" /></svg>
+                
+                <span>日志</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li>
+      <ol>
+        <li><a href="#1-main-分支">1. <code>main</code> 分支</a></li>
+        <li><a href="#2-build-分支">2. <code>build</code> 分支</a></li>
+        <li><a href="#3-exp-分支">3. <code>exp</code> 分支</a></li>
+        <li><a href="#4-feat-分支">4. <code>feat</code> 分支</a></li>
+        <li><a href="#5-fix-分支">5. <code>fix</code> 分支</a></li>
+        <li><a href="#6-issues-分支">6. <code>issues</code> 分支</a></li>
+        <li><a href="#7-perf-分支">7. <code>perf</code> 分支</a></li>
+        <li><a href="#8-refactor-分支">8. <code>refactor</code> 分支</a></li>
+        <li><a href="#9-rework-分支">9. <code>rework</code> 分支</a></li>
+        <li><a href="#10-dev-分支">10. <code>dev</code> 分支</a></li>
+        <li><a href="#11-017_lts-分支">11. <code>0.17_LTS</code> 分支</a></li>
+        <li><a href="#12-litecommand-分支">12. <code>litecommand</code> 分支</a></li>
+      </ol>
+    </li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/git/" >
+                Git
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/git%E5%88%86%E6%94%AF/">Git分支</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">09-11,  2024</time>
+            </div>
+        
+
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h3 id="1-main-分支">1. <code>main</code> 分支
+</h3><ul>
+<li><strong>用途</strong>: <code>main</code>（或 <code>master</code>）是项目的主要分支，通常代表的是当前稳定和可发布的版本。它是用户和生产环境直接使用的分支。</li>
+<li><strong>说明</strong>: 代码合并到 <code>main</code> 分支时，通常已经经过充分的测试，并且功能已经完全实现。</li>
+</ul>
+<h3 id="2-build-分支">2. <code>build</code> 分支
+</h3><ul>
+<li><strong>用途</strong>: 用于存储构建脚本、构建配置文件或持续集成和部署的代码。</li>
+<li><strong>说明</strong>: 该分支可能包含自动化构建系统所需的工具或配置文件，比如 Jenkinsfile、Dockerfile 或者 CI/CD 的脚本。</li>
+</ul>
+<h3 id="3-exp-分支">3. <code>exp</code> 分支
+</h3><ul>
+<li><strong>用途</strong>: <code>exp</code> 是实验（experimental）的缩写。用于进行实验性的开发。</li>
+<li><strong>说明</strong>: 该分支可能包含尚未确定的功能或新技术的尝试，通常不保证稳定性，并且可能会在未来被删除或合并到其他分支。</li>
+</ul>
+<h3 id="4-feat-分支">4. <code>feat</code> 分支
+</h3><ul>
+<li><strong>用途</strong>: <code>feat</code> 是 <code>feature</code> 的缩写。用于开发新功能。</li>
+<li><strong>说明</strong>: 通常每个功能都会有一个单独的分支（如 <code>feat/feature-name</code>），开发完成并通过测试后再合并到 <code>dev</code> 或 <code>main</code>。</li>
+</ul>
+<h3 id="5-fix-分支">5. <code>fix</code> 分支
+</h3><ul>
+<li><strong>用途</strong>: <code>fix</code> 分支专门用于修复 bug。</li>
+<li><strong>说明</strong>: 修复特定问题或 bug 的代码会先提交到 <code>fix</code> 分支，然后再合并到 <code>dev</code> 或 <code>main</code>，以确保问题修复后能立即进入下一步发布流程。</li>
+</ul>
+<h3 id="6-issues-分支">6. <code>issues</code> 分支
+</h3><ul>
+<li><strong>用途</strong>: 与项目的 issue 管理工具（如 GitHub Issues）相结合，专门用于处理特定的 issues（问题/任务）。</li>
+<li><strong>说明</strong>: 该分支通常用于实现特定问题的修复或功能改进，分支名称通常会包括 issue 的编号（如 <code>issues/#123</code>）。</li>
+</ul>
+<h3 id="7-perf-分支">7. <code>perf</code> 分支
+</h3><ul>
+<li><strong>用途</strong>: <code>perf</code> 是 <code>performance</code> 的缩写。用于进行性能优化。</li>
+<li><strong>说明</strong>: 该分支会涉及到代码的性能改进，例如减少内存使用、优化算法等，然后这些改动会被测试和验证后合并回主分支。</li>
+</ul>
+<h3 id="8-refactor-分支">8. <code>refactor</code> 分支
+</h3><ul>
+<li><strong>用途</strong>: 用于重构代码。</li>
+<li><strong>说明</strong>: 该分支上的改动通常不影响功能，但会改善代码质量、结构和可维护性。这些改动通常需要经过充分的测试，以确保没有引入新的 bug。</li>
+</ul>
+<h3 id="9-rework-分支">9. <code>rework</code> 分支
+</h3><ul>
+<li><strong>用途</strong>: 专门用于重新开发或重写某部分代码。</li>
+<li><strong>说明</strong>: 当某个功能或模块需要大规模重写而不破坏现有版本时，<code>rework</code> 分支会被创建。在完成后，这些改动可以被合并到 <code>dev</code> 或其他相应的分支。</li>
+</ul>
+<h3 id="10-dev-分支">10. <code>dev</code> 分支
+</h3><ul>
+<li><strong>用途</strong>: <code>dev</code> 是开发分支，通常是用于日常开发的主要分支。</li>
+<li><strong>说明</strong>: 这个分支包含尚在开发中的功能和改进，在合并到 <code>main</code> 之前通常会在这个分支进行测试和 bug 修复。</li>
+</ul>
+<h3 id="11-017_lts-分支">11. <code>0.17_LTS</code> 分支
+</h3><ul>
+<li><strong>用途</strong>: 该分支代表一个长期支持（Long Term Support, LTS）的版本。</li>
+<li><strong>说明</strong>: 此版本通常比最新版本更稳定，且会定期接收安全更新和重要的 bug 修复。它可能用于需要长期支持的客户或产品环境。</li>
+</ul>
+<h3 id="12-litecommand-分支">12. <code>litecommand</code> 分支
+</h3><ul>
+<li><strong>用途</strong>: 可能用于开发一个名为 <code>litecommand</code> 的特定功能或模块。</li>
+<li><strong>说明</strong>: 该分支上可能包含与 <code>litecommand</code> 功能相关的代码，开发完成后再合并回主分支。</li>
+</ul>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/git/">Git</a>
+        
+    </section>
+
+
+    </footer>
+
+
+    
+        <link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI&#43;WdtXRGWt2kTvGFasHpSy3SV"crossorigin="anonymous"
+            ><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG&#43;vnGctmUb0ZY0l8"crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"integrity="sha384-&#43;VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4&#43;/RRE05"crossorigin="anonymous"
+                defer
+                >
+            </script><script>
+    window.addEventListener("DOMContentLoaded", () => {
+        renderMathInElement(document.body, {
+            delimiters: [
+                { left: "$$", right: "$$", display: true },
+                { left: "$", right: "$", display: false },
+                { left: "\\(", right: "\\)", display: false },
+                { left: "\\[", right: "\\]", display: true }
+            ],
+            ignoredClasses: ["gist"]
+        });})
+</script>
+    
+</article>
+
+    
+
+    
+
+     
+    
+        
+    <script
+    src="https://giscus.app/client.js"
+    data-repo="gajzj/gajzj.github.io"
+    data-repo-id="R_kgDOMnkDwQ"
+    data-category="Announcements"
+    data-category-id="DIC_kwDOMnkDwc4Ch6ca"
+    data-mapping="pathname"
+    data-strict="0"
+    data-reactions-enabled="1"
+    data-emit-metadata="0"
+    data-input-position="top"
+    data-theme="light"
+    data-lang="en"
+    crossorigin="anonymous"
+    async
+></script>
+<script>
+    function setGiscusTheme(theme) {
+        let giscus = document.querySelector("iframe.giscus-frame");
+        if (giscus) {
+            giscus.contentWindow.postMessage(
+                {
+                    giscus: {
+                        setConfig: {
+                            theme: theme,
+                        },
+                    },
+                },
+                "https://giscus.app"
+            );
+        }
+    }
+
+    (function () {
+        addEventListener("message", (e) => {
+            if (event.origin !== "https://giscus.app") return;
+            handler();
+        });
+        window.addEventListener("onColorSchemeChange", handler);
+
+        function handler() {
+            if (document.documentElement.dataset.scheme === "light") {
+                setGiscusTheme('light');
+            } else {
+                setGiscusTheme('dark_dimmed');
+            }
+        }
+    })();
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2024 gajzj
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.26.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+</body>
+</html>
+    </body>
+</html>
