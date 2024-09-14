@@ -7,7 +7,54 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>gajzj</copyright>
-        <lastBuildDate>Wed, 11 Sep 2024 20:02:00 +0800</lastBuildDate><atom:link href="https://example.com/post/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Sat, 14 Sep 2024 20:02:00 +0800</lastBuildDate><atom:link href="https://example.com/post/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>数据库</title>
+        <link>https://example.com/p/%E6%95%B0%E6%8D%AE%E5%BA%93/</link>
+        <pubDate>Sat, 14 Sep 2024 20:02:00 +0800</pubDate>
+        
+        <guid>https://example.com/p/%E6%95%B0%E6%8D%AE%E5%BA%93/</guid>
+        <description>&lt;h2 id=&#34;q1&#34;&gt;Q1
+&lt;/h2&gt;&lt;blockquote&gt;
+&lt;p&gt;mapper&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Mapper 就是用来执行 SQL 语句的&lt;/p&gt;
+&lt;h2 id=&#34;q2&#34;&gt;Q2
+&lt;/h2&gt;&lt;blockquote&gt;
+&lt;p&gt;ORM 框架是如何跟踪 Java Bean 的修改，以便在 update() 操作中更新必要的属性&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;使用 Proxy 模式，从 ORM 框架读取的 User 示例实际上并不是 User 类，而是代理类，代理类继承自 User 类，但对每个 setter 方法都做了覆写&lt;/p&gt;
+&lt;h2 id=&#34;q3&#34;&gt;Q3
+&lt;/h2&gt;&lt;blockquote&gt;
+&lt;p&gt;ORM 分为全自动和半自动框架，有什么区别&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&#34;q4&#34;&gt;Q4
+&lt;/h2&gt;&lt;blockquote&gt;
+&lt;p&gt;Spring 提供的 JdbcTemplate 相对于 ORM 框架有什么差别，有什么优势&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;区别：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;查询后需要手动提供 Mapper 实例一边把 ResultSet 的每一行变为 Java 对象&lt;/li&gt;
+&lt;li&gt;增删改操作所需的参数列表，需要手动传入，即把 User 实例变为 [user.id, user.name, user.email] 这样的列表，比较麻烦&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;优势：确定性&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;每次读取操作一定是数据库操作而不是缓存，即每次读取操作一定是数据库操作而不是缓存，
+而 ORM 框架有一级二级缓存机制
+缺点&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;缺点：繁琐、复杂&lt;/p&gt;
+</description>
+        </item>
+        <item>
+        <title>Spring IoC</title>
+        <link>https://example.com/p/spring-ioc/</link>
+        <pubDate>Thu, 12 Sep 2024 16:02:00 +0800</pubDate>
+        
+        <guid>https://example.com/p/spring-ioc/</guid>
+        <description>&lt;h1 id=&#34;spring-ioc&#34;&gt;Spring IoC
+&lt;/h1&gt;</description>
+        </item>
+        <item>
         <title>Git分支</title>
         <link>https://example.com/p/git%E5%88%86%E6%94%AF/</link>
         <pubDate>Wed, 11 Sep 2024 20:02:00 +0800</pubDate>
