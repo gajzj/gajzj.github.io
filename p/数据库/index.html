@@ -225,6 +225,7 @@
     <li><a href="#q2">Q2</a></li>
     <li><a href="#q3">Q3</a></li>
     <li><a href="#q4">Q4</a></li>
+    <li><a href="#q5">Q5</a></li>
   </ol>
 </nav>
         </div>
@@ -306,20 +307,32 @@
 </blockquote>
 <h2 id="q4">Q4
 </h2><blockquote>
-<p>Spring 提供的 JdbcTemplate 相对于 ORM 框架有什么差别，有什么优势</p>
+<p>Spring 提供的 JdbcTemplate 相对于全自动的 ORM 框架有什么差别，有什么优势</p>
 </blockquote>
-<p>区别：</p>
+<ul>
+<li>区别：
 <ul>
 <li>查询后需要手动提供 Mapper 实例一边把 ResultSet 的每一行变为 Java 对象</li>
 <li>增删改操作所需的参数列表，需要手动传入，即把 User 实例变为 [user.id, user.name, user.email] 这样的列表，比较麻烦</li>
 </ul>
-<p>优势：确定性</p>
+</li>
+<li>优势：确定性
 <ul>
 <li>每次读取操作一定是数据库操作而不是缓存，即每次读取操作一定是数据库操作而不是缓存，
-而 ORM 框架有一级二级缓存机制
-缺点</li>
+而 ORM 框架有一级二级缓存机制</li>
 </ul>
-<p>缺点：繁琐、复杂</p>
+</li>
+<li>缺点：繁琐、复杂</li>
+<li>解决方案：
+<ul>
+<li>使用半自动的 ORM 框架 MyBatis，它只负责把ResultSet自动映射到Java Bean，或者自动填充Java Bean参数，但仍需自己写出SQL。</li>
+</ul>
+</li>
+</ul>
+<h2 id="q5">Q5
+</h2><blockquote>
+<p>sql 注入是什么，怎么解决</p>
+</blockquote>
 
 </section>
 
