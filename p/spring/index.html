@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html lang="zh-cn" dir="ltr">
     <head><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="Spring IoC ">
-<title>Spring IoC</title>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="Q1 Web 程序总是由 Servlet 容器创建，那么在一个 Web 程序中，那么，Spring 容器应该由谁创建？在什么时候创建？Spring 容器中的 Controller 又是如何通过 Servlet 调用的？\n">
+<title>spring</title>
 
-<link rel='canonical' href='https://example.com/p/spring-ioc/'>
+<link rel='canonical' href='https://example.com/p/spring/'>
 
-<link rel="stylesheet" href="/scss/style.min.0304c6baf04e01a8fe70693791cb744d56a3578a3120a8796cefc66825aa39c7.css"><meta property='og:title' content="Spring IoC">
-<meta property='og:description' content="Spring IoC ">
-<meta property='og:url' content='https://example.com/p/spring-ioc/'>
+<link rel="stylesheet" href="/scss/style.min.0304c6baf04e01a8fe70693791cb744d56a3578a3120a8796cefc66825aa39c7.css"><meta property='og:title' content="spring">
+<meta property='og:description' content="Q1 Web 程序总是由 Servlet 容器创建，那么在一个 Web 程序中，那么，Spring 容器应该由谁创建？在什么时候创建？Spring 容器中的 Controller 又是如何通过 Servlet 调用的？\n">
+<meta property='og:url' content='https://example.com/p/spring/'>
 <meta property='og:site_name' content='GAJ-Blog'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='spring' /><meta property='article:published_time' content='2024-09-12T16:02:00&#43;08:00'/><meta property='article:modified_time' content='2024-09-12T16:02:00&#43;08:00'/>
-<meta name="twitter:title" content="Spring IoC">
-<meta name="twitter:description" content="Spring IoC ">
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='spring' /><meta property='article:published_time' content='2024-09-15T16:02:00&#43;08:00'/><meta property='article:modified_time' content='2024-09-15T16:02:00&#43;08:00'/>
+<meta name="twitter:title" content="spring">
+<meta name="twitter:description" content="Q1 Web 程序总是由 Servlet 容器创建，那么在一个 Web 程序中，那么，Spring 容器应该由谁创建？在什么时候创建？Spring 容器中的 Controller 又是如何通过 Servlet 调用的？\n">
     <link rel="shortcut icon" href="/favicon.ico" />
 
     </head>
@@ -218,7 +218,7 @@
 
     <div class="article-title-wrapper">
         <h2 class="article-title">
-            <a href="/p/spring-ioc/">Spring IoC</a>
+            <a href="/p/spring/">spring</a>
         </h2>
     
         
@@ -240,7 +240,7 @@
   <path d="M3 11h16" />
   <path d="M18 16.496v1.504l1 1" />
 </svg>
-                <time class="article-time--published">09-12,  2024</time>
+                <time class="article-time--published">09-15,  2024</time>
             </div>
         
 
@@ -256,8 +256,64 @@
     <section class="article-content">
     
     
-    <h1 id="spring-ioc">Spring IoC
-</h1>
+    <h1 id="q1">Q1
+</h1><blockquote>
+<p>Web 程序总是由 Servlet 容器创建，那么在一个 Web 程序中，那么，Spring 容器应该由谁创建？在什么时候创建？Spring 容器中的 Controller 又是如何通过 Servlet 调用的？</p>
+</blockquote>
+<p>在Web应用中启动Spring容器有很多种方法，可以通过Listener启动，也可以通过Servlet启动，可以使用XML配置，也可以使用注解配置。这里，我们只介绍一种<em>最简单</em>的启动Spring容器的方式。</p>
+<p>第一步，我们在<code>web.xml</code>中配置Spring MVC提供的<code>DispatcherServlet</code>：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-xml" data-lang="xml"><span class="line"><span class="cl"><span class="cp">&lt;?xml version=&#34;1.0&#34;?&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;web-app&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;servlet&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&lt;servlet-name&gt;</span>dispatcher<span class="nt">&lt;/servlet-name&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&lt;servlet-class&gt;</span>org.springframework.web.servlet.DispatcherServlet<span class="nt">&lt;/servlet-class&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&lt;init-param&gt;</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&lt;param-name&gt;</span>contextClass<span class="nt">&lt;/param-name&gt;</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&lt;param-value&gt;</span>org.springframework.web.context.support.AnnotationConfigWebApplicationContext<span class="nt">&lt;/param-value&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&lt;/init-param&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&lt;init-param&gt;</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&lt;param-name&gt;</span>contextConfigLocation<span class="nt">&lt;/param-name&gt;</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&lt;param-value&gt;</span>com.itranswarp.learnjava.AppConfig<span class="nt">&lt;/param-value&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&lt;/init-param&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&lt;load-on-startup&gt;</span>0<span class="nt">&lt;/load-on-startup&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;/servlet&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;servlet-mapping&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&lt;servlet-name&gt;</span>dispatcher<span class="nt">&lt;/servlet-name&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&lt;url-pattern&gt;</span>/*<span class="nt">&lt;/url-pattern&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;/servlet-mapping&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;/web-app&gt;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>初始化参数<code>contextClass</code>指定使用注解配置的<code>AnnotationConfigWebApplicationContext</code>，配置文件的位置参数<code>contextConfigLocation</code>指向<code>AppConfig</code>的完整类名，最后，把这个Servlet映射到<code>/*</code>，即处理所有URL。</p>
+<p>上述配置可以看作一个样板配置，有了这个配置，Servlet容器会首先初始化Spring MVC的<code>DispatcherServlet</code>，在<code>DispatcherServlet</code>启动时，它根据配置<code>AppConfig</code>创建了一个类型是<code>WebApplicationContext</code>的IoC容器，完成所有Bean的初始化，并将容器绑到<code>ServletContext</code>上。</p>
+<p>因为<code>DispatcherServlet</code>持有IoC容器，能从IoC容器中获取所有<code>@Controller</code>的Bean，因此，<code>DispatcherServlet</code>接收到所有HTTP请求后，根据Controller方法配置的路径，就可以正确地把请求转发到指定方法，并根据返回的<code>ModelAndView</code>决定如何渲染页面。</p>
+
 </section>
 
 
@@ -311,12 +367,12 @@
             
                 
 <article class="">
-    <a href="/p/spring/">
+    <a href="/p/spring-ioc/">
         
         
 
         <div class="article-details">
-            <h2 class="article-title">spring</h2>
+            <h2 class="article-title">Spring IoC</h2>
         </div>
     </a>
 </article>

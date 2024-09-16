@@ -55,6 +55,14 @@
 &lt;/h2&gt;&lt;blockquote&gt;
 &lt;p&gt;sql 注入是什么，怎么解决&lt;/p&gt;
 &lt;/blockquote&gt;
+&lt;p&gt;Statement&lt;/p&gt;
+&lt;p&gt;PrepareStatement&lt;/p&gt;
+&lt;p&gt;#{}&lt;/p&gt;
+&lt;p&gt;${} 用在动态表名&lt;/p&gt;
+&lt;h2 id=&#34;q6&#34;&gt;Q6
+&lt;/h2&gt;&lt;blockquote&gt;
+&lt;p&gt;给一个场景，现在 UserService 中有一个 updateUser(Long id, String name) 方法，而 UserMapper 中 update 操作只有一个 update(User user) 方法（get、delete、insert都有），在这里你是会给接口新加一个方法用于更新 user 的 name；还是用 UserMapper 提供的 getById 获取一个 User 实例，更改 name 后再调用 update(user) 把这个实例传入。User 继承自 AbstractEntity，里面有多个字段如 id，createdTime，updatedTime&lt;/p&gt;
+&lt;/blockquote&gt;
 </description>
         </item>
         

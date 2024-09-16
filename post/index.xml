@@ -7,7 +7,72 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>gajzj</copyright>
-        <lastBuildDate>Sat, 14 Sep 2024 20:02:00 +0800</lastBuildDate><atom:link href="https://example.com/post/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Sun, 15 Sep 2024 16:02:00 +0800</lastBuildDate><atom:link href="https://example.com/post/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>spring</title>
+        <link>https://example.com/p/spring/</link>
+        <pubDate>Sun, 15 Sep 2024 16:02:00 +0800</pubDate>
+        
+        <guid>https://example.com/p/spring/</guid>
+        <description>&lt;h1 id=&#34;q1&#34;&gt;Q1
+&lt;/h1&gt;&lt;blockquote&gt;
+&lt;p&gt;Web 程序总是由 Servlet 容器创建，那么在一个 Web 程序中，那么，Spring 容器应该由谁创建？在什么时候创建？Spring 容器中的 Controller 又是如何通过 Servlet 调用的？&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;在Web应用中启动Spring容器有很多种方法，可以通过Listener启动，也可以通过Servlet启动，可以使用XML配置，也可以使用注解配置。这里，我们只介绍一种&lt;em&gt;最简单&lt;/em&gt;的启动Spring容器的方式。&lt;/p&gt;
+&lt;p&gt;第一步，我们在&lt;code&gt;web.xml&lt;/code&gt;中配置Spring MVC提供的&lt;code&gt;DispatcherServlet&lt;/code&gt;：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;15
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;16
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;17
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;18
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;19
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;20
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;21
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-xml&#34; data-lang=&#34;xml&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;cp&#34;&gt;&amp;lt;?xml version=&amp;#34;1.0&amp;#34;?&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nt&#34;&gt;&amp;lt;web-app&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;nt&#34;&gt;&amp;lt;servlet&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;nt&#34;&gt;&amp;lt;servlet-name&amp;gt;&lt;/span&gt;dispatcher&lt;span class=&#34;nt&#34;&gt;&amp;lt;/servlet-name&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;nt&#34;&gt;&amp;lt;servlet-class&amp;gt;&lt;/span&gt;org.springframework.web.servlet.DispatcherServlet&lt;span class=&#34;nt&#34;&gt;&amp;lt;/servlet-class&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;nt&#34;&gt;&amp;lt;init-param&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;            &lt;span class=&#34;nt&#34;&gt;&amp;lt;param-name&amp;gt;&lt;/span&gt;contextClass&lt;span class=&#34;nt&#34;&gt;&amp;lt;/param-name&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;            &lt;span class=&#34;nt&#34;&gt;&amp;lt;param-value&amp;gt;&lt;/span&gt;org.springframework.web.context.support.AnnotationConfigWebApplicationContext&lt;span class=&#34;nt&#34;&gt;&amp;lt;/param-value&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;nt&#34;&gt;&amp;lt;/init-param&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;nt&#34;&gt;&amp;lt;init-param&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;            &lt;span class=&#34;nt&#34;&gt;&amp;lt;param-name&amp;gt;&lt;/span&gt;contextConfigLocation&lt;span class=&#34;nt&#34;&gt;&amp;lt;/param-name&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;            &lt;span class=&#34;nt&#34;&gt;&amp;lt;param-value&amp;gt;&lt;/span&gt;com.itranswarp.learnjava.AppConfig&lt;span class=&#34;nt&#34;&gt;&amp;lt;/param-value&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;nt&#34;&gt;&amp;lt;/init-param&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;nt&#34;&gt;&amp;lt;load-on-startup&amp;gt;&lt;/span&gt;0&lt;span class=&#34;nt&#34;&gt;&amp;lt;/load-on-startup&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;nt&#34;&gt;&amp;lt;/servlet&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;nt&#34;&gt;&amp;lt;servlet-mapping&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;nt&#34;&gt;&amp;lt;servlet-name&amp;gt;&lt;/span&gt;dispatcher&lt;span class=&#34;nt&#34;&gt;&amp;lt;/servlet-name&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;nt&#34;&gt;&amp;lt;url-pattern&amp;gt;&lt;/span&gt;/*&lt;span class=&#34;nt&#34;&gt;&amp;lt;/url-pattern&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;nt&#34;&gt;&amp;lt;/servlet-mapping&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nt&#34;&gt;&amp;lt;/web-app&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;初始化参数&lt;code&gt;contextClass&lt;/code&gt;指定使用注解配置的&lt;code&gt;AnnotationConfigWebApplicationContext&lt;/code&gt;，配置文件的位置参数&lt;code&gt;contextConfigLocation&lt;/code&gt;指向&lt;code&gt;AppConfig&lt;/code&gt;的完整类名，最后，把这个Servlet映射到&lt;code&gt;/*&lt;/code&gt;，即处理所有URL。&lt;/p&gt;
+&lt;p&gt;上述配置可以看作一个样板配置，有了这个配置，Servlet容器会首先初始化Spring MVC的&lt;code&gt;DispatcherServlet&lt;/code&gt;，在&lt;code&gt;DispatcherServlet&lt;/code&gt;启动时，它根据配置&lt;code&gt;AppConfig&lt;/code&gt;创建了一个类型是&lt;code&gt;WebApplicationContext&lt;/code&gt;的IoC容器，完成所有Bean的初始化，并将容器绑到&lt;code&gt;ServletContext&lt;/code&gt;上。&lt;/p&gt;
+&lt;p&gt;因为&lt;code&gt;DispatcherServlet&lt;/code&gt;持有IoC容器，能从IoC容器中获取所有&lt;code&gt;@Controller&lt;/code&gt;的Bean，因此，&lt;code&gt;DispatcherServlet&lt;/code&gt;接收到所有HTTP请求后，根据Controller方法配置的路径，就可以正确地把请求转发到指定方法，并根据返回的&lt;code&gt;ModelAndView&lt;/code&gt;决定如何渲染页面。&lt;/p&gt;
+</description>
+        </item>
+        <item>
         <title>数据库</title>
         <link>https://example.com/p/%E6%95%B0%E6%8D%AE%E5%BA%93/</link>
         <pubDate>Sat, 14 Sep 2024 20:02:00 +0800</pubDate>
@@ -54,6 +119,14 @@
 &lt;h2 id=&#34;q5&#34;&gt;Q5
 &lt;/h2&gt;&lt;blockquote&gt;
 &lt;p&gt;sql 注入是什么，怎么解决&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Statement&lt;/p&gt;
+&lt;p&gt;PrepareStatement&lt;/p&gt;
+&lt;p&gt;#{}&lt;/p&gt;
+&lt;p&gt;${} 用在动态表名&lt;/p&gt;
+&lt;h2 id=&#34;q6&#34;&gt;Q6
+&lt;/h2&gt;&lt;blockquote&gt;
+&lt;p&gt;给一个场景，现在 UserService 中有一个 updateUser(Long id, String name) 方法，而 UserMapper 中 update 操作只有一个 update(User user) 方法（get、delete、insert都有），在这里你是会给接口新加一个方法用于更新 user 的 name；还是用 UserMapper 提供的 getById 获取一个 User 实例，更改 name 后再调用 update(user) 把这个实例传入。User 继承自 AbstractEntity，里面有多个字段如 id，createdTime，updatedTime&lt;/p&gt;
 &lt;/blockquote&gt;
 </description>
         </item>
