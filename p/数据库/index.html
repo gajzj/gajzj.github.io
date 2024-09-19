@@ -199,43 +199,7 @@
     </ol>
 </aside>
 
-    <aside class="sidebar right-sidebar sticky">
-        
-            
-                
-    <section class="widget archives">
-        <div class="widget-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <line x1="5" y1="9" x2="19" y2="9" />
-  <line x1="5" y1="15" x2="19" y2="15" />
-  <line x1="11" y1="4" x2="7" y2="20" />
-  <line x1="17" y1="4" x2="13" y2="20" />
-</svg>
-
-
-
-        </div>
-        <h2 class="widget-title section-title">目录</h2>
-        
-        <div class="widget--toc">
-            <nav id="TableOfContents">
-  <ol>
-    <li><a href="#q1">Q1</a></li>
-    <li><a href="#q2">Q2</a></li>
-    <li><a href="#q3">Q3</a></li>
-    <li><a href="#q4">Q4</a></li>
-    <li><a href="#q5">Q5</a></li>
-    <li><a href="#q6">Q6</a></li>
-  </ol>
-</nav>
-        </div>
-    </section>
-
-            
-        
-    </aside>
-
+    
 
             <main class="main full-width">
     <article class="main-article">
@@ -292,22 +256,22 @@
     <section class="article-content">
     
     
-    <h2 id="q1">Q1
-</h2><blockquote>
+    <h1 id="q1">Q1
+</h1><blockquote>
 <p>mapper</p>
 </blockquote>
 <p>Mapper 就是用来执行 SQL 语句的</p>
-<h2 id="q2">Q2
-</h2><blockquote>
+<h1 id="q2">Q2
+</h1><blockquote>
 <p>ORM 框架是如何跟踪 Java Bean 的修改，以便在 update() 操作中更新必要的属性</p>
 </blockquote>
 <p>使用 Proxy 模式，从 ORM 框架读取的 User 示例实际上并不是 User 类，而是代理类，代理类继承自 User 类，但对每个 setter 方法都做了覆写</p>
-<h2 id="q3">Q3
-</h2><blockquote>
+<h1 id="q3">Q3
+</h1><blockquote>
 <p>ORM 分为全自动和半自动框架，有什么区别</p>
 </blockquote>
-<h2 id="q4">Q4
-</h2><blockquote>
+<h1 id="q4">Q4
+</h1><blockquote>
 <p>Spring 提供的 JdbcTemplate 相对于全自动的 ORM 框架有什么差别，有什么优势</p>
 </blockquote>
 <ul>
@@ -330,18 +294,332 @@
 </ul>
 </li>
 </ul>
-<h2 id="q5">Q5
-</h2><blockquote>
+<h1 id="q5">Q5
+</h1><blockquote>
 <p>sql 注入是什么，怎么解决</p>
 </blockquote>
 <p>Statement</p>
 <p>PrepareStatement</p>
 <p>#{}</p>
 <p>${} 用在动态表名</p>
-<h2 id="q6">Q6
-</h2><blockquote>
-<p>给一个场景，现在 UserService 中有一个 updateUser(Long id, String name) 方法，而 UserMapper 中 update 操作只有一个 update(User user) 方法（get、delete、insert都有），在这里你是会给接口新加一个方法用于更新 user 的 name；还是用 UserMapper 提供的 getById 获取一个 User 实例，更改 name 后再调用 update(user) 把这个实例传入。User 继承自 AbstractEntity，里面有多个字段如 id，createdTime，updatedTime</p>
+<h1 id="q6">Q6
+</h1><blockquote>
+<p>给一个场景：</p>
+<p>现在 UserService 中有一个 updateUser(Long id, String name) 方法，而 UserMapper 中 update 操作只有一个 update(User user) 方法（get、delete、insert都有）</p>
+<p>在这里你是会给接口新加一个方法用于更新 user 的 name；还是用 UserMapper 提供的 getById 获取一个 User 实例，更改 name 后再调用 update(user) 把这个实例传入。</p>
+<p>注：User 继承自 AbstractEntity，里面有多个字段如 id，createdTime，updatedTime</p>
 </blockquote>
+<h1 id="q7">Q7
+</h1><blockquote>
+<p>如果使用 PageHelper 处理分页查询，会不会有线程安全问题</p>
+</blockquote>
+<p><strong>PageHelper的使用</strong></p>
+<ul>
+<li>
+<p>PageHelper 只会对紧跟在其后的第一条 SQL 语句进行分页处理，如：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="w">    </span><span class="nd">@Override</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="n">PageBean</span><span class="w"> </span><span class="nf">page</span><span class="p">(</span><span class="n">Integer</span><span class="w"> </span><span class="n">page</span><span class="p">,</span><span class="w"> </span><span class="n">Integer</span><span class="w"> </span><span class="n">pageSize</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">PageHelper</span><span class="p">.</span><span class="na">startPage</span><span class="p">(</span><span class="n">page</span><span class="p">,</span><span class="w"> </span><span class="n">pageSize</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">List</span><span class="o">&lt;</span><span class="n">Emp</span><span class="o">&gt;</span><span class="w"> </span><span class="n">empList</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">empMapper</span><span class="p">.</span><span class="na">list</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">Page</span><span class="o">&lt;</span><span class="n">Emp</span><span class="o">&gt;</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">Page</span><span class="o">&lt;</span><span class="n">Emp</span><span class="o">&gt;</span><span class="p">)</span><span class="w"> </span><span class="n">empList</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">PageBean</span><span class="p">(</span><span class="n">p</span><span class="p">.</span><span class="na">getTotal</span><span class="p">(),</span><span class="w"> </span><span class="n">p</span><span class="p">.</span><span class="na">getResult</span><span class="p">());</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>只要可以保证在 PageHelper 方法调用后紧跟着查询方法，就是安全的。</p>
+</li>
+</ul>
+<p><strong>线程安全问题的产生原因</strong></p>
+<ul>
+<li>
+<p>PageHelper 使用了静态的 ThreadLocal 参数，这意味着分页设置是与当前啊线程相关联的。</p>
+</li>
+<li>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="w"> </span><span class="c1">//使用PageHelper分页助手插件进行分页操作</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">PageHelper</span><span class="p">.</span><span class="na">startPage</span><span class="p">(</span><span class="n">0</span><span class="p">,</span><span class="w"> </span><span class="n">10</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">List</span><span class="o">&lt;</span><span class="n">Country</span><span class="o">&gt;</span><span class="w"> </span><span class="n">list</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  		</span><span class="k">if</span><span class="p">(</span><span class="n">param1</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="kc">null</span><span class="p">){</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    		</span><span class="n">list</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">countryMapper</span><span class="p">.</span><span class="na">selectIf</span><span class="p">(</span><span class="n">param1</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  		</span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">   			 </span><span class="n">list</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">Country</span><span class="o">&gt;</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  		</span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">Page</span><span class="o">&lt;</span><span class="n">CheckItem</span><span class="o">&gt;</span><span class="w"> </span><span class="n">page</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">checkItemDao</span><span class="p">.</span><span class="na">selectByCondition</span><span class="p">(</span><span class="n">queryString</span><span class="p">);</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>这种情况下由于 param1 存在 null 的情况，就会导致 PageHelper 生产了一个分页参数，但是没有被消费，这个参数就会一直保留在这个线程上。当这个线程再次被使用时，就可能导致不该分页的方法去消费这个分页参数，这就产生了莫名其妙的分页。</p>
+</li>
+</ul>
+<h1 id="q8">Q8
+</h1><blockquote>
+<p>对于一个请求参数</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@Data</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">EmpQueryParam</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c1">// 对于请求中的参数，只有映射到 String 类型时会把空字符串映射，对于其他的类型遇到 &#34;&#34; 会映射为 null</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">Integer</span><span class="w"> </span><span class="n">page</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">1</span><span class="p">;</span><span class="w"> </span><span class="c1">// 页码，默认值1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">Integer</span><span class="w"> </span><span class="n">pageSize</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">10</span><span class="p">;</span><span class="w"> </span><span class="c1">// 每页展示记录数，默认值10</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">name</span><span class="p">;</span><span class="w"> </span><span class="c1">// 姓名</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">Integer</span><span class="w"> </span><span class="n">gender</span><span class="p">;</span><span class="w"> </span><span class="c1">// 性别</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nd">@DateTimeFormat</span><span class="p">(</span><span class="n">pattern</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&#34;yyyy-MM-dd&#34;</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">LocalDate</span><span class="w"> </span><span class="n">begin</span><span class="p">;</span><span class="w"> </span><span class="c1">// 入职开始时间，</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nd">@DateTimeFormat</span><span class="p">(</span><span class="n">pattern</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&#34;yyyy-MM-dd&#34;</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">LocalDate</span><span class="w"> </span><span class="n">end</span><span class="p">;</span><span class="w"> </span><span class="c1">// 入职结束时间</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>编写动态 SQL 语句如下</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-xml" data-lang="xml"><span class="line"><span class="cl"><span class="nt">&lt;select</span> <span class="na">id=</span><span class="s">&#34;list&#34;</span> <span class="na">resultType=</span><span class="s">&#34;com.gaj.pojo.Emp&#34;</span><span class="nt">&gt;</span>
+</span></span><span class="line"><span class="cl">    select e.*, d.name deptName from emp e left join dept d on e.dept_id = d.id
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;where&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&lt;if</span> <span class="na">test=</span><span class="s">&#34;param.name != null and param.name != &#39;&#39;&#34;</span><span class="nt">&gt;</span> e.name like concat(&#39;%&#39;, #{param.name}, &#39;%&#39;) <span class="nt">&lt;/if&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&lt;if</span> <span class="na">test=</span><span class="s">&#34;param.gender != null&#34;</span><span class="nt">&gt;</span> and e.gender = #{param.gender} <span class="nt">&lt;/if&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&lt;if</span> <span class="na">test=</span><span class="s">&#34;param.begin != null and param.end != null&#34;</span><span class="nt">&gt;</span> and e.entry_date between #{param.begin} and #{param.end} <span class="nt">&lt;/if&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;/where&gt;</span>
+</span></span><span class="line"><span class="cl">    order by e.update_time desc
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;/select&gt;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>前端的请求</p>
+<p><code> http://localhost:90/api/emps?begin=&amp;end=&amp;gender=&amp;name=&amp;page=1&amp;pageSize=5</code>
+这里的 begin end gender 都是空字符串，为什么对它们不用判空字符串（只用判空），对 name 要判</p>
+</blockquote>
+<p>很显然Integer 和 LocalDate 只会为 null，不会为空字符串，
+简单来说这里只有 String 需要判断是否为 &quot;&quot;
+因为编译器已经确保了 &quot;&quot; 空字符串不会映射到其他引用类型</p>
+<h1 id="q9">Q9
+</h1><blockquote>
+<p>spring 开启一个事务是怎么样的，底层是通过操作什么来开启</p>
+</blockquote>
+<hr>
+<p>答题思路</p>
+<ul>
+<li>简述 spring 框架中事务如何启用
+<ul>
+<li><code>@EnableTransaction</code></li>
+<li><code>PlatformTransactionManager</code></li>
+</ul>
+</li>
+<li>数据库底层
+<ul>
+<li>显式事务和隐式事务</li>
+</ul>
+</li>
+<li>JDBC
+<ul>
+<li>开启事务的关键代码是 <code>conn.setAutoCommit(false)</code> 表示关闭提交</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>spring 启用声明式事务</strong>
+spring 中启用声明式事务和和开启一个声明式事务没什么好说的，前者需要在启动类上加上<code>@EnableTransaction</code>注解；后者只要在开启一个事务的类上（或者方法上）加上<code>@Transactional</code>注解，然后在需要回滚的地方抛出<code>RunTimeException</code>（默认情况下，也可以在<code>Transactional</code>注解声明<code>rollbackFor</code>属性），spring 的事务管理类（<code>PlatformTransactionManager</code>）会自动<code>rollback</code>。</p>
+<p><strong>spring 启用编程式事务</strong>
+spring 中使用编程式事务主要是<code>PlatformTransactionManager</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="n">TransactionStatus</span><span class="w"> </span><span class="n">tx</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">null</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">try</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c1">// 开启事务:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">tx</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">txManager</span><span class="p">.</span><span class="na">getTransaction</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">DefaultTransactionDefinition</span><span class="p">());</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c1">// 相关JDBC操作:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">jdbcTemplate</span><span class="p">.</span><span class="na">update</span><span class="p">(</span><span class="s">&#34;...&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">jdbcTemplate</span><span class="p">.</span><span class="na">update</span><span class="p">(</span><span class="s">&#34;...&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c1">// 提交事务:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">txManager</span><span class="p">.</span><span class="na">commit</span><span class="p">(</span><span class="n">tx</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="n">RuntimeException</span><span class="w"> </span><span class="n">e</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c1">// 回滚事务:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">txManager</span><span class="p">.</span><span class="na">rollback</span><span class="p">(</span><span class="n">tx</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">throw</span><span class="w"> </span><span class="n">e</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>比较繁琐</p>
+<p><strong>底层启用事务的原理</strong>
+若是从数据库层面来说的话，开启一个事务是用<code>BEGIN</code>，<code>COMMIT</code>提交一个事务，<code>ROLLBACK</code>回滚事务。事务有隔离级别，但不是本题的讨论范围这里不做讲解。</p>
+<p>主要的答题点应为 <strong>JDBC</strong> 层面的：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="n">Connection</span><span class="w"> </span><span class="n">conn</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">openConnection</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">try</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c1">// 关闭自动提交:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">conn</span><span class="p">.</span><span class="na">setAutoCommit</span><span class="p">(</span><span class="kc">false</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c1">// 执行多条SQL语句:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">insert</span><span class="p">();</span><span class="w"> </span><span class="n">update</span><span class="p">();</span><span class="w"> </span><span class="n">delete</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c1">// 提交事务:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">conn</span><span class="p">.</span><span class="na">commit</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="n">SQLException</span><span class="w"> </span><span class="n">e</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c1">// 回滚事务:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">conn</span><span class="p">.</span><span class="na">rollback</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w"> </span><span class="k">finally</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">conn</span><span class="p">.</span><span class="na">setAutoCommit</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">conn</span><span class="p">.</span><span class="na">close</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>开启事务的关键代码是 <code>conn.setAutoCommit(false)</code> 表示关闭提交。</p>
+<p>因为事务分为显示事务和隐式事务，对于单条 SQL 语句，数据库系统自动将其作为一个事务执行，这就是隐式事务。</p>
+<p>关闭自动提交就代表开启了显示事务，然后在执行多条sql语句的过程中如果 catch 到了异常，就可以选择回滚事务，如果程序正常执行就将 commit</p>
+<p><strong>自动提交更改后必须要改回原来的值</strong></p>
+<p>所以 spring 框架在开启事务的时候其实就是对自动提交的操作。</p>
+<h1 id="q10">Q10
+</h1><blockquote>
+<p>使用<code>@Transactional</code>注解可以开启一个事务，在什么时候会回滚？</p>
+</blockquote>
+<p>默认抛出<code>RuntimeException</code>异常时会回滚，非<code>RuntimeException</code>（包括<code>IOException</code>、<code>ReflectiveOperationException</code>等等）不会回滚。</p>
+<p>为了简化代码，我们强烈建议业务异常体系从<code>RuntimeException</code>派生，这样就不必声明任何特殊异常即可让Spring的声明式事务正常工作。</p>
+<h1 id="q11">Q11
+</h1><blockquote>
+<p>Spring使用声明式事务，最终也是通过执行JDBC事务来实现功能的，那么，一个事务方法，如何获知当前是否存在事务？</p>
+</blockquote>
+<h1 id="q12">Q12
+</h1><blockquote>
+<p>事务失效场景</p>
+</blockquote>
+<p>事务方法非 public 修饰</p>
+<p>非事务方法调用事务方法</p>
+<p>事务方法的异常被捕获了</p>
+<p>事务异常类型不对</p>
+<p>事务传播行为不对</p>
+<p>没有被 Spring 管理</p>
+<h1 id="q13">Q13
+</h1><blockquote>
+<p>数据库事务具有 ACID 特性</p>
+</blockquote>
+<ul>
+<li>Atomicity 原子性</li>
+<li>Consistency 一致性</li>
+<li>Isolation 隔离性</li>
+<li>Durability 持久性</li>
+</ul>
+<h1 id="q14">Q14
+</h1><blockquote>
+<p>SQL 标准定义了哪四种隔离级别</p>
+</blockquote>
+<div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th style="text-align: left">Isolation Level</th>
+          <th style="text-align: left">脏读（Dirty Read）</th>
+          <th style="text-align: left">不可重复读（Non Repeatable Read）</th>
+          <th style="text-align: left">幻读（Phantom Read）</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left">Read Uncommitted</td>
+          <td style="text-align: left">Yes</td>
+          <td style="text-align: left">Yes</td>
+          <td style="text-align: left">Yes</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">Read Committed</td>
+          <td style="text-align: left">-</td>
+          <td style="text-align: left">Yes</td>
+          <td style="text-align: left">Yes</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">Repeatable Read</td>
+          <td style="text-align: left">-</td>
+          <td style="text-align: left">-</td>
+          <td style="text-align: left">Yes</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">Serializable</td>
+          <td style="text-align: left">-</td>
+          <td style="text-align: left">-</td>
+          <td style="text-align: left">-</td>
+      </tr>
+  </tbody>
+</table></div>
 
 </section>
 
