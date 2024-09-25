@@ -8,11 +8,11 @@
         <language>zh-cn</language>
         <copyright>gajzj</copyright>
         <lastBuildDate>Sat, 21 Sep 2024 16:02:00 +0800</lastBuildDate><atom:link href="https://example.com/index.xml" rel="self" type="application/rss+xml" /><item>
-        <title>spring</title>
-        <link>https://example.com/p/spring/</link>
+        <title>springMVC</title>
+        <link>https://example.com/p/springmvc/</link>
         <pubDate>Sat, 21 Sep 2024 16:02:00 +0800</pubDate>
         
-        <guid>https://example.com/p/spring/</guid>
+        <guid>https://example.com/p/springmvc/</guid>
         <description>&lt;h1 id=&#34;q1&#34;&gt;Q1
 &lt;/h1&gt;&lt;blockquote&gt;
 &lt;p&gt;json 传输的过程中，如果想要限制一个属性只能写或者只能读&lt;/p&gt;
@@ -36,10 +36,10 @@
 &lt;/blockquote&gt;
 &lt;p&gt;Interceptor 的拦截范围其实就是 Controller 方法，它实际上就相当于基于 AOP 的方法拦截。
 因为 Interceptor 只拦截 Controller 方法，所以返回 ModelAndView 并渲染后，后续处理就脱离了 Interceptor 的拦截范围（虚线框）&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://example.com/p/spring/index.assets/image-20240922091131626.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/springmvc/index.assets/image-20240922091131626.png&#34;
 	width=&#34;370&#34;
 	height=&#34;728&#34;
-	srcset=&#34;https://example.com/p/spring/index.assets/image-20240922091131626_hu6237817612943823597.png 480w, https://example.com/p/spring/index.assets/image-20240922091131626_hu433611942901679742.png 1024w&#34;
+	srcset=&#34;https://example.com/p/springmvc/index.assets/image-20240922091131626_hu6237817612943823597.png 480w, https://example.com/p/springmvc/index.assets/image-20240922091131626_hu433611942901679742.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;image-20240922091131626&#34;
@@ -51,10 +51,10 @@
 	
 &gt;&lt;/p&gt;
 &lt;p&gt;Filter 的拦截范围&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://example.com/p/spring/index.assets/image-20240922091203996.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/springmvc/index.assets/image-20240922091203996.png&#34;
 	width=&#34;342&#34;
 	height=&#34;631&#34;
-	srcset=&#34;https://example.com/p/spring/index.assets/image-20240922091203996_hu2986680621646032377.png 480w, https://example.com/p/spring/index.assets/image-20240922091203996_hu4072659808437627556.png 1024w&#34;
+	srcset=&#34;https://example.com/p/springmvc/index.assets/image-20240922091203996_hu2986680621646032377.png 480w, https://example.com/p/springmvc/index.assets/image-20240922091203996_hu4072659808437627556.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;image-20240922091203996&#34;
@@ -163,10 +163,10 @@
 &lt;li&gt;Spring容器通过扫描&lt;code&gt;@Component&lt;/code&gt;实例化&lt;code&gt;AuthFilter&lt;/code&gt;。&lt;/li&gt;
 &lt;/ol&gt;
 &lt;p&gt;当&lt;code&gt;DelegatingFilterProxy&lt;/code&gt;生效后，它会自动查找注册在&lt;code&gt;ServletContext&lt;/code&gt;上的Spring容器，再试图从容器中查找名为&lt;code&gt;authFilter&lt;/code&gt;的Bean，也就是我们用&lt;code&gt;@Component&lt;/code&gt;声明的&lt;code&gt;AuthFilter&lt;/code&gt;。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://example.com/p/spring/index.assets/image-20240922084029467.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/springmvc/index.assets/image-20240922084029467.png&#34;
 	width=&#34;586&#34;
 	height=&#34;252&#34;
-	srcset=&#34;https://example.com/p/spring/index.assets/image-20240922084029467_hu11415386808655997615.png 480w, https://example.com/p/spring/index.assets/image-20240922084029467_hu2227229734490777092.png 1024w&#34;
+	srcset=&#34;https://example.com/p/springmvc/index.assets/image-20240922084029467_hu11415386808655997615.png 480w, https://example.com/p/springmvc/index.assets/image-20240922084029467_hu2227229734490777092.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;image-20240922084029467&#34;
@@ -185,7 +185,7 @@
         <pubDate>Sun, 15 Sep 2024 16:02:00 +0800</pubDate>
         
         <guid>https://example.com/p/spring/</guid>
-        <description>&lt;h1 id=&#34;q1&#34;&gt;Q1
+        <description>&lt;h1 id=&#34;q1-spring-容器由谁来创建&#34;&gt;Q1 Spring 容器由谁来创建
 &lt;/h1&gt;&lt;blockquote&gt;
 &lt;p&gt;Web 程序总是由 Servlet 容器创建，那么在一个 Web 程序中，那么，Spring 容器应该由谁创建？在什么时候创建？Spring 容器中的 Controller 又是如何通过 Servlet 调用的？&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -242,6 +242,89 @@
 &lt;/div&gt;&lt;p&gt;初始化参数&lt;code&gt;contextClass&lt;/code&gt;指定使用注解配置的&lt;code&gt;AnnotationConfigWebApplicationContext&lt;/code&gt;，配置文件的位置参数&lt;code&gt;contextConfigLocation&lt;/code&gt;指向&lt;code&gt;AppConfig&lt;/code&gt;的完整类名，最后，把这个Servlet映射到&lt;code&gt;/*&lt;/code&gt;，即处理所有URL。&lt;/p&gt;
 &lt;p&gt;上述配置可以看作一个样板配置，有了这个配置，Servlet容器会首先初始化Spring MVC的&lt;code&gt;DispatcherServlet&lt;/code&gt;，在&lt;code&gt;DispatcherServlet&lt;/code&gt;启动时，它根据配置&lt;code&gt;AppConfig&lt;/code&gt;创建了一个类型是&lt;code&gt;WebApplicationContext&lt;/code&gt;的IoC容器，完成所有Bean的初始化，并将容器绑到&lt;code&gt;ServletContext&lt;/code&gt;上。&lt;/p&gt;
 &lt;p&gt;因为&lt;code&gt;DispatcherServlet&lt;/code&gt;持有IoC容器，能从IoC容器中获取所有&lt;code&gt;@Controller&lt;/code&gt;的Bean，因此，&lt;code&gt;DispatcherServlet&lt;/code&gt;接收到所有HTTP请求后，根据Controller方法配置的路径，就可以正确地把请求转发到指定方法，并根据返回的&lt;code&gt;ModelAndView&lt;/code&gt;决定如何渲染页面。&lt;/p&gt;
+&lt;h1 id=&#34;q2-spring-bean-的生命周期&#34;&gt;Q2 Spring Bean 的生命周期
+&lt;/h1&gt;&lt;blockquote&gt;
+&lt;p&gt;Spring Bean 的生命周期&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;下图源自&lt;a class=&#34;link&#34; href=&#34;https://www.bilibili.com/video/BV1yT411H7YK?p=39&amp;amp;vd_source=88fe7c234173a0985f7a95f5514573fb&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;框架篇-05-Spring-bean的生命周期_哔哩哔哩_bilibili&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/spring/index.assets/image-20240925171323819.png&#34;
+	width=&#34;866&#34;
+	height=&#34;417&#34;
+	srcset=&#34;https://example.com/p/spring/index.assets/image-20240925171323819_hu7042304209295925293.png 480w, https://example.com/p/spring/index.assets/image-20240925171323819_hu5059806239178258533.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20240925171323819&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;207&#34;
+		data-flex-basis=&#34;498px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;1、首先是 BeanDefinition，见名字知意，&lt;strong&gt;Bean 的定义&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;通过 xml 配置一个 Bean（现在基本不用了）对应需要创建的 ApplictionContext（顶层接口）为 ClassPathXmlApplicationContext（实现类）&lt;/li&gt;
+&lt;li&gt;通过注解配置一个 Bean（主流，更简洁），使用 @Bean 标注方法，一般叫做 createXxx（比如要创建数据库连接池的就叫 createDataSource），这种方法是用来告诉 IoC 容器如何创建一个组件，然后对应需要创建 AnnotionApplicationContext&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Spring 容器&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;ApplicationContext 就是 Spring 容器，它有很多实现类，并且 Spring 还提供了另一种 IoC 容器叫 BeanFactory&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;二者的区别&lt;/strong&gt;主要在于 ApplicationContext 会一次性创建所有的 Bean，而 BeanFactory 是按需创建的（很少使用）。ApplicationContext 还有一些额外的功能这里暂不展开&lt;/p&gt;
+&lt;p&gt;2、然后是&lt;strong&gt;依赖注入&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;注入当前这个组件需要注入的依赖（例如 @AutoWired @Value 标注的属性）&lt;/p&gt;
+&lt;p&gt;3、&lt;strong&gt;XxxAware接口和Xxx接口&lt;/strong&gt;（加分点，按照 Aware 接口的设计来说，实际上做事的都是 Xxx，我们直接注入并 Xxx 也可以，但视频中既然体现了这一点，那就展开讲讲）&lt;/p&gt;
+&lt;p&gt;该视频从引出了一个不太常见的 Aware 接口的概念，这是一种将&lt;strong&gt;功能实现和使用分离&lt;/strong&gt;的设计：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Xxx 接口：Xxx 接口提供了一组功能定义
+&lt;ul&gt;
+&lt;li&gt;定义接口&lt;/li&gt;
+&lt;li&gt;直接使用&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;XxxAware 接口：XxxAware 接口允许 Spring 容器向实现该接口的类注入特定的上下文或资源。
+&lt;ul&gt;
+&lt;li&gt;提供上下文&lt;/li&gt;
+&lt;li&gt;获取上下文&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;这种设计体现的优势：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;解耦&lt;/p&gt;
+&lt;p&gt;Aware 接口的实现类不需要直接依赖于特定的上下文，而是通过接口获取所需要的资源&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;灵活&lt;/p&gt;
+&lt;p&gt;实现 XxxAware 接口的类可以在不同的上下文中灵活使用，而无需修改其代码。这使得类的重用性更强。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;关注点分离&lt;/p&gt;
+&lt;p&gt;通过将功能定义（Xxx 接口）与上下文访问（XxxAware 接口）分离，开发者可以更清晰地关注各自的职责，使代码更加清晰和易读。（笔者注：我们想使用某个东西的时候肯定更希望直接知道怎么用，而不关心它内部是如何实现的）&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;易于拓展&lt;/p&gt;
+&lt;p&gt;当需要增加新的功能或上下文支持时，只需实现新的 XxxAware 接口，而不需要对现有的业务逻辑做大量修改。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;明白了吗，实际上这里的 Aware 就是要使用 Xxx，我们在这一步通过 Aware 接口把我们需要的上下文注入到这里，就这么简单&lt;/p&gt;
+&lt;p&gt;4、before&lt;/p&gt;
+&lt;p&gt;&lt;del&gt;不知道具体要干什么，管他呢反正你知道它&lt;/del&gt;是在初始化之前执行的就完事了&lt;/p&gt;
+&lt;p&gt;5、初始化方法&lt;/p&gt;
+&lt;p&gt;我们在这一阶段会去执行组件的 Init 方法（InitializingBean @PostConstruct），完成类的静态资源的加载&lt;/p&gt;
+&lt;p&gt;6、after&lt;/p&gt;
+&lt;p&gt;初始化之后，增强这个 Bean&lt;/p&gt;
+&lt;p&gt;7、destory&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;((&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;ConfigurableApplicationContext&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;context&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;).&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;close&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;();&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;close 之后就会触发 Bean 的销毁&lt;/p&gt;
+&lt;p&gt;tips：本题的内容可能需要观看 day17 的 Bean 管理内容辅以理解&lt;/p&gt;
 </description>
         </item>
         <item>

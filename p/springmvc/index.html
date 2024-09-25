@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html lang="zh-cn" dir="ltr">
     <head><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="Q1 Spring 容器由谁来创建 Web 程序总是由 Servlet 容器创建，那么在一个 Web 程序中，那么，Spring 容器应该由谁创建？在什么时候创建？Spring 容器中的 Controller 又是如何通过 Servlet 调用的？\n">
-<title>spring</title>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="Q1 json 传输的过程中，如果想要限制一个属性只能写或者只能读\n1 2 @JsonProperty(access = JsonProperty.Access.WRITE_ONLY) @JsonProperty(access = JsonProperty.Access.READ_ONLY) 加在字段和加在方法上有区别\n加在字段上直接控制字段的序列化和反序列化行为\n加载方法上控制方法的调用来影响序列化和反序列化，通常用在有自定义逻辑时\n">
+<title>springMVC</title>
 
-<link rel='canonical' href='https://example.com/p/spring/'>
+<link rel='canonical' href='https://example.com/p/springmvc/'>
 
-<link rel="stylesheet" href="/scss/style.min.0304c6baf04e01a8fe70693791cb744d56a3578a3120a8796cefc66825aa39c7.css"><meta property='og:title' content="spring">
-<meta property='og:description' content="Q1 Spring 容器由谁来创建 Web 程序总是由 Servlet 容器创建，那么在一个 Web 程序中，那么，Spring 容器应该由谁创建？在什么时候创建？Spring 容器中的 Controller 又是如何通过 Servlet 调用的？\n">
-<meta property='og:url' content='https://example.com/p/spring/'>
+<link rel="stylesheet" href="/scss/style.min.0304c6baf04e01a8fe70693791cb744d56a3578a3120a8796cefc66825aa39c7.css"><meta property='og:title' content="springMVC">
+<meta property='og:description' content="Q1 json 传输的过程中，如果想要限制一个属性只能写或者只能读\n1 2 @JsonProperty(access = JsonProperty.Access.WRITE_ONLY) @JsonProperty(access = JsonProperty.Access.READ_ONLY) 加在字段和加在方法上有区别\n加在字段上直接控制字段的序列化和反序列化行为\n加载方法上控制方法的调用来影响序列化和反序列化，通常用在有自定义逻辑时\n">
+<meta property='og:url' content='https://example.com/p/springmvc/'>
 <meta property='og:site_name' content='GAJ-Blog'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='spring' /><meta property='article:published_time' content='2024-09-15T16:02:00&#43;08:00'/><meta property='article:modified_time' content='2024-09-15T16:02:00&#43;08:00'/>
-<meta name="twitter:title" content="spring">
-<meta name="twitter:description" content="Q1 Spring 容器由谁来创建 Web 程序总是由 Servlet 容器创建，那么在一个 Web 程序中，那么，Spring 容器应该由谁创建？在什么时候创建？Spring 容器中的 Controller 又是如何通过 Servlet 调用的？\n">
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='spring' /><meta property='article:published_time' content='2024-09-21T16:02:00&#43;08:00'/><meta property='article:modified_time' content='2024-09-21T16:02:00&#43;08:00'/>
+<meta name="twitter:title" content="springMVC">
+<meta name="twitter:description" content="Q1 json 传输的过程中，如果想要限制一个属性只能写或者只能读\n1 2 @JsonProperty(access = JsonProperty.Access.WRITE_ONLY) @JsonProperty(access = JsonProperty.Access.READ_ONLY) 加在字段和加在方法上有区别\n加在字段上直接控制字段的序列化和反序列化行为\n加载方法上控制方法的调用来影响序列化和反序列化，通常用在有自定义逻辑时\n">
     <link rel="shortcut icon" href="/favicon.ico" />
 
     </head>
@@ -218,7 +218,7 @@
 
     <div class="article-title-wrapper">
         <h2 class="article-title">
-            <a href="/p/spring/">spring</a>
+            <a href="/p/springmvc/">springMVC</a>
         </h2>
     
         
@@ -240,7 +240,7 @@
   <path d="M3 11h16" />
   <path d="M18 16.496v1.504l1 1" />
 </svg>
-                <time class="article-time--published">09-15,  2024</time>
+                <time class="article-time--published">09-21,  2024</time>
             </div>
         
 
@@ -256,12 +256,66 @@
     <section class="article-content">
     
     
-    <h1 id="q1-spring-容器由谁来创建">Q1 Spring 容器由谁来创建
+    <h1 id="q1">Q1
 </h1><blockquote>
-<p>Web 程序总是由 Servlet 容器创建，那么在一个 Web 程序中，那么，Spring 容器应该由谁创建？在什么时候创建？Spring 容器中的 Controller 又是如何通过 Servlet 调用的？</p>
+<p>json 传输的过程中，如果想要限制一个属性只能写或者只能读</p>
 </blockquote>
-<p>在Web应用中启动Spring容器有很多种方法，可以通过Listener启动，也可以通过Servlet启动，可以使用XML配置，也可以使用注解配置。这里，我们只介绍一种<em>最简单</em>的启动Spring容器的方式。</p>
-<p>第一步，我们在<code>web.xml</code>中配置Spring MVC提供的<code>DispatcherServlet</code>：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@JsonProperty</span><span class="p">(</span><span class="n">access</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">JsonProperty</span><span class="p">.</span><span class="na">Access</span><span class="p">.</span><span class="na">WRITE_ONLY</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nd">@JsonProperty</span><span class="p">(</span><span class="n">access</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">JsonProperty</span><span class="p">.</span><span class="na">Access</span><span class="p">.</span><span class="na">READ_ONLY</span><span class="p">)</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>加在字段和加在方法上有区别</p>
+<p>加在字段上直接控制字段的序列化和反序列化行为</p>
+<p>加载方法上控制方法的调用来影响序列化和反序列化，通常用在有自定义逻辑时</p>
+<h1 id="q2">Q2
+</h1><blockquote>
+<p>Interceptor 和 Filter 的作用范围</p>
+</blockquote>
+<p>Interceptor 的拦截范围其实就是 Controller 方法，它实际上就相当于基于 AOP 的方法拦截。
+因为 Interceptor 只拦截 Controller 方法，所以返回 ModelAndView 并渲染后，后续处理就脱离了 Interceptor 的拦截范围（虚线框）</p>
+<p><img src="/p/springmvc/index.assets/image-20240922091131626.png"
+	width="370"
+	height="728"
+	srcset="/p/springmvc/index.assets/image-20240922091131626_hu6237817612943823597.png 480w, /p/springmvc/index.assets/image-20240922091131626_hu433611942901679742.png 1024w"
+	loading="lazy"
+	
+		alt="image-20240922091131626"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="50"
+		data-flex-basis="121px"
+	
+></p>
+<p>Filter 的拦截范围</p>
+<p><img src="/p/springmvc/index.assets/image-20240922091203996.png"
+	width="342"
+	height="631"
+	srcset="/p/springmvc/index.assets/image-20240922091203996_hu2986680621646032377.png 480w, /p/springmvc/index.assets/image-20240922091203996_hu4072659808437627556.png 1024w"
+	loading="lazy"
+	
+		alt="image-20240922091203996"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="54"
+		data-flex-basis="130px"
+	
+></p>
+<h2 id="好处">好处
+</h2><p>使用Interceptor的好处是Interceptor本身是Spring管理的Bean，因此注入任意Bean都非常简单。此外，可以应用多个Interceptor，并通过简单的<code>@Order</code>指定顺序。</p>
+<p>Spring作为老牌全能型框架，要想拦截请求进行一些统一的处理，我们有Filter、Interceptor、ControllerAdvice、AOP这么多种截面可供选择： Filter——作用在最外层，在请求进入Spring之前就触发，可以用于处理一些网络通信层面的东西； Interceptor——作用在Controller的外层，数据进入Controller层之前，或离开Controller的前后触发； ControllerAdvice——作用在Interceptor之内，数据进入Controller层但还没处理之前触发，用于预处理Controller层的RequestBody和ResponseBody，以及统一异常处理； AOP——作用于自己写的方法。 使用的时候遵循“最小作用域”原理，在保证能统一抽象出来的前提下，选择最近最小的那个截面。</p>
+<h1 id="t1">T1
+</h1><blockquote>
+<p>DelegatingFilterProxy 是 spring 框架提供的用来让 Servlet 容器实例化的 Filter，间接引用 spring 容器实例化的 Filter</p>
+</blockquote>
+<p>比如我们在 spring 中声明一个 Component</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt"> 1
@@ -285,117 +339,87 @@
 </span><span class="lnt">19
 </span><span class="lnt">20
 </span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-xml" data-lang="xml"><span class="line"><span class="cl"><span class="cp">&lt;?xml version=&#34;1.0&#34;?&gt;</span>
-</span></span><span class="line"><span class="cl"><span class="nt">&lt;web-app&gt;</span>
-</span></span><span class="line"><span class="cl">    <span class="nt">&lt;servlet&gt;</span>
-</span></span><span class="line"><span class="cl">        <span class="nt">&lt;servlet-name&gt;</span>dispatcher<span class="nt">&lt;/servlet-name&gt;</span>
-</span></span><span class="line"><span class="cl">        <span class="nt">&lt;servlet-class&gt;</span>org.springframework.web.servlet.DispatcherServlet<span class="nt">&lt;/servlet-class&gt;</span>
-</span></span><span class="line"><span class="cl">        <span class="nt">&lt;init-param&gt;</span>
-</span></span><span class="line"><span class="cl">            <span class="nt">&lt;param-name&gt;</span>contextClass<span class="nt">&lt;/param-name&gt;</span>
-</span></span><span class="line"><span class="cl">            <span class="nt">&lt;param-value&gt;</span>org.springframework.web.context.support.AnnotationConfigWebApplicationContext<span class="nt">&lt;/param-value&gt;</span>
-</span></span><span class="line"><span class="cl">        <span class="nt">&lt;/init-param&gt;</span>
-</span></span><span class="line"><span class="cl">        <span class="nt">&lt;init-param&gt;</span>
-</span></span><span class="line"><span class="cl">            <span class="nt">&lt;param-name&gt;</span>contextConfigLocation<span class="nt">&lt;/param-name&gt;</span>
-</span></span><span class="line"><span class="cl">            <span class="nt">&lt;param-value&gt;</span>com.itranswarp.learnjava.AppConfig<span class="nt">&lt;/param-value&gt;</span>
-</span></span><span class="line"><span class="cl">        <span class="nt">&lt;/init-param&gt;</span>
-</span></span><span class="line"><span class="cl">        <span class="nt">&lt;load-on-startup&gt;</span>0<span class="nt">&lt;/load-on-startup&gt;</span>
-</span></span><span class="line"><span class="cl">    <span class="nt">&lt;/servlet&gt;</span>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@Component</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">AuthFilter</span><span class="w"> </span><span class="kd">implements</span><span class="w"> </span><span class="n">Filter</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nd">@Autowired</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">UserService</span><span class="w"> </span><span class="n">userService</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">doFilter</span><span class="p">(</span><span class="n">ServletRequest</span><span class="w"> </span><span class="n">request</span><span class="p">,</span><span class="w"> </span><span class="n">ServletResponse</span><span class="w"> </span><span class="n">response</span><span class="p">,</span><span class="w"> </span><span class="n">FilterChain</span><span class="w"> </span><span class="n">chain</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="kd">throws</span><span class="w"> </span><span class="n">IOException</span><span class="p">,</span><span class="w"> </span><span class="n">ServletException</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">HttpServletRequest</span><span class="w"> </span><span class="n">req</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">HttpServletRequest</span><span class="p">)</span><span class="w"> </span><span class="n">request</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">// 获取Authorization头:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">String</span><span class="w"> </span><span class="n">authHeader</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">req</span><span class="p">.</span><span class="na">getHeader</span><span class="p">(</span><span class="s">&#34;Authorization&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">authHeader</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="kc">null</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">authHeader</span><span class="p">.</span><span class="na">startsWith</span><span class="p">(</span><span class="s">&#34;Basic &#34;</span><span class="p">))</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="c1">// 从Header中提取email和password:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="n">String</span><span class="w"> </span><span class="n">email</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">prefixFrom</span><span class="p">(</span><span class="n">authHeader</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="n">String</span><span class="w"> </span><span class="n">password</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">suffixFrom</span><span class="p">(</span><span class="n">authHeader</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="c1">// 登录:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="n">User</span><span class="w"> </span><span class="n">user</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">userService</span><span class="p">.</span><span class="na">signin</span><span class="p">(</span><span class="n">email</span><span class="p">,</span><span class="w"> </span><span class="n">password</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="c1">// 放入Session:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="n">req</span><span class="p">.</span><span class="na">getSession</span><span class="p">().</span><span class="na">setAttribute</span><span class="p">(</span><span class="n">UserController</span><span class="p">.</span><span class="na">KEY_USER</span><span class="p">,</span><span class="w"> </span><span class="n">user</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">// 继续处理请求:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">chain</span><span class="p">.</span><span class="na">doFilter</span><span class="p">(</span><span class="n">request</span><span class="p">,</span><span class="w"> </span><span class="n">response</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>因为 AuthFilter 只是一个普通的 Bean，Servlet 容器并不知道，所以它不会起作用。</p>
+<p>如果我们直接在<code>web.xml</code>中声明这个<code>AuthFilter</code>，注意到<code>AuthFilter</code>的实例将由Servlet容器而不是Spring容器初始化，因此，<code>@Autowire</code>根本不生效，用于登录的<code>UserService</code>成员变量永远是<code>null</code>。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-xml" data-lang="xml"><span class="line"><span class="cl"><span class="nt">&lt;web-app&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;filter&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&lt;filter-name&gt;</span>authFilter<span class="nt">&lt;/filter-name&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&lt;filter-class&gt;</span>org.springframework.web.filter.DelegatingFilterProxy<span class="nt">&lt;/filter-class&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;/filter&gt;</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="nt">&lt;servlet-mapping&gt;</span>
-</span></span><span class="line"><span class="cl">        <span class="nt">&lt;servlet-name&gt;</span>dispatcher<span class="nt">&lt;/servlet-name&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;filter-mapping&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&lt;filter-name&gt;</span>authFilter<span class="nt">&lt;/filter-name&gt;</span>
 </span></span><span class="line"><span class="cl">        <span class="nt">&lt;url-pattern&gt;</span>/*<span class="nt">&lt;/url-pattern&gt;</span>
-</span></span><span class="line"><span class="cl">    <span class="nt">&lt;/servlet-mapping&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;/filter-mapping&gt;</span>
+</span></span><span class="line"><span class="cl">    ...
 </span></span><span class="line"><span class="cl"><span class="nt">&lt;/web-app&gt;</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><p>初始化参数<code>contextClass</code>指定使用注解配置的<code>AnnotationConfigWebApplicationContext</code>，配置文件的位置参数<code>contextConfigLocation</code>指向<code>AppConfig</code>的完整类名，最后，把这个Servlet映射到<code>/*</code>，即处理所有URL。</p>
-<p>上述配置可以看作一个样板配置，有了这个配置，Servlet容器会首先初始化Spring MVC的<code>DispatcherServlet</code>，在<code>DispatcherServlet</code>启动时，它根据配置<code>AppConfig</code>创建了一个类型是<code>WebApplicationContext</code>的IoC容器，完成所有Bean的初始化，并将容器绑到<code>ServletContext</code>上。</p>
-<p>因为<code>DispatcherServlet</code>持有IoC容器，能从IoC容器中获取所有<code>@Controller</code>的Bean，因此，<code>DispatcherServlet</code>接收到所有HTTP请求后，根据Controller方法配置的路径，就可以正确地把请求转发到指定方法，并根据返回的<code>ModelAndView</code>决定如何渲染页面。</p>
-<h1 id="q2-spring-bean-的生命周期">Q2 Spring Bean 的生命周期
-</h1><blockquote>
-<p>Spring Bean 的生命周期</p>
-</blockquote>
-<p>下图源自<a class="link" href="https://www.bilibili.com/video/BV1yT411H7YK?p=39&amp;vd_source=88fe7c234173a0985f7a95f5514573fb"  target="_blank" rel="noopener"
-    >框架篇-05-Spring-bean的生命周期_哔哩哔哩_bilibili</a></p>
-<p><img src="/p/spring/index.assets/image-20240925171323819.png"
-	width="866"
-	height="417"
-	srcset="/p/spring/index.assets/image-20240925171323819_hu7042304209295925293.png 480w, /p/spring/index.assets/image-20240925171323819_hu5059806239178258533.png 1024w"
+</div><p>实现原理：</p>
+<ol>
+<li>Servlet容器从<code>web.xml</code>中读取配置，实例化<code>DelegatingFilterProxy</code>，注意命名是<code>authFilter</code>；</li>
+<li>Spring容器通过扫描<code>@Component</code>实例化<code>AuthFilter</code>。</li>
+</ol>
+<p>当<code>DelegatingFilterProxy</code>生效后，它会自动查找注册在<code>ServletContext</code>上的Spring容器，再试图从容器中查找名为<code>authFilter</code>的Bean，也就是我们用<code>@Component</code>声明的<code>AuthFilter</code>。</p>
+<p><img src="/p/springmvc/index.assets/image-20240922084029467.png"
+	width="586"
+	height="252"
+	srcset="/p/springmvc/index.assets/image-20240922084029467_hu11415386808655997615.png 480w, /p/springmvc/index.assets/image-20240922084029467_hu2227229734490777092.png 1024w"
 	loading="lazy"
 	
-		alt="image-20240925171323819"
+		alt="image-20240922084029467"
 	
 	
 		class="gallery-image" 
-		data-flex-grow="207"
-		data-flex-basis="498px"
+		data-flex-grow="232"
+		data-flex-basis="558px"
 	
 ></p>
-<p>1、首先是 BeanDefinition，见名字知意，<strong>Bean 的定义</strong>：</p>
-<ul>
-<li>通过 xml 配置一个 Bean（现在基本不用了）对应需要创建的 ApplictionContext（顶层接口）为 ClassPathXmlApplicationContext（实现类）</li>
-<li>通过注解配置一个 Bean（主流，更简洁），使用 @Bean 标注方法，一般叫做 createXxx（比如要创建数据库连接池的就叫 createDataSource），这种方法是用来告诉 IoC 容器如何创建一个组件，然后对应需要创建 AnnotionApplicationContext</li>
-</ul>
-<p><strong>Spring 容器</strong></p>
-<p>ApplicationContext 就是 Spring 容器，它有很多实现类，并且 Spring 还提供了另一种 IoC 容器叫 BeanFactory</p>
-<p><strong>二者的区别</strong>主要在于 ApplicationContext 会一次性创建所有的 Bean，而 BeanFactory 是按需创建的（很少使用）。ApplicationContext 还有一些额外的功能这里暂不展开</p>
-<p>2、然后是<strong>依赖注入</strong></p>
-<p>注入当前这个组件需要注入的依赖（例如 @AutoWired @Value 标注的属性）</p>
-<p>3、<strong>XxxAware接口和Xxx接口</strong>（加分点，按照 Aware 接口的设计来说，实际上做事的都是 Xxx，我们直接注入并 Xxx 也可以，但视频中既然体现了这一点，那就展开讲讲）</p>
-<p>该视频从引出了一个不太常见的 Aware 接口的概念，这是一种将<strong>功能实现和使用分离</strong>的设计：</p>
-<ul>
-<li>Xxx 接口：Xxx 接口提供了一组功能定义
-<ul>
-<li>定义接口</li>
-<li>直接使用</li>
-</ul>
-</li>
-<li>XxxAware 接口：XxxAware 接口允许 Spring 容器向实现该接口的类注入特定的上下文或资源。
-<ul>
-<li>提供上下文</li>
-<li>获取上下文</li>
-</ul>
-</li>
-</ul>
-<p>这种设计体现的优势：</p>
-<ul>
-<li>
-<p>解耦</p>
-<p>Aware 接口的实现类不需要直接依赖于特定的上下文，而是通过接口获取所需要的资源</p>
-</li>
-<li>
-<p>灵活</p>
-<p>实现 XxxAware 接口的类可以在不同的上下文中灵活使用，而无需修改其代码。这使得类的重用性更强。</p>
-</li>
-<li>
-<p>关注点分离</p>
-<p>通过将功能定义（Xxx 接口）与上下文访问（XxxAware 接口）分离，开发者可以更清晰地关注各自的职责，使代码更加清晰和易读。（笔者注：我们想使用某个东西的时候肯定更希望直接知道怎么用，而不关心它内部是如何实现的）</p>
-</li>
-<li>
-<p>易于拓展</p>
-<p>当需要增加新的功能或上下文支持时，只需实现新的 XxxAware 接口，而不需要对现有的业务逻辑做大量修改。</p>
-</li>
-</ul>
-<p>明白了吗，实际上这里的 Aware 就是要使用 Xxx，我们在这一步通过 Aware 接口把我们需要的上下文注入到这里，就这么简单</p>
-<p>4、before</p>
-<p><del>不知道具体要干什么，管他呢反正你知道它</del>是在初始化之前执行的就完事了</p>
-<p>5、初始化方法</p>
-<p>我们在这一阶段会去执行组件的 Init 方法（InitializingBean @PostConstruct），完成类的静态资源的加载</p>
-<p>6、after</p>
-<p>初始化之后，增强这个 Bean</p>
-<p>7、destory</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="p">((</span><span class="n">ConfigurableApplicationContext</span><span class="p">)</span><span class="w"> </span><span class="n">context</span><span class="p">).</span><span class="na">close</span><span class="p">();</span><span class="w">
-</span></span></span></code></pre></td></tr></table>
-</div>
-</div><p>close 之后就会触发 Bean 的销毁</p>
-<p>tips：本题的内容可能需要观看 day17 的 Bean 管理内容辅以理解</p>
 
 </section>
 
@@ -450,12 +474,12 @@
             
                 
 <article class="">
-    <a href="/p/springmvc/">
+    <a href="/p/spring/">
         
         
 
         <div class="article-details">
-            <h2 class="article-title">springMVC</h2>
+            <h2 class="article-title">spring</h2>
         </div>
     </a>
 </article>
