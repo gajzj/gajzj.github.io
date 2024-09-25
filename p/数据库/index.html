@@ -446,7 +446,6 @@
 </h1><blockquote>
 <p>spring 开启一个事务是怎么样的，底层是通过操作什么来开启</p>
 </blockquote>
-<hr>
 <p>答题思路</p>
 <ul>
 <li>简述 spring 框架中事务如何启用
@@ -620,6 +619,69 @@ spring 中使用编程式事务主要是<code>PlatformTransactionManager</code><
       </tr>
   </tbody>
 </table></div>
+<h1 id="q15">Q15
+</h1><blockquote>
+<p>你实现过文件上传功能吗，说一下你项目中的方案</p>
+</blockquote>
+<p>OSS</p>
+<p>有什么好处</p>
+<h1 id="q16">Q16
+</h1><blockquote>
+<p>mybatis 新增操作怎么获取新增记录的主键，怎么确保它的正确映射</p>
+</blockquote>
+<p><code>@Options(useGeneratedKeys = true, keyProperty = &quot;id&quot;, keyColumn = &quot;id&quot;)</code></p>
+<p>property 和 column</p>
+<h1 id="q17">Q17
+</h1><blockquote>
+<p>跨表操作在我们查询的时候非常常见，你怎么决定是在 mapper 层通过表连接 SQL JOIN 来处理跨表，还是在 service 层做跨表，都有什么优劣</p>
+</blockquote>
+<p><strong>思路</strong></p>
+<ul>
+<li>性能</li>
+<li>灵活、拓展性</li>
+</ul>
+<hr>
+<p>跨表操作在 mapper 层</p>
+<ul>
+<li>优点
+<ul>
+<li>性能更优，数据库引擎的优化</li>
+<li>事务的一致性</li>
+</ul>
+</li>
+<li>缺点
+<ul>
+<li>复杂的 sql 维护困难</li>
+<li>耦合性高</li>
+</ul>
+</li>
+</ul>
+<p>跨表操作在 service 层</p>
+<ul>
+<li>优点
+<ul>
+<li>可读性、可维护性</li>
+<li>灵活性</li>
+<li>可拓展性</li>
+</ul>
+</li>
+<li>缺点
+<ul>
+<li>性能</li>
+<li>事务管理复杂</li>
+</ul>
+</li>
+</ul>
+<p>我更偏向将复杂的跨表操作放在 service 层，<strong>项目的稳健性是非常重要的</strong>，非常简单的跨表操作才考虑放在mapper 层。放在 mapper 层虽然提高了性能且减少了事务管理的麻烦，但是带来的弊端是在项目未来继续扩张时一定会碰到的。</p>
+<p><strong>避免过早优化</strong></p>
+<p><code>mapper</code> 层的跨表操作通常遵循<strong>低复杂性</strong>和<strong>高效率</strong>的原则。因此，通常建议 <code>mapper</code> 层的跨表操作仅限于<strong>必要且简单的场景</strong>。</p>
+<p><strong>复杂查询的最佳实践</strong></p>
+<p>在开发中，遇到需要跨表操作的场景时，建议采取以下策略：</p>
+<ul>
+<li><strong>拆分查询</strong>：尽量避免过度依赖 <code>JOIN</code>，可以通过多次查询分别获取数据，再通过 <code>service</code> 层合并处理。</li>
+<li><strong>视图或存储过程</strong>：如果有较为复杂的跨表查询需求，可以考虑在数据库中创建视图或者存储过程，将复杂的逻辑封装在数据库中，以便简化 <code>mapper</code> 层的操作。</li>
+<li><strong>DTO 或 VO 封装</strong>：将查询结果封装到 <code>DTO</code> 或 <code>VO</code>，而不是直接在 <code>mapper</code> 层进行业务逻辑处理。例如，查询班级与班主任的名字，可以在 <code>service</code> 层执行两次查询，将数据封装成一个完整的 DTO 返回给前端。</li>
+</ul>
 
 </section>
 

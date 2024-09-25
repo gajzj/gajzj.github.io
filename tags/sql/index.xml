@@ -203,7 +203,6 @@
 &lt;/h1&gt;&lt;blockquote&gt;
 &lt;p&gt;spring 开启一个事务是怎么样的，底层是通过操作什么来开启&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;hr&gt;
 &lt;p&gt;答题思路&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;简述 spring 框架中事务如何启用
@@ -377,6 +376,69 @@ spring 中使用编程式事务主要是&lt;code&gt;PlatformTransactionManager&l
       &lt;/tr&gt;
   &lt;/tbody&gt;
 &lt;/table&gt;
+&lt;h1 id=&#34;q15&#34;&gt;Q15
+&lt;/h1&gt;&lt;blockquote&gt;
+&lt;p&gt;你实现过文件上传功能吗，说一下你项目中的方案&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;OSS&lt;/p&gt;
+&lt;p&gt;有什么好处&lt;/p&gt;
+&lt;h1 id=&#34;q16&#34;&gt;Q16
+&lt;/h1&gt;&lt;blockquote&gt;
+&lt;p&gt;mybatis 新增操作怎么获取新增记录的主键，怎么确保它的正确映射&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;code&gt;@Options(useGeneratedKeys = true, keyProperty = &amp;quot;id&amp;quot;, keyColumn = &amp;quot;id&amp;quot;)&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;property 和 column&lt;/p&gt;
+&lt;h1 id=&#34;q17&#34;&gt;Q17
+&lt;/h1&gt;&lt;blockquote&gt;
+&lt;p&gt;跨表操作在我们查询的时候非常常见，你怎么决定是在 mapper 层通过表连接 SQL JOIN 来处理跨表，还是在 service 层做跨表，都有什么优劣&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;strong&gt;思路&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;性能&lt;/li&gt;
+&lt;li&gt;灵活、拓展性&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;p&gt;跨表操作在 mapper 层&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;优点
+&lt;ul&gt;
+&lt;li&gt;性能更优，数据库引擎的优化&lt;/li&gt;
+&lt;li&gt;事务的一致性&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;缺点
+&lt;ul&gt;
+&lt;li&gt;复杂的 sql 维护困难&lt;/li&gt;
+&lt;li&gt;耦合性高&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;跨表操作在 service 层&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;优点
+&lt;ul&gt;
+&lt;li&gt;可读性、可维护性&lt;/li&gt;
+&lt;li&gt;灵活性&lt;/li&gt;
+&lt;li&gt;可拓展性&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;缺点
+&lt;ul&gt;
+&lt;li&gt;性能&lt;/li&gt;
+&lt;li&gt;事务管理复杂&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;我更偏向将复杂的跨表操作放在 service 层，&lt;strong&gt;项目的稳健性是非常重要的&lt;/strong&gt;，非常简单的跨表操作才考虑放在mapper 层。放在 mapper 层虽然提高了性能且减少了事务管理的麻烦，但是带来的弊端是在项目未来继续扩张时一定会碰到的。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;避免过早优化&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;mapper&lt;/code&gt; 层的跨表操作通常遵循&lt;strong&gt;低复杂性&lt;/strong&gt;和&lt;strong&gt;高效率&lt;/strong&gt;的原则。因此，通常建议 &lt;code&gt;mapper&lt;/code&gt; 层的跨表操作仅限于&lt;strong&gt;必要且简单的场景&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;复杂查询的最佳实践&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;在开发中，遇到需要跨表操作的场景时，建议采取以下策略：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;拆分查询&lt;/strong&gt;：尽量避免过度依赖 &lt;code&gt;JOIN&lt;/code&gt;，可以通过多次查询分别获取数据，再通过 &lt;code&gt;service&lt;/code&gt; 层合并处理。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;视图或存储过程&lt;/strong&gt;：如果有较为复杂的跨表查询需求，可以考虑在数据库中创建视图或者存储过程，将复杂的逻辑封装在数据库中，以便简化 &lt;code&gt;mapper&lt;/code&gt; 层的操作。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;DTO 或 VO 封装&lt;/strong&gt;：将查询结果封装到 &lt;code&gt;DTO&lt;/code&gt; 或 &lt;code&gt;VO&lt;/code&gt;，而不是直接在 &lt;code&gt;mapper&lt;/code&gt; 层进行业务逻辑处理。例如，查询班级与班主任的名字，可以在 &lt;code&gt;service&lt;/code&gt; 层执行两次查询，将数据封装成一个完整的 DTO 返回给前端。&lt;/li&gt;
+&lt;/ul&gt;
 </description>
         </item>
         
