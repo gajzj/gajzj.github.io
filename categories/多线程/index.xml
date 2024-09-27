@@ -45,6 +45,9 @@
 &lt;/ul&gt;
 &lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://tech.meituan.com/2020/04/02/java-pooling-pratice-in-meituan.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;Java线程池实现原理及其在美团业务中的实践 - 美团技术团队 (meituan.com)&lt;/a&gt;&lt;/p&gt;
+&lt;h1 id=&#34;q-乐观锁&#34;&gt;Q 乐观锁
+&lt;/h1&gt;&lt;p&gt;乐观锁的基本原理：
+乐观锁的思想是假设并发情况下不会有冲突，只有在提交数据时才会检测是否存在冲突。&lt;/p&gt;
 </description>
         </item>
         

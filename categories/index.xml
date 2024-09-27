@@ -7,7 +7,23 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>gajzj</copyright>
-        <lastBuildDate>Sat, 21 Sep 2024 16:02:00 +0800</lastBuildDate><atom:link href="https://example.com/categories/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Thu, 26 Sep 2024 16:02:00 +0800</lastBuildDate><atom:link href="https://example.com/categories/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>Spring Cloud</title>
+        <link>https://example.com/categories/spring-cloud/</link>
+        <pubDate>Thu, 26 Sep 2024 16:02:00 +0800</pubDate>
+        
+        <guid>https://example.com/categories/spring-cloud/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>代码规范</title>
+        <link>https://example.com/categories/%E4%BB%A3%E7%A0%81%E8%A7%84%E8%8C%83/</link>
+        <pubDate>Thu, 26 Sep 2024 16:02:00 +0800</pubDate>
+        
+        <guid>https://example.com/categories/%E4%BB%A3%E7%A0%81%E8%A7%84%E8%8C%83/</guid>
+        <description></description>
+        </item>
+        <item>
         <title>Spring</title>
         <link>https://example.com/categories/spring/</link>
         <pubDate>Sat, 21 Sep 2024 16:02:00 +0800</pubDate>

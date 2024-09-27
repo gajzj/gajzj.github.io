@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Spring Cloud on GAJ-Blog</title>
+        <link>https://example.com/categories/spring-cloud/</link>
+        <description>Recent content in Spring Cloud on GAJ-Blog</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>gajzj</copyright>
+        <lastBuildDate>Thu, 26 Sep 2024 16:02:00 +0800</lastBuildDate><atom:link href="https://example.com/categories/spring-cloud/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>Spring Cloud</title>
+        <link>https://example.com/p/spring-cloud/</link>
+        <pubDate>Thu, 26 Sep 2024 16:02:00 +0800</pubDate>
+        
+        <guid>https://example.com/p/spring-cloud/</guid>
+        <description>&lt;h1 id=&#34;q1-spring-cloud-config&#34;&gt;Q1 Spring Cloud Config
+&lt;/h1&gt;&lt;blockquote&gt;
+&lt;p&gt;Spring Cloud Config 读取配置文件的步骤&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;1、启动 XxxApplication 时，读取自身的 application.yml，获得 name 和 Config Server 地址；&lt;/p&gt;
+&lt;p&gt;2、根据 name、profile 和 Config Server 地址，获取一个或多个由优先级的配置文件；&lt;/p&gt;
+&lt;p&gt;3、按优先级合并配置项；&lt;/p&gt;
+&lt;p&gt;4、如果配置项中存在环境变量，则使用 Xxx 应用本身的环境变量去替换占位符。&lt;/p&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>
