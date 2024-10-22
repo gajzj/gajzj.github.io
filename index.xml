@@ -13,7 +13,7 @@
         <pubDate>Thu, 26 Sep 2024 16:02:00 +0800</pubDate>
         
         <guid>https://example.com/p/spring-cloud/</guid>
-        <description>&lt;h1 id=&#34;q1-spring-cloud-config&#34;&gt;Q1 Spring Cloud Config
+        <description>&lt;h1 id=&#34;spring-cloud-config&#34;&gt;Spring Cloud Config
 &lt;/h1&gt;&lt;blockquote&gt;
 &lt;p&gt;Spring Cloud Config 读取配置文件的步骤&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -21,7 +21,140 @@
 &lt;p&gt;2、根据 name、profile 和 Config Server 地址，获取一个或多个由优先级的配置文件；&lt;/p&gt;
 &lt;p&gt;3、按优先级合并配置项；&lt;/p&gt;
 &lt;p&gt;4、如果配置项中存在环境变量，则使用 Xxx 应用本身的环境变量去替换占位符。&lt;/p&gt;
-</description>
+&lt;h1 id=&#34;网关&#34;&gt;网关
+&lt;/h1&gt;&lt;ul&gt;
+&lt;li&gt;创建网关微服务&lt;/li&gt;
+&lt;li&gt;引入 SpringCloudGateway、NacosDiscovery 依赖&lt;/li&gt;
+&lt;li&gt;编写启动类&lt;/li&gt;
+&lt;li&gt;配置网关路由&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;网关路由配置&#34;&gt;网关路由配置
+&lt;/h2&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;8
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-yml&#34; data-lang=&#34;yml&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nt&#34;&gt;spring&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;  &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;cloud&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;    &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;gateway&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;      &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;routes&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;         &lt;/span&gt;- &lt;span class=&#34;nt&#34;&gt;id&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;item&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;c&#34;&gt;# 路由规则id，自定义，唯一&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;          &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;uri&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;lb://item-service&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;c&#34;&gt;# 路由的目标服务，lb代表负载均衡，会从注册中心拉取服务列表&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;          &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;predicates&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;c&#34;&gt;# 路由断言，判断当前请求是否符合当前规则，符合则路由到目标服务&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;            &lt;/span&gt;- &lt;span class=&#34;l&#34;&gt;Path=/items/**,/search/**&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;c&#34;&gt;# 这里是以请求路径作为判断规则&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;GatewayProperties 读取配置，通过一个 List&lt;RouteDefinition&gt; 来保存，
+每个 RouteDefinition 就是具体的路由规则定义。
+包含四个常见属性：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;id：路由唯一标识&lt;/li&gt;
+&lt;li&gt;predicates：路由断言，就是匹配条件&lt;/li&gt;
+&lt;li&gt;filters：路由过滤条件&lt;/li&gt;
+&lt;li&gt;uri：路由目标地址，&lt;code&gt;lb://&lt;/code&gt;代表负载均衡，从注册中心获取目标微服务的实例列表，并且负载均衡选择一个访问。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;网关是所有微服务的入口，将登录校验的工作放到网关。在网关和用户服务保存密钥。&lt;/p&gt;
+&lt;p&gt;网关过滤器&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;GatewayFilter：路由过滤器&lt;/li&gt;
+&lt;li&gt;GlobalFilter：全局过滤器&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;微服务获取用户&#34;&gt;微服务获取用户
+&lt;/h1&gt;&lt;p&gt;网关通过请求头获取用户身份信息，继续通过http请求发送到微服务，这样就可以把用户信息传递到下游微服务。&lt;/p&gt;
+&lt;p&gt;通过微服务的拦截器，存放到 ThreadLocal 中来提供服务内部用户信息的上下文&lt;/p&gt;
+&lt;p&gt;微服务之间通过OpenFeign传递用户&lt;/p&gt;
+&lt;p&gt;Feign提供一个拦截器接口 feign.RequestInterceptor&lt;/p&gt;
+&lt;p&gt;在&lt;code&gt;com.hmall.api.config.DefaultFeignConfig&lt;/code&gt;中添加一个Bean&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;15
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;16
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;@Bean
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;public RequestInterceptor userInfoRequestInterceptor(){
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    return new RequestInterceptor() {
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        @Override
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        public void apply(RequestTemplate template) {
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;            // 获取登录用户
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;            Long userId = UserContext.getUser();
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;            if(userId == null) {
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;                // 如果为空则直接跳过
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;                return;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;            }
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;            // 如果不为空则放入请求头中，传递给下游微服务
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;            template.header(&amp;#34;user-info&amp;#34;, userId.toString());
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        }
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    };
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h1 id=&#34;配置管理&#34;&gt;配置管理
+&lt;/h1&gt;&lt;h2 id=&#34;配置共享&#34;&gt;配置共享
+&lt;/h2&gt;&lt;p&gt;共享的配置抽取到Nacos统一管理&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;在nacos添加共享配置&lt;/li&gt;
+&lt;li&gt;微服务拉取配置&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;312拉取共享配置&#34;&gt;3.1.2.拉取共享配置
+&lt;/h3&gt;&lt;p&gt;接下来，我们要在微服务拉取共享配置。将拉取到的共享配置与本地的&lt;code&gt;application.yaml&lt;/code&gt;配置合并，完成项目上下文的初始化。&lt;/p&gt;
+&lt;p&gt;不过，需要注意的是，读取Nacos配置是SpringCloud上下文（&lt;code&gt;ApplicationContext&lt;/code&gt;）初始化时处理的，发生在项目的引导阶段。然后才会初始化SpringBoot上下文，去读取&lt;code&gt;application.yaml&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;也就是说引导阶段，&lt;code&gt;application.yaml&lt;/code&gt;文件尚未读取，根本不知道nacos 地址，该如何去加载nacos中的配置文件呢？&lt;/p&gt;
+&lt;p&gt;SpringCloud在初始化上下文的时候会先读取一个名为&lt;code&gt;bootstrap.yaml&lt;/code&gt;(或者&lt;code&gt;bootstrap.properties&lt;/code&gt;)的文件，如果我们将nacos地址配置到&lt;code&gt;bootstrap.yaml&lt;/code&gt;中，那么在项目引导阶段就可以读取nacos中的配置了。&lt;/p&gt;
+&lt;h2 id=&#34;32配置热更新&#34;&gt;3.2.配置热更新
+&lt;/h2&gt;&lt;h2 id=&#34;33动态路由&#34;&gt;3.3.动态路由
+&lt;/h2&gt;&lt;p&gt;路由配置是在项目启动时由org.springframework.cloud.gateway.route.CompositeRouteDefinitionLocator加载，一经加载就缓存到内存中的路由表中。&lt;/p&gt;
+&lt;h3 id=&#34;331监听nacos配置变更&#34;&gt;3.3.1.监听nacos配置变更
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;创建ConfigService，目的是连接到nacos&lt;/li&gt;
+&lt;li&gt;添加配置监听器，编写配置变更的通知和处理逻辑&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;通过自动装配，实际上ConfigService已经创建好了，我们只需要通过NacosConfigManager去getConfigservice就可以了&lt;/p&gt;
+&lt;p&gt;项目第一次启动时不仅仅要添加监听器，也要读取配置，所以我们用&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-Java&#34; data-lang=&#34;Java&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;String&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;getConfigAndSignListener&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;    &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;String&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;dataId&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;// 配置文件id&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;    &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;String&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;group&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;// 配置组，走默认&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;    &lt;/span&gt;&lt;span class=&#34;kt&#34;&gt;long&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;timeoutMs&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;// 读取配置的超时时间&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;    &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Listener&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;listener&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;// 监听器&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;kd&#34;&gt;throws&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;NacosException&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;这个api，既可以配置监听器，也可以根据dataId和group读取配置并返回。&lt;/p&gt;
+&lt;h3 id=&#34;332更新路由&#34;&gt;3.3.2.更新路由
+&lt;/h3&gt;&lt;p&gt;监听了配置，就需要用到&lt;code&gt;org.springframework.cloud.gateway.route.RouteDefinitionWriter&lt;/code&gt;这个接口来更新路由也就是RouteDefinition&lt;/p&gt;
+&lt;h3 id=&#34;333实现动态路由&#34;&gt;3.3.3.实现动态路由
+&lt;/h3&gt;</description>
         </item>
         <item>
         <title>Spring IoC</title>
@@ -766,36 +899,36 @@ spring 中使用编程式事务主要是&lt;code&gt;PlatformTransactionManager&l
 &lt;table&gt;
   &lt;thead&gt;
       &lt;tr&gt;
-          &lt;th style=&#34;text-align: left&#34;&gt;Isolation Level&lt;/th&gt;
-          &lt;th style=&#34;text-align: left&#34;&gt;脏读（Dirty Read）&lt;/th&gt;
-          &lt;th style=&#34;text-align: left&#34;&gt;不可重复读（Non Repeatable Read）&lt;/th&gt;
-          &lt;th style=&#34;text-align: left&#34;&gt;幻读（Phantom Read）&lt;/th&gt;
+          &lt;th&gt;Isolation Level&lt;/th&gt;
+          &lt;th&gt;脏读（Dirty Read）&lt;/th&gt;
+          &lt;th&gt;不可重复读（Non Repeatable Read）&lt;/th&gt;
+          &lt;th&gt;幻读（Phantom Read）&lt;/th&gt;
       &lt;/tr&gt;
   &lt;/thead&gt;
   &lt;tbody&gt;
       &lt;tr&gt;
-          &lt;td style=&#34;text-align: left&#34;&gt;Read Uncommitted&lt;/td&gt;
-          &lt;td style=&#34;text-align: left&#34;&gt;Yes&lt;/td&gt;
-          &lt;td style=&#34;text-align: left&#34;&gt;Yes&lt;/td&gt;
-          &lt;td style=&#34;text-align: left&#34;&gt;Yes&lt;/td&gt;
+          &lt;td&gt;Read Uncommitted&lt;/td&gt;
+          &lt;td&gt;Yes&lt;/td&gt;
+          &lt;td&gt;Yes&lt;/td&gt;
+          &lt;td&gt;Yes&lt;/td&gt;
       &lt;/tr&gt;
       &lt;tr&gt;
-          &lt;td style=&#34;text-align: left&#34;&gt;Read Committed&lt;/td&gt;
-          &lt;td style=&#34;text-align: left&#34;&gt;-&lt;/td&gt;
-          &lt;td style=&#34;text-align: left&#34;&gt;Yes&lt;/td&gt;
-          &lt;td style=&#34;text-align: left&#34;&gt;Yes&lt;/td&gt;
+          &lt;td&gt;Read Committed&lt;/td&gt;
+          &lt;td&gt;-&lt;/td&gt;
+          &lt;td&gt;Yes&lt;/td&gt;
+          &lt;td&gt;Yes&lt;/td&gt;
       &lt;/tr&gt;
       &lt;tr&gt;
-          &lt;td style=&#34;text-align: left&#34;&gt;Repeatable Read&lt;/td&gt;
-          &lt;td style=&#34;text-align: left&#34;&gt;-&lt;/td&gt;
-          &lt;td style=&#34;text-align: left&#34;&gt;-&lt;/td&gt;
-          &lt;td style=&#34;text-align: left&#34;&gt;Yes&lt;/td&gt;
+          &lt;td&gt;Repeatable Read&lt;/td&gt;
+          &lt;td&gt;-&lt;/td&gt;
+          &lt;td&gt;-&lt;/td&gt;
+          &lt;td&gt;Yes&lt;/td&gt;
       &lt;/tr&gt;
       &lt;tr&gt;
-          &lt;td style=&#34;text-align: left&#34;&gt;Serializable&lt;/td&gt;
-          &lt;td style=&#34;text-align: left&#34;&gt;-&lt;/td&gt;
-          &lt;td style=&#34;text-align: left&#34;&gt;-&lt;/td&gt;
-          &lt;td style=&#34;text-align: left&#34;&gt;-&lt;/td&gt;
+          &lt;td&gt;Serializable&lt;/td&gt;
+          &lt;td&gt;-&lt;/td&gt;
+          &lt;td&gt;-&lt;/td&gt;
+          &lt;td&gt;-&lt;/td&gt;
       &lt;/tr&gt;
   &lt;/tbody&gt;
 &lt;/table&gt;
@@ -2446,22 +2579,22 @@ spring 中使用编程式事务主要是&lt;code&gt;PlatformTransactionManager&l
 &lt;table&gt;
   &lt;thead&gt;
       &lt;tr&gt;
-          &lt;th style=&#34;text-align: left&#34;&gt;网站功能更新&lt;/th&gt;
-          &lt;th style=&#34;text-align: left&#34;&gt;时间&lt;/th&gt;
-          &lt;th style=&#34;text-align: left&#34;&gt;详情&lt;/th&gt;
+          &lt;th&gt;网站功能更新&lt;/th&gt;
+          &lt;th&gt;时间&lt;/th&gt;
+          &lt;th&gt;详情&lt;/th&gt;
       &lt;/tr&gt;
   &lt;/thead&gt;
   &lt;tbody&gt;
       &lt;tr&gt;
-          &lt;td style=&#34;text-align: left&#34;&gt;网站成功搭建&lt;/td&gt;
-          &lt;td style=&#34;text-align: left&#34;&gt;2024年8月25日&lt;/td&gt;
-          &lt;td style=&#34;text-align: left&#34;&gt;&lt;a class=&#34;link&#34; href=&#34;https://gajzj.github.io/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+          &lt;td&gt;网站成功搭建&lt;/td&gt;
+          &lt;td&gt;2024年8月25日&lt;/td&gt;
+          &lt;td&gt;&lt;a class=&#34;link&#34; href=&#34;https://gajzj.github.io/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;https://gajzj.github.io/&lt;/a&gt;&lt;/td&gt;
       &lt;/tr&gt;
       &lt;tr&gt;
-          &lt;td style=&#34;text-align: left&#34;&gt;网站接入 giscus 评论&lt;/td&gt;
-          &lt;td style=&#34;text-align: left&#34;&gt;2024年8月26日&lt;/td&gt;
-          &lt;td style=&#34;text-align: left&#34;&gt;在文章的底部可以查看并发表评论&lt;/td&gt;
+          &lt;td&gt;网站接入 giscus 评论&lt;/td&gt;
+          &lt;td&gt;2024年8月26日&lt;/td&gt;
+          &lt;td&gt;在文章的底部可以查看并发表评论&lt;/td&gt;
       &lt;/tr&gt;
   &lt;/tbody&gt;
 &lt;/table&gt;
@@ -2469,32 +2602,32 @@ spring 中使用编程式事务主要是&lt;code&gt;PlatformTransactionManager&l
 &lt;table&gt;
   &lt;thead&gt;
       &lt;tr&gt;
-          &lt;th style=&#34;text-align: left&#34;&gt;更新计划&lt;/th&gt;
-          &lt;th style=&#34;text-align: left&#34;&gt;背景&lt;/th&gt;
-          &lt;th style=&#34;text-align: left&#34;&gt;详情&lt;/th&gt;
+          &lt;th&gt;更新计划&lt;/th&gt;
+          &lt;th&gt;背景&lt;/th&gt;
+          &lt;th&gt;详情&lt;/th&gt;
       &lt;/tr&gt;
   &lt;/thead&gt;
   &lt;tbody&gt;
       &lt;tr&gt;
-          &lt;td style=&#34;text-align: left&#34;&gt;&lt;del&gt;加入文章评论功能&lt;/del&gt;&lt;/td&gt;
-          &lt;td style=&#34;text-align: left&#34;&gt;&lt;del&gt;看着下面评论区报错很难受&lt;/del&gt;&lt;/td&gt;
-          &lt;td style=&#34;text-align: left&#34;&gt;&lt;/td&gt;
+          &lt;td&gt;&lt;del&gt;加入文章评论功能&lt;/del&gt;&lt;/td&gt;
+          &lt;td&gt;&lt;del&gt;看着下面评论区报错很难受&lt;/del&gt;&lt;/td&gt;
+          &lt;td&gt;&lt;/td&gt;
       &lt;/tr&gt;
       &lt;tr&gt;
-          &lt;td style=&#34;text-align: left&#34;&gt;美化网站&lt;/td&gt;
-          &lt;td style=&#34;text-align: left&#34;&gt;当前网站过于单调&lt;/td&gt;
-          &lt;td style=&#34;text-align: left&#34;&gt;字体、背景、配色&lt;/td&gt;
+          &lt;td&gt;美化网站&lt;/td&gt;
+          &lt;td&gt;当前网站过于单调&lt;/td&gt;
+          &lt;td&gt;字体、背景、配色&lt;/td&gt;
       &lt;/tr&gt;
       &lt;tr&gt;
-          &lt;td style=&#34;text-align: left&#34;&gt;加入签到功能&lt;/td&gt;
-          &lt;td style=&#34;text-align: left&#34;&gt;就是想要一个&lt;/td&gt;
-          &lt;td style=&#34;text-align: left&#34;&gt;参考&lt;a class=&#34;link&#34; href=&#34;https://www.luogu.com.cn/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+          &lt;td&gt;加入签到功能&lt;/td&gt;
+          &lt;td&gt;就是想要一个&lt;/td&gt;
+          &lt;td&gt;参考&lt;a class=&#34;link&#34; href=&#34;https://www.luogu.com.cn/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;洛谷&lt;/a&gt;&lt;/td&gt;
       &lt;/tr&gt;
       &lt;tr&gt;
-          &lt;td style=&#34;text-align: left&#34;&gt;favicon 未能正常显示&lt;/td&gt;
-          &lt;td style=&#34;text-align: left&#34;&gt;没有图标很丑&lt;/td&gt;
-          &lt;td style=&#34;text-align: left&#34;&gt;浏览器上的网站图标未能正常显示&lt;/td&gt;
+          &lt;td&gt;favicon 未能正常显示&lt;/td&gt;
+          &lt;td&gt;没有图标很丑&lt;/td&gt;
+          &lt;td&gt;浏览器上的网站图标未能正常显示&lt;/td&gt;
       &lt;/tr&gt;
   &lt;/tbody&gt;
 &lt;/table&gt;
