@@ -221,11 +221,16 @@
         <div class="widget--toc">
             <nav id="TableOfContents">
   <ol>
-    <li>
+    <li><a href="#q1">Q1</a>
       <ol>
         <li><a href="#推荐用法">推荐用法：</a></li>
       </ol>
     </li>
+    <li><a href="#单体项目平滑发布">单体项目平滑发布</a></li>
+    <li><a href="#广告投放定时任务">广告投放定时任务</a></li>
+    <li><a href="#限制堆外内存">限制堆外内存</a></li>
+    <li><a href="#深分页">深分页</a></li>
+    <li><a href="#服务器情况">服务器情况</a></li>
   </ol>
 </nav>
         </div>
@@ -291,8 +296,8 @@
     <section class="article-content">
     
     
-    <h1 id="q1">Q1
-</h1><blockquote>
+    <h2 id="q1">Q1
+</h2><blockquote>
 <p>private final Logger logger = LoggerFactory.getLogger(getClass());</p>
 <p>还是</p>
 <p>private statci final Logger logger = LoggerFactory.getLogger(ClassName.class);</p>
@@ -349,7 +354,38 @@
 <pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">private final Logger logger = LoggerFactory.getLogger(getClass());
 </span></span></code></pre></td></tr></table>
 </div>
-</div><p>总结：对于一般类，建议使用 <code>static final Logger</code> 和类名；如果有继承需求，使用 <code>getClass()</code> 更灵活。</p>
+</div><p>总结：对于一般类，建议使用 <code>static final Logger</code> 和类名；如果有继承需求，使用 <code>getClass()</code> 更灵活</p>
+<h2 id="单体项目平滑发布">单体项目平滑发布
+</h2><ul>
+<li>
+<p>蓝绿发布</p>
+<p>单机多双结点</p>
+</li>
+<li>
+<p>k8s和docker</p>
+</li>
+</ul>
+<h2 id="广告投放定时任务">广告投放定时任务
+</h2><p><a class="link" href="https://www.bilibili.com/video/BV1xt421K78v/?spm_id_from=333.337.top_right_bar_window_history.content.click"  target="_blank" rel="noopener"
+    >从半小时到秒级-京东定时任务优化实战_哔哩哔哩_bilibili</a></p>
+<h2 id="限制堆外内存">限制堆外内存
+</h2><h2 id="深分页">深分页
+</h2><p>limit 5000000, 100 和 where id &gt; 5000000 limit 100</p>
+<h2 id="服务器情况">服务器情况
+</h2><p><img src="/p/%E9%9A%8F%E8%AE%B0/index.assets/image-20241109084522477.png"
+	width="528"
+	height="151"
+	srcset="/p/%E9%9A%8F%E8%AE%B0/index.assets/image-20241109084522477_hu14651569809227415220.png 480w, /p/%E9%9A%8F%E8%AE%B0/index.assets/image-20241109084522477_hu6506989586169050596.png 1024w"
+	loading="lazy"
+	
+		alt="image-20241109084522477"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="349"
+		data-flex-basis="839px"
+	
+></p>
 
 </section>
 
@@ -390,6 +426,28 @@
     
 
     
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/p/%E9%9A%8F%E8%AE%B0/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">随记</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
 
      
     

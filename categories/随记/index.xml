@@ -72,6 +72,120 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;总结：对于一般类，建议使用 &lt;code&gt;static final Logger&lt;/code&gt; 和类名；如果有继承需求，使用 &lt;code&gt;getClass()&lt;/code&gt; 更灵活。&lt;/p&gt;
+&lt;h1 id=&#34;单体项目平滑发布&#34;&gt;单体项目平滑发布
+&lt;/h1&gt;&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;蓝绿发布&lt;/p&gt;
+&lt;p&gt;单机多双结点&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;k8s和docker&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;广告投放定时任务&#34;&gt;广告投放定时任务
+&lt;/h1&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.bilibili.com/video/BV1xt421K78v/?spm_id_from=333.337.top_right_bar_window_history.content.click&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;从半小时到秒级-京东定时任务优化实战_哔哩哔哩_bilibili&lt;/a&gt;&lt;/p&gt;
+&lt;h1 id=&#34;限制堆外内存&#34;&gt;限制堆外内存
+&lt;/h1&gt;&lt;h1 id=&#34;深分页&#34;&gt;深分页
+&lt;/h1&gt;&lt;p&gt;limit 5000000, 100 和 where id &amp;gt; 5000000 limit 100&lt;/p&gt;
+</description>
+        </item>
+        <item>
+        <title>随记</title>
+        <link>https://example.com/p/%E9%9A%8F%E8%AE%B0/</link>
+        <pubDate>Thu, 12 Sep 2024 16:02:00 +0800</pubDate>
+        
+        <guid>https://example.com/p/%E9%9A%8F%E8%AE%B0/</guid>
+        <description>&lt;h2 id=&#34;q1&#34;&gt;Q1
+&lt;/h2&gt;&lt;blockquote&gt;
+&lt;p&gt;private final Logger logger = LoggerFactory.getLogger(getClass());&lt;/p&gt;
+&lt;p&gt;还是&lt;/p&gt;
+&lt;p&gt;private statci final Logger logger = LoggerFactory.getLogger(ClassName.class);&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;两种写法各有优缺点，选择哪一种取决于你的需求和项目风格。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;&lt;code&gt;private final Logger logger = LoggerFactory.getLogger(getClass());&lt;/code&gt;&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;优点：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;通用性高&lt;/strong&gt;：可以用于任何类，无需手动更新类名（适合复制粘贴代码到其他类中时无需修改）。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;适应继承&lt;/strong&gt;：如果这个类被继承，&lt;code&gt;getClass()&lt;/code&gt; 会返回子类的类型，日志会正确显示子类的类名。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;缺点：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;运行时开销&lt;/strong&gt;：&lt;code&gt;getClass()&lt;/code&gt; 是在运行时确定的，虽然开销不大，但比静态方法稍微慢一些。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;&lt;code&gt;private static final Logger logger = LoggerFactory.getLogger(ClassName.class);&lt;/code&gt;&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;优点：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;效率稍高&lt;/strong&gt;：因为 &lt;code&gt;ClassName.class&lt;/code&gt; 是在编译时确定的，性能上稍微优于 &lt;code&gt;getClass()&lt;/code&gt;。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;符合静态常量的惯例&lt;/strong&gt;：&lt;code&gt;logger&lt;/code&gt; 是静态的，通常被定义为 &lt;code&gt;static final&lt;/code&gt;，符合惯例。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;日志清晰&lt;/strong&gt;：明确指定类名，在日志中始终使用这个类的名字，不管它是否被继承。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;缺点：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;继承问题&lt;/strong&gt;：如果类被继承，日志依然显示的是父类的类名，而不是子类的名字，这在需要记录子类日志时可能不是理想的选择。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;类名需要手动更新&lt;/strong&gt;：如果你复制这个类或重命名它，你需要手动更新 &lt;code&gt;ClassName&lt;/code&gt;，否则会导致日志记录混乱。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&#34;推荐用法&#34;&gt;推荐用法：
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;使用 &lt;code&gt;static final&lt;/code&gt; 和类名&lt;/strong&gt; 的方式更为常见，尤其在不涉及继承的情况下。这种方式在性能上更高效，且更符合静态常量的使用习惯。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;private static final Logger logger = LoggerFactory.getLogger(ClassName.class);
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;ul&gt;
+&lt;li&gt;如果你的类可能会被继承并且你希望日志记录子类的类名，则可以考虑使用 &lt;code&gt;getClass()&lt;/code&gt;：&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;private final Logger logger = LoggerFactory.getLogger(getClass());
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;总结：对于一般类，建议使用 &lt;code&gt;static final Logger&lt;/code&gt; 和类名；如果有继承需求，使用 &lt;code&gt;getClass()&lt;/code&gt; 更灵活&lt;/p&gt;
+&lt;h2 id=&#34;单体项目平滑发布&#34;&gt;单体项目平滑发布
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;蓝绿发布&lt;/p&gt;
+&lt;p&gt;单机多双结点&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;k8s和docker&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;广告投放定时任务&#34;&gt;广告投放定时任务
+&lt;/h2&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.bilibili.com/video/BV1xt421K78v/?spm_id_from=333.337.top_right_bar_window_history.content.click&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;从半小时到秒级-京东定时任务优化实战_哔哩哔哩_bilibili&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;限制堆外内存&#34;&gt;限制堆外内存
+&lt;/h2&gt;&lt;h2 id=&#34;深分页&#34;&gt;深分页
+&lt;/h2&gt;&lt;p&gt;limit 5000000, 100 和 where id &amp;gt; 5000000 limit 100&lt;/p&gt;
+&lt;h2 id=&#34;服务器情况&#34;&gt;服务器情况
+&lt;/h2&gt;&lt;p&gt;&lt;img src=&#34;https://example.com/p/%E9%9A%8F%E8%AE%B0/index.assets/image-20241109084522477.png&#34;
+	width=&#34;528&#34;
+	height=&#34;151&#34;
+	srcset=&#34;https://example.com/p/%E9%9A%8F%E8%AE%B0/index.assets/image-20241109084522477_hu14651569809227415220.png 480w, https://example.com/p/%E9%9A%8F%E8%AE%B0/index.assets/image-20241109084522477_hu6506989586169050596.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20241109084522477&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;349&#34;
+		data-flex-basis=&#34;839px&#34;
+	
+&gt;&lt;/p&gt;
 </description>
         </item>
         

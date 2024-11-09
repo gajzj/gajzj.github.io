@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>GC on GAJ-Blog</title>
+        <link>https://example.com/tags/gc/</link>
+        <description>Recent content in GC on GAJ-Blog</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>gajzj</copyright>
+        <lastBuildDate>Thu, 31 Oct 2024 10:02:00 +0800</lastBuildDate><atom:link href="https://example.com/tags/gc/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>G1垃圾回收器</title>
+        <link>https://example.com/p/g1%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8/</link>
+        <pubDate>Thu, 31 Oct 2024 10:02:00 +0800</pubDate>
+        
+        <guid>https://example.com/p/g1%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8/</guid>
+        <description>&lt;h1 id=&#34;g1垃圾回收器详解&#34;&gt;G1垃圾回收器详解
+&lt;/h1&gt;&lt;p&gt;G1和CMS要求的内存模型不同&lt;/p&gt;
+&lt;p&gt;G1具有软实时性，即用户可以指定垃圾回收的限时，G1会努力在这个时限内完成gc。通常设定一个合理的目标让90%的垃圾回收时间都在这个时限内。&lt;/p&gt;
+&lt;h1 id=&#34;g1的内存模型&#34;&gt;G1的内存模型
+&lt;/h1&gt;&lt;h2 id=&#34;分区概念&#34;&gt;分区概念
+&lt;/h2&gt;&lt;p&gt;&lt;img src=&#34;https://example.com/p/g1%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8/index.assets/f0bdbd9f9088d335a702739798e1e25a.png&#34;
+	width=&#34;589&#34;
+	height=&#34;292&#34;
+	srcset=&#34;https://example.com/p/g1%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8/index.assets/f0bdbd9f9088d335a702739798e1e25a_hu11936586203969620188.png 480w, https://example.com/p/g1%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8/index.assets/f0bdbd9f9088d335a702739798e1e25a_hu1772571718479536578.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;G1分区示意图&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;201&#34;
+		data-flex-basis=&#34;484px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;h3 id=&#34;分区region&#34;&gt;分区Region
+&lt;/h3&gt;&lt;p&gt;G1采用分区的类似，将堆空间分为若干个大小相等的内存区域，每次分配对象空间将逐段地使用内存。可以通过&lt;code&gt;-XX:G1HeapRegionSize=n&lt;/code&gt;指定分区大小(1MB~32MB，且必须是2的幂)，默认分为2048个分区。&lt;/p&gt;
+&lt;h3 id=&#34;卡片card&#34;&gt;卡片Card
+&lt;/h3&gt;&lt;p&gt;分区内部又会分为若干个大小为512 Byte 的卡片，全局卡片表记录了所有分区的卡片信息。每个卡片在全局卡片表中都有一个对应的条目。&lt;/p&gt;
+&lt;h3 id=&#34;堆heap&#34;&gt;堆Heap
+&lt;/h3&gt;&lt;p&gt;通过-Xms/-Xmx指定堆大小。当发送ygc或者mixgc，通过计算gc与应用的耗时比，自动调整对空间大小。gc频率过高则增加堆尺寸来减少gc频率。&lt;/p&gt;
+&lt;p&gt;-XX:GCTimeRatio即为GC与应用的耗时比。&lt;/p&gt;
+&lt;p&gt;空间不足时，g1会首先尝试增加堆空间，如果扩容失败则发起fullgc。&lt;/p&gt;
+&lt;h2 id=&#34;分代模型&#34;&gt;分代模型
+&lt;/h2&gt;&lt;p&gt;&lt;img src=&#34;https://example.com/p/g1%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8/index.assets/78ca8aa4b7a360c7b7e794c803dcf05c.png&#34;
+	width=&#34;518&#34;
+	height=&#34;315&#34;
+	srcset=&#34;https://example.com/p/g1%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8/index.assets/78ca8aa4b7a360c7b7e794c803dcf05c_hu11960976990673088892.png 480w, https://example.com/p/g1%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8/index.assets/78ca8aa4b7a360c7b7e794c803dcf05c_hu6866350095950060920.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;28345836009_65a54854be_z.jpg&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;164&#34;
+		data-flex-basis=&#34;394px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;h3 id=&#34;分代&#34;&gt;分代
+&lt;/h3&gt;&lt;p&gt;Young代和Old代，Young代又包括Eden空间和Survivor空间。&lt;/p&gt;
+&lt;p&gt;整个Young代内存占用初始空间&lt;code&gt;-XX:G1NewSizePercent&lt;/code&gt;（默认整堆5%）与最大空间（默认60%）&lt;/p&gt;
+&lt;h3 id=&#34;local-alloction-buffer-lab&#34;&gt;Local alloction buffer （Lab）
+&lt;/h3&gt;&lt;p&gt;应用线程占用TLAB来创建对象，而大部分都会落入Eden；&lt;/p&gt;
+&lt;p&gt;每次gc时，每个gc线程同样可以独占一个GCLAB用来转移对象，每次回收会将对象复制到Suvivor空间或老年代空间；&lt;/p&gt;
+&lt;p&gt;对于Eden/Survivor空间晋升（Promption）到Survivor/老年代空间的对象，同样有GC独占PLAB&lt;/p&gt;
+&lt;p&gt;这些缓冲区就是每个线程认领的内存分配，可以减少同步时间，提升GC效率&lt;/p&gt;
+&lt;h2 id=&#34;分区模型&#34;&gt;分区模型
+&lt;/h2&gt;</description>
+        </item>
+        
+    </channel>
+</rss>
