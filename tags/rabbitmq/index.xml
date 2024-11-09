@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>RabbitMQ on GAJ-Blog</title>
+        <link>https://example.com/tags/rabbitmq/</link>
+        <description>Recent content in RabbitMQ on GAJ-Blog</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>gajzj</copyright>
+        <lastBuildDate>Fri, 08 Nov 2024 20:02:00 +0800</lastBuildDate><atom:link href="https://example.com/tags/rabbitmq/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>RabbitMQ</title>
+        <link>https://example.com/p/rabbitmq/</link>
+        <pubDate>Fri, 08 Nov 2024 20:02:00 +0800</pubDate>
+        
+        <guid>https://example.com/p/rabbitmq/</guid>
+        <description>&lt;h2 id=&#34;mq&#34;&gt;MQ
+&lt;/h2&gt;&lt;h2 id=&#34;发送可靠性&#34;&gt;发送可靠性
+&lt;/h2&gt;&lt;h2 id=&#34;mq可靠性&#34;&gt;MQ可靠性
+&lt;/h2&gt;&lt;h3 id=&#34;数据持久化&#34;&gt;数据持久化
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;交换机持久化
+&lt;ul&gt;
+&lt;li&gt;Durable 持久化模式&lt;/li&gt;
+&lt;li&gt;Transient 临时模式&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;队列持久化
+&lt;ul&gt;
+&lt;li&gt;Durable 持久化模式&lt;/li&gt;
+&lt;li&gt;Transient 临时模式&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;消息持久化&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;在开启持久化机制以后，如果同时还开启了生产者确认，那么MQ会在消息持久化以后才发送ACK回执，进一步确保消息的可靠性。&lt;/p&gt;
+&lt;p&gt;不过出于性能考虑，为了减少IO次数，发送到MQ的消息并不是逐条持久化到数据库的，而是每隔一段时间批量持久化。一般间隔在100毫秒左右，这就会导致ACK有一定的延迟，因此建议生产者确认全部采用异步方式。&lt;/p&gt;
+&lt;h3 id=&#34;lazyqueue解决消息积压&#34;&gt;LazyQueue（解决消息积压）
+&lt;/h3&gt;</description>
+        </item>
+        
+    </channel>
+</rss>

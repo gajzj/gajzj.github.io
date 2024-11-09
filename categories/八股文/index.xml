@@ -57,68 +57,6 @@
 &lt;p&gt;衡量一个哈希算法的好坏主要参考该算法能否将数据均匀的映射到Key的取值范围中&lt;/p&gt;
 &lt;h3 id=&#34;226-二叉树&#34;&gt;2.2.6 二叉树：
 &lt;/h3&gt;&lt;p&gt;data 域和 左右儿子的指针&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://example.com/index.assets/image-20240828204814043.png&#34;
-	
-	
-	
-	loading=&#34;lazy&#34;
-	
-		alt=&#34;二叉树的存储结构&#34;
-	
-	
-&gt;&lt;/p&gt;
-</description>
-        </item>
-        <item>
-        <title>集合八股文</title>
-        <link>https://example.com/p/%E9%9B%86%E5%90%88%E5%85%AB%E8%82%A1%E6%96%87/</link>
-        <pubDate>Wed, 28 Aug 2024 20:02:00 +0800</pubDate>
-        
-        <guid>https://example.com/p/%E9%9B%86%E5%90%88%E5%85%AB%E8%82%A1%E6%96%87/</guid>
-        <description>&lt;h2 id=&#34;1-数据结构&#34;&gt;1 数据结构
-&lt;/h2&gt;&lt;h3 id=&#34;11-算法复杂度&#34;&gt;1.1 算法复杂度
-&lt;/h3&gt;&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;时间复杂度和空间复杂度&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;大 O 复杂度表示法&lt;/p&gt;
-&lt;p&gt;舍去低阶、常量、系数&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&#34;2-常见数据结构&#34;&gt;2 常见数据结构
-&lt;/h3&gt;&lt;h3 id=&#34;221-数组&#34;&gt;2.2.1 数组：
-&lt;/h3&gt;&lt;p&gt;&lt;strong&gt;存储方式：&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;内存中连续的空间，存储相同的数据类型；&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;增删改查：&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;遍历：&lt;/strong&gt;&lt;/p&gt;
-&lt;h3 id=&#34;222-链表&#34;&gt;2.2.2 链表：
-&lt;/h3&gt;&lt;p&gt;&lt;strong&gt;存储方式：&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;内存中离散的结点，data（数据）和 next（下一个元素的地址）；&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;增删改查：&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;遍历：&lt;/strong&gt;&lt;/p&gt;
-&lt;h3 id=&#34;223-栈&#34;&gt;2.2.3 栈：
-&lt;/h3&gt;&lt;p&gt;&lt;strong&gt;存储方式：&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;满足先进后出的存储结构；&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;入栈和出栈操作：&lt;/strong&gt;&lt;/p&gt;
-&lt;h3 id=&#34;224-队列&#34;&gt;2.2.4 队列：
-&lt;/h3&gt;&lt;p&gt;满足先进先出的存储结构；&lt;/p&gt;
-&lt;p&gt;入队和出队操作；&lt;/p&gt;
-&lt;h3 id=&#34;225-散列表&#34;&gt;2.2.5 散列表
-&lt;/h3&gt;&lt;p&gt;理想的哈希表是不会产生冲突，即每一个元素的键（Key）都不相同的数组，但显然这种数据结构在计算机有限的空间下无法实现，注定产生哈希冲突；&lt;/p&gt;
-&lt;p&gt;哈希冲突的解决方案决定了哈希表的具体数据结构：&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;链地址&lt;/p&gt;
-&lt;p&gt;Java 中采用的方案，将冲突的值将通过链表存储，并根据一定的规则将链表转换为红黑树（红黑树相对链表能显著优化查找速度）&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;开放定址、再哈希法、公共溢出区&amp;hellip;&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;衡量一个哈希算法的好坏主要参考该算法能否将数据均匀的映射到Key的取值范围中&lt;/p&gt;
-&lt;h3 id=&#34;226-二叉树&#34;&gt;2.2.6 二叉树：
-&lt;/h3&gt;&lt;p&gt;data 域和 左右儿子的指针&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;https://example.com/p/%E9%9B%86%E5%90%88%E5%85%AB%E8%82%A1%E6%96%87/index.assets/image-20240828204814043.png&#34;
 	width=&#34;796&#34;
 	height=&#34;435&#34;

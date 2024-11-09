@@ -7,7 +7,179 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>gajzj</copyright>
-        <lastBuildDate>Thu, 31 Oct 2024 10:02:00 +0800</lastBuildDate><atom:link href="https://example.com/post/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Sat, 09 Nov 2024 16:02:00 +0800</lastBuildDate><atom:link href="https://example.com/post/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>每日八股</title>
+        <link>https://example.com/p/%E6%AF%8F%E6%97%A5%E5%85%AB%E8%82%A1/</link>
+        <pubDate>Sat, 09 Nov 2024 16:02:00 +0800</pubDate>
+        
+        <guid>https://example.com/p/%E6%AF%8F%E6%97%A5%E5%85%AB%E8%82%A1/</guid>
+        <description>&lt;h1 id=&#34;每日八股&#34;&gt;每日八股
+&lt;/h1&gt;&lt;blockquote&gt;
+&lt;p&gt;本文档只记录答题思路，旨在当面试时遇到时能快速切入重点，然后灵活的组织语言回答问题。同时，为了回答的流畅性，应当尽可能的学会怎么读这些英文单词，用英文表达&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&#34;day1&#34;&gt;day1
+&lt;/h2&gt;&lt;h3 id=&#34;q1微服务你用到了那些中间件&#34;&gt;Q1：微服务你用到了那些中间件
+&lt;/h3&gt;&lt;p&gt;这张图的演变能非常好的描述我们单体结构向微服务转变过程&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/%E6%AF%8F%E6%97%A5%E5%85%AB%E8%82%A1/index.assets/image-20241109150514024.png&#34;
+	width=&#34;1407&#34;
+	height=&#34;532&#34;
+	srcset=&#34;https://example.com/p/%E6%AF%8F%E6%97%A5%E5%85%AB%E8%82%A1/index.assets/image-20241109150514024_hu3403548323223964474.png 480w, https://example.com/p/%E6%AF%8F%E6%97%A5%E5%85%AB%E8%82%A1/index.assets/image-20241109150514024_hu7738992844842760827.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20241109150514024&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;264&#34;
+		data-flex-basis=&#34;634px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;如果可以，请从&lt;strong&gt;单体向微服务架构转变&lt;/strong&gt;的思路来回答每个中间件对应的职责（跟面试官说你在公司经历过单体项目向微服务转型的过程，希望以此出发展开回答）&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;单体的耦合度太高，同时无法很好的承载高并发，简单的水平拓展成本过高（也不治本），需要&lt;strong&gt;拆分服务&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;而服务与服务之间需要远程调用，需要统一的&lt;strong&gt;注册中心和配置中心&lt;/strong&gt;（人工维护太繁琐）&lt;/li&gt;
+&lt;li&gt;服务于服务之间的调用，并不必须同步，可以采取引入&lt;strong&gt;消息队列&lt;/strong&gt;完成异步调用&lt;/li&gt;
+&lt;li&gt;用户的请求需要统一的服务网关来路由（注意这里路由是个动词），以及负载均衡&lt;/li&gt;
+&lt;li&gt;服务集群的增长，带来了更多的数据，对我们的数据、缓存有更高的挑战，所以需要&lt;strong&gt;分布式缓存、分库分表、分布式搜索&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;集群规模增大带来，debug不局限于某一台服务，需要&lt;strong&gt;分布式日志服务&lt;/strong&gt;和&lt;strong&gt;系统监控链路追踪&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;引入自动化部署（DevOps）来做到持续开发、持续交付，降低部署维护成本&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;有了演变过程，哪些中间件做哪些事情，自然就有了答案&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;思考一个问题：假如一个交易平台对于订单需要严格的排序，需要一个定序系统来生产一个全局唯一的序列号，请问这种情况时候还能做水平拓展？如何容灾？&lt;a class=&#34;link&#34; href=&#34;https://liaoxuefeng.com/books/java/springcloud/sequence/index.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;设计定序系统 - Java教程 - 廖雪峰的官方网站 (liaoxuefeng.com)&lt;/a&gt;（看文末的**如何在定序器崩溃后自动恢复？**问题，拓展抢锁）&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&#34;q2nacos注册中心的心跳机制&#34;&gt;Q2：Nacos注册中心的心跳机制
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;注册中心、心跳检测（ping pong）&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;每个加入nacos的服务都会&lt;strong&gt;注册自己信息&lt;/strong&gt;以及&lt;strong&gt;定时拉取服务列表&lt;/strong&gt;（why？for rpc）&lt;/p&gt;
+&lt;p&gt;注册到nacos的服务以及nacos本身都需要通过主动或者被动的方式维持自己的存活（&lt;strong&gt;主动上报或是主动询问&lt;/strong&gt;）&lt;/p&gt;
+&lt;p&gt;类似场景拓展：&lt;a class=&#34;link&#34; href=&#34;https://developer.kookapp.cn/doc/websocket&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Websocket (kookapp.cn)&lt;/a&gt;（看连接流程、重连、连接流程示意图即可）&lt;/p&gt;
+&lt;h3 id=&#34;q3常见的负载均衡算法&#34;&gt;Q3：常见的负载均衡算法
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;轮询、权重、响应时间&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&#34;q4threadlocal&#34;&gt;Q4：ThreadLocal
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;看成一个&lt;strong&gt;全局&lt;code&gt;Map&amp;lt;Thread, Object&amp;gt;&lt;/code&gt;&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;线程池复用&lt;/strong&gt;会带来污染&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Spring是否也需要&lt;/strong&gt;考虑相关问题&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;基本概念&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;实际上，可以把&lt;code&gt;ThreadLocal&lt;/code&gt;看成一个&lt;strong&gt;全局&lt;code&gt;Map&amp;lt;Thread, Object&amp;gt;&lt;/code&gt;&lt;/strong&gt;：每个线程获取&lt;code&gt;ThreadLocal&lt;/code&gt;变量时，总是&lt;strong&gt;使用&lt;code&gt;Thread&lt;/code&gt;自身作为key&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;因此，&lt;code&gt;ThreadLocal&lt;/code&gt;相当于给每个线程都开辟了一个独立的存储空间（上下文语境，学点高级词汇），各个线程的&lt;code&gt;ThreadLocal&lt;/code&gt;关联的实例互不干扰。&lt;/p&gt;
+&lt;p&gt;最后，特别注意&lt;code&gt;ThreadLocal&lt;/code&gt;一定要在&lt;code&gt;finally&lt;/code&gt;中remove！！！！&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;拓展（问就是看过了SpringMVC源码）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;清除非常重要，为什么？&lt;strong&gt;线程池复用&lt;/strong&gt;会带来污染&lt;/p&gt;
+&lt;p&gt;再想一个问题，我们有这样的问题需要使用ThreadLocal，&lt;strong&gt;Spring是否也需要&lt;/strong&gt;？结合SpringMVC执行流程&lt;/p&gt;
+&lt;p&gt;SpringMVC把每一个请求交给一个独立的线程处理，内部同样用到了线程池、ThreadLocal。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;DispatcherServlet和RequestContextHolder&lt;/strong&gt;（注意context这个单词，就是内容或则说上下文的意思）&lt;/p&gt;
+&lt;p&gt;RequestContextHolder会存储请求和响应的相关消息，也就是一个请求的上下文，所以毫无疑问SpringMVC同样有使用到ThreadLocal&lt;/p&gt;
+&lt;h3 id=&#34;q5聚集索引和非聚集索引&#34;&gt;Q5：聚集索引和非聚集索引
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;数据和索引在一起存储&lt;/p&gt;
+&lt;p&gt;数据和索引不在一起&lt;/p&gt;
+&lt;p&gt;主动提及回表查询和覆盖查询、索引的维护有代价&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&#34;q6如何定位慢查询&#34;&gt;Q6：如何定位慢查询
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;注意慢查询和慢sql&lt;/p&gt;
+&lt;p&gt;前端：静态资源丢失&lt;/p&gt;
+&lt;p&gt;后端：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;redis缓存&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;MQ积压&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;数据库：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;慢日志&lt;/li&gt;
+&lt;li&gt;explain
+&lt;ul&gt;
+&lt;li&gt;key&lt;/li&gt;
+&lt;li&gt;key_length&lt;/li&gt;
+&lt;li&gt;rows&lt;/li&gt;
+&lt;li&gt;extra&lt;/li&gt;
+&lt;li&gt;type&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;主动提及索引失效的场景&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/%E6%AF%8F%E6%97%A5%E5%85%AB%E8%82%A1/index.assets/968f19d0cd15f17a0275011cd61d40f.png&#34;
+	width=&#34;1043&#34;
+	height=&#34;655&#34;
+	srcset=&#34;https://example.com/p/%E6%AF%8F%E6%97%A5%E5%85%AB%E8%82%A1/index.assets/968f19d0cd15f17a0275011cd61d40f_hu3319291941357880734.png 480w, https://example.com/p/%E6%AF%8F%E6%97%A5%E5%85%AB%E8%82%A1/index.assets/968f19d0cd15f17a0275011cd61d40f_hu4864076192576903339.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;968f19d0cd15f17a0275011cd61d40f&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;159&#34;
+		data-flex-basis=&#34;382px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;h3 id=&#34;q7java的map&#34;&gt;Q7：Java的Map
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;基本&lt;/p&gt;
+&lt;p&gt;HashMap的七七八八，你们懂的&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;拓展&lt;/p&gt;
+&lt;p&gt;HashMap/WeakHashMap优化枚举类预加载（弱引用、垃圾回收器）&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;这里讲讲HashMap/WeakHashMap优化枚举类预加载&lt;/p&gt;
+&lt;p&gt;首先，我们使用枚举类往往无法避免valueOf()操作，但这个操作是O(n)的，对这个操作非常常见的优化就是通过static静态代码块在类加载的时候把它们加载到一个Map中，也就是缓存，可以优化查找速度到O(1)。&lt;/p&gt;
+&lt;p&gt;用WeakHashMap的原因，就是为了避免OOM（以及把面试官往JVM引导）&lt;/p&gt;
+</description>
+        </item>
+        <item>
+        <title>RabbitMQ</title>
+        <link>https://example.com/p/rabbitmq/</link>
+        <pubDate>Fri, 08 Nov 2024 20:02:00 +0800</pubDate>
+        
+        <guid>https://example.com/p/rabbitmq/</guid>
+        <description>&lt;h2 id=&#34;mq&#34;&gt;MQ
+&lt;/h2&gt;&lt;h2 id=&#34;发送可靠性&#34;&gt;发送可靠性
+&lt;/h2&gt;&lt;h2 id=&#34;mq可靠性&#34;&gt;MQ可靠性
+&lt;/h2&gt;&lt;h3 id=&#34;数据持久化&#34;&gt;数据持久化
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;交换机持久化
+&lt;ul&gt;
+&lt;li&gt;Durable 持久化模式&lt;/li&gt;
+&lt;li&gt;Transient 临时模式&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;队列持久化
+&lt;ul&gt;
+&lt;li&gt;Durable 持久化模式&lt;/li&gt;
+&lt;li&gt;Transient 临时模式&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;消息持久化&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;在开启持久化机制以后，如果同时还开启了生产者确认，那么MQ会在消息持久化以后才发送ACK回执，进一步确保消息的可靠性。&lt;/p&gt;
+&lt;p&gt;不过出于性能考虑，为了减少IO次数，发送到MQ的消息并不是逐条持久化到数据库的，而是每隔一段时间批量持久化。一般间隔在100毫秒左右，这就会导致ACK有一定的延迟，因此建议生产者确认全部采用异步方式。&lt;/p&gt;
+&lt;h3 id=&#34;lazyqueue解决消息积压&#34;&gt;LazyQueue（解决消息积压）
+&lt;/h3&gt;</description>
+        </item>
+        <item>
         <title>G1垃圾回收器</title>
         <link>https://example.com/p/g1%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8/</link>
         <pubDate>Thu, 31 Oct 2024 10:02:00 +0800</pubDate>
@@ -2195,68 +2367,6 @@ spring 中使用编程式事务主要是&lt;code&gt;PlatformTransactionManager&l
 &lt;/h2&gt;&lt;h2 id=&#34;集成-jpa&#34;&gt;集成 JPA
 &lt;/h2&gt;&lt;h2 id=&#34;集成-mybatis&#34;&gt;集成 MyBatis
 &lt;/h2&gt;</description>
-        </item>
-        <item>
-        <title>集合八股文</title>
-        <link>https://example.com/p/%E9%9B%86%E5%90%88%E5%85%AB%E8%82%A1%E6%96%87/</link>
-        <pubDate>Wed, 28 Aug 2024 20:02:00 +0800</pubDate>
-        
-        <guid>https://example.com/p/%E9%9B%86%E5%90%88%E5%85%AB%E8%82%A1%E6%96%87/</guid>
-        <description>&lt;h2 id=&#34;1-数据结构&#34;&gt;1 数据结构
-&lt;/h2&gt;&lt;h3 id=&#34;11-算法复杂度&#34;&gt;1.1 算法复杂度
-&lt;/h3&gt;&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;时间复杂度和空间复杂度&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;大 O 复杂度表示法&lt;/p&gt;
-&lt;p&gt;舍去低阶、常量、系数&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&#34;2-常见数据结构&#34;&gt;2 常见数据结构
-&lt;/h3&gt;&lt;h3 id=&#34;221-数组&#34;&gt;2.2.1 数组：
-&lt;/h3&gt;&lt;p&gt;&lt;strong&gt;存储方式：&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;内存中连续的空间，存储相同的数据类型；&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;增删改查：&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;遍历：&lt;/strong&gt;&lt;/p&gt;
-&lt;h3 id=&#34;222-链表&#34;&gt;2.2.2 链表：
-&lt;/h3&gt;&lt;p&gt;&lt;strong&gt;存储方式：&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;内存中离散的结点，data（数据）和 next（下一个元素的地址）；&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;增删改查：&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;遍历：&lt;/strong&gt;&lt;/p&gt;
-&lt;h3 id=&#34;223-栈&#34;&gt;2.2.3 栈：
-&lt;/h3&gt;&lt;p&gt;&lt;strong&gt;存储方式：&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;满足先进后出的存储结构；&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;入栈和出栈操作：&lt;/strong&gt;&lt;/p&gt;
-&lt;h3 id=&#34;224-队列&#34;&gt;2.2.4 队列：
-&lt;/h3&gt;&lt;p&gt;满足先进先出的存储结构；&lt;/p&gt;
-&lt;p&gt;入队和出队操作；&lt;/p&gt;
-&lt;h3 id=&#34;225-散列表&#34;&gt;2.2.5 散列表
-&lt;/h3&gt;&lt;p&gt;理想的哈希表是不会产生冲突，即每一个元素的键（Key）都不相同的数组，但显然这种数据结构在计算机有限的空间下无法实现，注定产生哈希冲突；&lt;/p&gt;
-&lt;p&gt;哈希冲突的解决方案决定了哈希表的具体数据结构：&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;链地址&lt;/p&gt;
-&lt;p&gt;Java 中采用的方案，将冲突的值将通过链表存储，并根据一定的规则将链表转换为红黑树（红黑树相对链表能显著优化查找速度）&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;开放定址、再哈希法、公共溢出区&amp;hellip;&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;衡量一个哈希算法的好坏主要参考该算法能否将数据均匀的映射到Key的取值范围中&lt;/p&gt;
-&lt;h3 id=&#34;226-二叉树&#34;&gt;2.2.6 二叉树：
-&lt;/h3&gt;&lt;p&gt;data 域和 左右儿子的指针&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://example.com/index.assets/image-20240828204814043.png&#34;
-	
-	
-	
-	loading=&#34;lazy&#34;
-	
-		alt=&#34;二叉树的存储结构&#34;
-	
-	
-&gt;&lt;/p&gt;
-</description>
         </item>
         <item>
         <title>集合八股文</title>
