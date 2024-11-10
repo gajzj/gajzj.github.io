@@ -147,6 +147,43 @@
 &lt;p&gt;这里讲讲HashMap/WeakHashMap优化枚举类预加载&lt;/p&gt;
 &lt;p&gt;首先，我们使用枚举类往往无法避免valueOf()操作，但这个操作是O(n)的，对这个操作非常常见的优化就是通过static静态代码块在类加载的时候把它们加载到一个Map中，也就是缓存，可以优化查找速度到O(1)。&lt;/p&gt;
 &lt;p&gt;用WeakHashMap的原因，就是为了避免OOM（以及把面试官往JVM引导）&lt;/p&gt;
+&lt;h2 id=&#34;day2&#34;&gt;day2
+&lt;/h2&gt;&lt;blockquote&gt;
+&lt;p&gt;今天务必要去看一看JVM（看看，挑简单的记，复杂的记大纲），后面的时间可能很难沉下心来去理解，JVM重点关注内存模型和垃圾回收器&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://liaoxuefeng.com/books/java/design-patterns/index.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;设计模式 - Java教程 - 廖雪峰的官方网站 (liaoxuefeng.com)&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://refactoringguru.cn/design-patterns/factory-method&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;工厂方法设计模式 (refactoringguru.cn)&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&#34;q1gataway实现原理&#34;&gt;Q1：GataWay实现原理
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;GataWay三大作用&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;作用&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;路由（网关就是看门老大爷）、负载（分清楚网关负载和服务调用负载的区别）、拦截（注意拦截范围和之前的拦截器更大）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;实现原理&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Spring WebFlux、Netty（和传统Servlet有什么区别）&lt;/li&gt;
+&lt;li&gt;结合作用讲请求到网关到具体的服务的流程&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;q2你们项目中的远程调用用的什么技术&#34;&gt;Q2：你们项目中的远程调用用的什么技术
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;务必理解当前我们的远程调用就是http请求，那么对于一个http请求我们需要封装交给httpClient发送请求并接收响应&lt;/p&gt;
+&lt;p&gt;这种调用往往是同步的，我们还会需要消息队列来达成一些异步调用的操作&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;openFeign、底层是http客户端、dubbo&lt;/p&gt;
+&lt;h3 id=&#34;q3jvm的组成&#34;&gt;Q3：JVM的组成
+&lt;/h3&gt;&lt;h3 id=&#34;q4类加载机制&#34;&gt;Q4：类加载机制
+&lt;/h3&gt;&lt;h3 id=&#34;q5垃圾回收器有哪些你们项目用的是什么&#34;&gt;Q5：垃圾回收器有哪些，你们项目用的是什么
+&lt;/h3&gt;&lt;h3 id=&#34;q6jvm内存模型&#34;&gt;Q6：JVM内存模型
+&lt;/h3&gt;&lt;h2 id=&#34;day3&#34;&gt;day3
+&lt;/h2&gt;&lt;blockquote&gt;
+&lt;p&gt;看设计模式，有时间看看springMVC源码&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://liaoxuefeng.com/books/java/web/mvc-adv/index.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;MVC高级开发 - Java教程 - 廖雪峰的官方网站 (liaoxuefeng.com)&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
 </description>
         </item>
         

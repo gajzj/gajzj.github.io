@@ -13,8 +13,8 @@
         <pubDate>Fri, 08 Nov 2024 20:02:00 +0800</pubDate>
         
         <guid>https://example.com/p/rabbitmq/</guid>
-        <description>&lt;h2 id=&#34;mq&#34;&gt;MQ
-&lt;/h2&gt;&lt;h2 id=&#34;发送可靠性&#34;&gt;发送可靠性
+        <description>&lt;h1 id=&#34;mq&#34;&gt;MQ
+&lt;/h1&gt;&lt;h2 id=&#34;发送者的可靠性&#34;&gt;发送者的可靠性
 &lt;/h2&gt;&lt;h2 id=&#34;mq可靠性&#34;&gt;MQ可靠性
 &lt;/h2&gt;&lt;h3 id=&#34;数据持久化&#34;&gt;数据持久化
 &lt;/h3&gt;&lt;ul&gt;
@@ -35,7 +35,45 @@
 &lt;p&gt;在开启持久化机制以后，如果同时还开启了生产者确认，那么MQ会在消息持久化以后才发送ACK回执，进一步确保消息的可靠性。&lt;/p&gt;
 &lt;p&gt;不过出于性能考虑，为了减少IO次数，发送到MQ的消息并不是逐条持久化到数据库的，而是每隔一段时间批量持久化。一般间隔在100毫秒左右，这就会导致ACK有一定的延迟，因此建议生产者确认全部采用异步方式。&lt;/p&gt;
 &lt;h3 id=&#34;lazyqueue解决消息积压&#34;&gt;LazyQueue（解决消息积压）
-&lt;/h3&gt;</description>
+&lt;/h3&gt;&lt;p&gt;导致消息积压&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;消费者宕机或网络故障&lt;/li&gt;
+&lt;li&gt;发送量激增&lt;/li&gt;
+&lt;li&gt;消费者处理业务发送阻塞&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;为了解决这个问题，从RabbitMQ的3.6.0版本开始，就增加了Lazy Queues的模式，也就是惰性队列。惰性队列的特征如下：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;接收到消息后直接存入磁盘而非内存&lt;/li&gt;
+&lt;li&gt;消费者要消费消息时才会从磁盘中读取并加载到内存（也就是懒加载）&lt;/li&gt;
+&lt;li&gt;支持数百万条的消息存储&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;消费者的可靠性&#34;&gt;消费者的可靠性
+&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;消费者确认&lt;/strong&gt;：告知RabbitMQ自己消息处理状态。回执有三种可选值：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;ack：成功处理消息，RabbitMQ从队列中删除该消息&lt;/li&gt;
+&lt;li&gt;nack：消息处理失败，RabbitMQ需要再次投递消息&lt;/li&gt;
+&lt;li&gt;reject：消息处理失败并拒绝该消息，RabbitMQ从队列中删除该消&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;ACK的处理方式&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;&lt;code&gt;none&lt;/code&gt;&lt;/strong&gt;：不处理。即消息投递给消费者后立刻ack，消息会立刻从MQ删除。非常不安全，不建议使用&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;&lt;code&gt;manual&lt;/code&gt;&lt;/strong&gt;：手动模式。需要自己在业务代码中调用api，发送&lt;code&gt;ack&lt;/code&gt;或&lt;code&gt;reject&lt;/code&gt;，存在业务入侵，但更灵活&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;&lt;code&gt;auto&lt;/code&gt;&lt;/strong&gt;：自动模式。SpringAMQP利用AOP对我们的消息处理逻辑做了环绕增强，当业务正常执行时则自动返回&lt;code&gt;ack&lt;/code&gt;.  当业务出现异常时，根据异常判断返回不同结果：
+&lt;ul&gt;
+&lt;li&gt;如果是&lt;strong&gt;业务异常&lt;/strong&gt;，会自动返回&lt;code&gt;nack&lt;/code&gt;；&lt;/li&gt;
+&lt;li&gt;如果是&lt;strong&gt;消息处理或校验异常&lt;/strong&gt;，自动返回&lt;code&gt;reject&lt;/code&gt;;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;失败重试机制&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;当消费者出现异常后，消息会不断requeue（重入队）到队列，再重新发送给消费者。&lt;/p&gt;
+&lt;p&gt;极端情况会出现一直requeue&lt;/p&gt;
+&lt;p&gt;spring支持在消费者出现异常时利用本地重试&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;失败处理策略&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Spring允许我们自定义重试次数耗尽后的消息处理策略&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;业务幂等性&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;业务重复执行结果仍然不变&lt;/p&gt;
+</description>
         </item>
         
     </channel>

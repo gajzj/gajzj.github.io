@@ -7,7 +7,23 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>gajzj</copyright>
-        <lastBuildDate>Fri, 08 Nov 2024 20:02:00 +0800</lastBuildDate><atom:link href="https://example.com/tags/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Sat, 09 Nov 2024 16:02:00 +0800</lastBuildDate><atom:link href="https://example.com/tags/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>JVM相关面试题</title>
+        <link>https://example.com/tags/jvm%E7%9B%B8%E5%85%B3%E9%9D%A2%E8%AF%95%E9%A2%98/</link>
+        <pubDate>Sat, 09 Nov 2024 16:02:00 +0800</pubDate>
+        
+        <guid>https://example.com/tags/jvm%E7%9B%B8%E5%85%B3%E9%9D%A2%E8%AF%95%E9%A2%98/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>每日八股</title>
+        <link>https://example.com/tags/%E6%AF%8F%E6%97%A5%E5%85%AB%E8%82%A1/</link>
+        <pubDate>Sat, 09 Nov 2024 16:02:00 +0800</pubDate>
+        
+        <guid>https://example.com/tags/%E6%AF%8F%E6%97%A5%E5%85%AB%E8%82%A1/</guid>
+        <description></description>
+        </item>
+        <item>
         <title>RabbitMQ</title>
         <link>https://example.com/tags/rabbitmq/</link>
         <pubDate>Fri, 08 Nov 2024 20:02:00 +0800</pubDate>
