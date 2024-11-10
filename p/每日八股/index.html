@@ -237,9 +237,9 @@
         <li><a href="#q1gataway实现原理">Q1：GataWay实现原理</a></li>
         <li><a href="#q2你们项目中的远程调用用的什么技术">Q2：你们项目中的远程调用用的什么技术</a></li>
         <li><a href="#q3jvm的组成">Q3：JVM的组成</a></li>
-        <li><a href="#q4类加载机制">Q4：类加载机制</a></li>
+        <li><a href="#q4类加载机制ai来的详情大家自己ai">Q4：类加载机制(AI来的，详情大家自己ai)</a></li>
         <li><a href="#q5垃圾回收器有哪些你们项目用的是什么">Q5：垃圾回收器有哪些，你们项目用的是什么</a></li>
-        <li><a href="#q6jvm内存模型">Q6：JVM内存模型</a></li>
+        <li><a href="#q6jvm内存模型jmm">Q6：JVM内存模型（JMM）</a></li>
       </ol>
     </li>
     <li><a href="#day3">day3</a></li>
@@ -470,10 +470,135 @@
 </blockquote>
 <p>openFeign、底层是http客户端、dubbo</p>
 <h3 id="q3jvm的组成">Q3：JVM的组成
-</h3><h3 id="q4类加载机制">Q4：类加载机制
-</h3><h3 id="q5垃圾回收器有哪些你们项目用的是什么">Q5：垃圾回收器有哪些，你们项目用的是什么
-</h3><h3 id="q6jvm内存模型">Q6：JVM内存模型
-</h3><h2 id="day3">day3
+</h3><blockquote>
+<p>主要组成部分（不会就硬背）</p>
+</blockquote>
+<p>组成部分</p>
+<ul>
+<li>
+<p><strong>类加载器</strong></p>
+</li>
+<li>
+<p>运行时数据区</p>
+<ul>
+<li>
+<p><strong>方法区</strong></p>
+<p>用于<strong>存储已被加载的类的信息</strong></p>
+</li>
+<li>
+<p><strong>堆</strong></p>
+<p>JVM 管理的最大的一块内存区域，被所有线程共享。<strong>用于存储对象实例和数组</strong>，几乎所有的对象实例和数组都是在堆中<strong>分配内存</strong>的。（和垃圾回收器有关）</p>
+</li>
+<li>
+<p><strong>程序计数器</strong></p>
+<p>当前线程所执行的字节码的<strong>行号指示器</strong>（学过计组的话会有类似概念）</p>
+</li>
+<li>
+<p><strong>虚拟机栈</strong></p>
+</li>
+</ul>
+</li>
+<li>
+<p>执行引擎</p>
+<p>两种执行方式</p>
+<ul>
+<li><strong>解释执行</strong>：一条一条地读取字节码指令并执行</li>
+<li><strong>即时编译</strong>：将热点代码编译成机器码，提高执行效率</li>
+</ul>
+<p>示例：在一个简单的 Java 循环语句中，刚开始执行时可能是通过解释执行，当循环执行次数足够多，被判定为热点代码后，执行引擎就会对这个循环部分进行即时编译，之后再执行这个循环时就会以更快的机器码形式执行。</p>
+</li>
+<li>
+<p>本地库接口</p>
+<p>使得Java能调用Native Method Library（java源码中如果见到native往往指的就是c相关的东西）中的函数</p>
+</li>
+</ul>
+<blockquote>
+<p>该文章在字节码的层面分析了异常处理，可以看看，作为了解JVM的一个开头</p>
+<p><a class="link" href="https://developer.aliyun.com/article/1182650"  target="_blank" rel="noopener"
+    >Java异常处理和最佳实践（含案例分析）-阿里云开发者社区 (aliyun.com)</a></p>
+</blockquote>
+<h3 id="q4类加载机制ai来的详情大家自己ai">Q4：类加载机制(AI来的，详情大家自己ai)
+</h3><blockquote>
+<p>五个过程、三种类加载器（简称五过三类），不行就背小标题</p>
+</blockquote>
+<p>五个过程</p>
+<ul>
+<li>
+<p>加载（loading）</p>
+<p><strong>查找并读取类的字节码文件</strong></p>
+<p>三个加载器</p>
+<p>双亲委派模型（<strong>避免用户自定义的类覆盖Java核心类库的类</strong>）</p>
+<ul>
+<li>类加载器收到类加载请求时先找它的父类加载器，再找子加载器</li>
+</ul>
+</li>
+<li>
+<p>验证（verification）</p>
+<p><strong>确保符合 Java 虚拟机规范</strong></p>
+</li>
+<li>
+<p>准备（preparation）</p>
+<p>为类的<strong>静态变量分配内存</strong>并设置初始值</p>
+</li>
+<li>
+<p>解析（resolution）</p>
+<p>将类、方法、字段等的符号引用<strong>转换为直接引用</strong>（便于快速访问）</p>
+</li>
+<li>
+<p>初始化（initialization）</p>
+<p>主要是执行类的<strong>初始化代码</strong></p>
+</li>
+</ul>
+<p>三种类加载器</p>
+<ul>
+<li>
+<p>启动类加载器（<strong>JVM的启动</strong>）</p>
+<p>JVM内置，负责加载Java核心类库</p>
+</li>
+<li>
+<p>拓展类加载器</p>
+<p>负责加载拓展类库</p>
+</li>
+<li>
+<p>应用程序类加载器</p>
+<p>负责加载classpath下的类</p>
+</li>
+</ul>
+<h3 id="q5垃圾回收器有哪些你们项目用的是什么">Q5：垃圾回收器有哪些，你们项目用的是什么
+</h3><blockquote>
+<p>G1、CMS，我们用的G1</p>
+<p>1.9开始默认是G1</p>
+<p>先了解GC相关的概念如：FullGC、YoungGC、分代收集、STW</p>
+</blockquote>
+<p>要了解相关配置参数如：</p>
+<ul>
+<li><strong>-XX:G1HeapRegionSize=n</strong>指定分区大小</li>
+<li><strong>-XX:G1NewSizePercent</strong>设置年轻代在堆中占比</li>
+<li><strong>-XX:MaxGCPauseMillis</strong>指定回收时最大暂停时间（G1和CMS不同的点很大程度在于G1是规定时间内尽力完成回收：软实时性）这是<strong>最重要的参数之一</strong>（只记一个那就记这个）</li>
+<li>。。。</li>
+</ul>
+<p>分代收集算法（见3.4.4 分代收集算法，先了解，明天背）</p>
+<h3 id="q6jvm内存模型jmm">Q6：JVM内存模型（JMM）
+</h3><p><a class="link" href="https://developer.aliyun.com/article/1586039?spm=a2c6h.14164896.0.0.2a9847c5YKHm42&amp;scm=20140722.S_community@@%e6%96%87%e7%ab%a0@@1586039._.ID_1586039-RL_JMM-LOC_search~UND~community~UND~item-OR_ser-V_4-P0_5"  target="_blank" rel="noopener"
+    >JUC（8）JMM-阿里云开发者社区 (aliyun.com)</a></p>
+<blockquote>
+<p>俩内存、三关键字</p>
+</blockquote>
+<ul>
+<li>
+<p>主内存</p>
+<p>线程共享</p>
+</li>
+<li>
+<p>工作内存</p>
+<p>线程独有，存储对共享变量的<strong>副本</strong>（注意是副本）</p>
+</li>
+<li>
+<p>指令重排序导致数据不一致</p>
+<p>使用volatile修饰变量，<strong>确保变量的修改立即对其他线程可见</strong></p>
+</li>
+</ul>
+<h2 id="day3">day3
 </h2><blockquote>
 <p>看设计模式，有时间看看springMVC源码</p>
 <p><a class="link" href="https://liaoxuefeng.com/books/java/web/mvc-adv/index.html"  target="_blank" rel="noopener"
