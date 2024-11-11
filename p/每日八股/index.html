@@ -247,8 +247,13 @@
         <li><a href="#q1docker部署和常用指令">Q1：Docker部署和常用指令</a></li>
         <li><a href="#q2linux指令">Q2：linux指令</a></li>
         <li><a href="#q3都有哪些设计模式用过哪些具体场景">Q3：都有哪些设计模式，用过哪些，具体场景？</a></li>
+        <li><a href="#q4redis数据类型">Q4：Redis数据类型</a></li>
+        <li><a href="#q5redis三剑客以及如何解决">Q5：Redis三剑客以及如何解决</a></li>
+        <li><a href="#q6redis数据持久化">Q6：Redis数据持久化</a></li>
+        <li><a href="#q7">Q7：</a></li>
       </ol>
     </li>
+    <li><a href="#day4">day4</a></li>
   </ol>
 </nav>
         </div>
@@ -609,6 +614,7 @@
 <p>看设计模式，有时间看看springMVC源码</p>
 <p><a class="link" href="https://liaoxuefeng.com/books/java/web/mvc-adv/index.html"  target="_blank" rel="noopener"
     >MVC高级开发 - Java教程 - 廖雪峰的官方网站 (liaoxuefeng.com)</a></p>
+<p>redis面试题选自航哥面试专题</p>
 </blockquote>
 <h3 id="q1docker部署和常用指令">Q1：Docker部署和常用指令
 </h3><blockquote>
@@ -674,6 +680,61 @@
 <li>聚合、聚合根：</li>
 <li>充血模型、贫血模型</li>
 </ul>
+<blockquote>
+<p>总的来说DDD不是我们现阶段需要重点关注的，但是能够带着它的思想去开发、分析需求绝对是能体现出个人开发经验的</p>
+</blockquote>
+<h3 id="q4redis数据类型">Q4：Redis数据类型
+</h3><blockquote>
+<p>结合自己业务说，如：云岚面试第八章抢券业务的Redis数据结构用的什么？具体说说</p>
+</blockquote>
+<h3 id="q5redis三剑客以及如何解决">Q5：Redis三剑客以及如何解决
+</h3><blockquote>
+<p>击穿、穿透、雪崩</p>
+<p><a class="link" href="https://cloud.tencent.com/developer/article/2407203"  target="_blank" rel="noopener"
+    >不用背八股文！一文搞懂redis缓存击穿、穿透、雪崩！-腾讯云开发者社区-腾讯云 (tencent.com)</a></p>
+</blockquote>
+<ul>
+<li>击穿：（热点数据过期导致大量请求直接打到数据库）
+<ul>
+<li><strong>热点数据</strong>即将过期时，提前异步更新缓存</li>
+<li>设置热点数据永不过期（谨慎使用）</li>
+</ul>
+</li>
+<li>穿透：（查询一个数据库不存在的值导致每次都要查询数据库，恶意请求）
+<ul>
+<li>缓存空值</li>
+<li>布隆过滤器，底层是bitmap（查询数据时，先通过布隆过滤器判断键是否可能存在，如果不存在就直接返回空值）</li>
+</ul>
+</li>
+<li>雪崩：短时间大量的key同时失效
+<ul>
+<li>key：固定+随机时间</li>
+<li>redis架构升级</li>
+</ul>
+</li>
+</ul>
+<h3 id="q6redis数据持久化">Q6：Redis数据持久化
+</h3><blockquote>
+<p>RDB和AOF</p>
+</blockquote>
+<p>RDB</p>
+<p>对redis生成快照（二进制文件），非常快，但有数据丢失风险</p>
+<p>AOF</p>
+<ul>
+<li>将每个写命令追加到AOF文件末尾，恢复时重新执行这些命令</li>
+<li>同步策略
+<ul>
+<li>always</li>
+<li>everysec（默认这个）</li>
+<li>no</li>
+</ul>
+</li>
+</ul>
+<h3 id="q7">Q7：
+</h3><h2 id="day4">day4
+</h2><blockquote>
+<p>看MQ、云岚秒杀、优惠卷</p>
+</blockquote>
 
 </section>
 
