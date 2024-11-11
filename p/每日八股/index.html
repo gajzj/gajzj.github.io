@@ -242,7 +242,13 @@
         <li><a href="#q6jvm内存模型jmm">Q6：JVM内存模型（JMM）</a></li>
       </ol>
     </li>
-    <li><a href="#day3">day3</a></li>
+    <li><a href="#day3">day3</a>
+      <ol>
+        <li><a href="#q1docker部署和常用指令">Q1：Docker部署和常用指令</a></li>
+        <li><a href="#q2linux指令">Q2：linux指令</a></li>
+        <li><a href="#q3都有哪些设计模式用过哪些具体场景">Q3：都有哪些设计模式，用过哪些，具体场景？</a></li>
+      </ol>
+    </li>
   </ol>
 </nav>
         </div>
@@ -604,6 +610,70 @@
 <p><a class="link" href="https://liaoxuefeng.com/books/java/web/mvc-adv/index.html"  target="_blank" rel="noopener"
     >MVC高级开发 - Java教程 - 廖雪峰的官方网站 (liaoxuefeng.com)</a></p>
 </blockquote>
+<h3 id="q1docker部署和常用指令">Q1：Docker部署和常用指令
+</h3><blockquote>
+<p>部署：dockerfile和dockercompose</p>
+<p>镜像、容器、数据卷、dockerfile、dockercompose</p>
+</blockquote>
+<p>镜像pull、push，docker images，还有docker rmi；还有容器相关的docker run，docker start、docker stop，进入容器的<strong>docker exec -it</strong> 容器名称 bash，查看日志的<strong>docker logs。</strong></p>
+<h3 id="q2linux指令">Q2：linux指令
+</h3><blockquote>
+<p>chmod、cat info.log | grep &lsquo;关键字&rsquo;</p>
+</blockquote>
+<h3 id="q3都有哪些设计模式用过哪些具体场景">Q3：都有哪些设计模式，用过哪些，具体场景？
+</h3><blockquote>
+<p>经典的面向对象设计模式：三大类型、23种</p>
+<p>还有领域驱动模型（DDD）：先当成思想和沟通语言去理解（通用语言和限界上下文）</p>
+<p><a class="link" href="https://developer.aliyun.com/article/1583387?spm=a2c6h.14164896.0.0.c8e547c5LlXN3S&amp;scm=20140722.S_community@@%e6%96%87%e7%ab%a0@@1583387._.ID_1583387-RL_DDD-LOC_search~UND~community~UND~item-OR_ser-V_4-P0_19"  target="_blank" rel="noopener"
+    >DDD基础教程：一文带你读懂DDD分层架构-阿里云开发者社区 (aliyun.com)</a></p>
+</blockquote>
+<p>创建型模式</p>
+<ul>
+<li>工厂模式</li>
+<li>原型</li>
+<li>单例</li>
+</ul>
+<p>结构型模式</p>
+<ul>
+<li>适配器</li>
+<li>代理</li>
+</ul>
+<p>行为型模式</p>
+<ul>
+<li>
+<p>责任链（filter）</p>
+<p>责任链模式是一种把多个处理器组合在一起，依次处理请求的模式</p>
+</li>
+<li>
+<p>命令</p>
+<p>把请求封装成一个命令，然后执行该命令。</p>
+</li>
+<li>
+<p>解释器</p>
+<p>给定一个语言，定义它的<strong>文法</strong>的一种表示，并定义一个解释器，这个解释器使用该表示来<strong>解释语言中的句子</strong>。</p>
+</li>
+<li>
+<p>中介</p>
+<p>目的是把多方会谈变成双方会谈，从而实现多方的松耦合。</p>
+</li>
+<li>
+<p>观察者模式（发布订阅模式）</p>
+</li>
+<li>
+<p>状态</p>
+</li>
+<li>
+<p>模板方法（template）</p>
+</li>
+</ul>
+<p>DDD</p>
+<ul>
+<li>了解的不多，但可以在开发和沟通的时候带着领域驱动思想去帮助我思考问题，比如</li>
+<li>通用语言：规定整个项目组（包括开发和产品）当前项目的名词（比如zzyl的PRD的前几页有对护理等级的定义和解释），帮助项目组<strong>提高沟通效率</strong>（但学习成本相应地提高）</li>
+<li>限界上下文：限界上下文是一个显式的语义和语境上的边界，领域模型便存在于边界之内。</li>
+<li>聚合、聚合根：</li>
+<li>充血模型、贫血模型</li>
+</ul>
 
 </section>
 

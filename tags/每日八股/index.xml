@@ -309,6 +309,70 @@
 &lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://liaoxuefeng.com/books/java/web/mvc-adv/index.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;MVC高级开发 - Java教程 - 廖雪峰的官方网站 (liaoxuefeng.com)&lt;/a&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
+&lt;h3 id=&#34;q1docker部署和常用指令&#34;&gt;Q1：Docker部署和常用指令
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;部署：dockerfile和dockercompose&lt;/p&gt;
+&lt;p&gt;镜像、容器、数据卷、dockerfile、dockercompose&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;镜像pull、push，docker images，还有docker rmi；还有容器相关的docker run，docker start、docker stop，进入容器的&lt;strong&gt;docker exec -it&lt;/strong&gt; 容器名称 bash，查看日志的&lt;strong&gt;docker logs。&lt;/strong&gt;&lt;/p&gt;
+&lt;h3 id=&#34;q2linux指令&#34;&gt;Q2：linux指令
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;chmod、cat info.log | grep &amp;lsquo;关键字&amp;rsquo;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&#34;q3都有哪些设计模式用过哪些具体场景&#34;&gt;Q3：都有哪些设计模式，用过哪些，具体场景？
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;经典的面向对象设计模式：三大类型、23种&lt;/p&gt;
+&lt;p&gt;还有领域驱动模型（DDD）：先当成思想和沟通语言去理解（通用语言和限界上下文）&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://developer.aliyun.com/article/1583387?spm=a2c6h.14164896.0.0.c8e547c5LlXN3S&amp;amp;scm=20140722.S_community@@%e6%96%87%e7%ab%a0@@1583387._.ID_1583387-RL_DDD-LOC_search~UND~community~UND~item-OR_ser-V_4-P0_19&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;DDD基础教程：一文带你读懂DDD分层架构-阿里云开发者社区 (aliyun.com)&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;创建型模式&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;工厂模式&lt;/li&gt;
+&lt;li&gt;原型&lt;/li&gt;
+&lt;li&gt;单例&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;结构型模式&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;适配器&lt;/li&gt;
+&lt;li&gt;代理&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;行为型模式&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;责任链（filter）&lt;/p&gt;
+&lt;p&gt;责任链模式是一种把多个处理器组合在一起，依次处理请求的模式&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;命令&lt;/p&gt;
+&lt;p&gt;把请求封装成一个命令，然后执行该命令。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;解释器&lt;/p&gt;
+&lt;p&gt;给定一个语言，定义它的&lt;strong&gt;文法&lt;/strong&gt;的一种表示，并定义一个解释器，这个解释器使用该表示来&lt;strong&gt;解释语言中的句子&lt;/strong&gt;。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;中介&lt;/p&gt;
+&lt;p&gt;目的是把多方会谈变成双方会谈，从而实现多方的松耦合。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;观察者模式（发布订阅模式）&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;状态&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;模板方法（template）&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;DDD&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;了解的不多，但可以在开发和沟通的时候带着领域驱动思想去帮助我思考问题，比如&lt;/li&gt;
+&lt;li&gt;通用语言：规定整个项目组（包括开发和产品）当前项目的名词（比如zzyl的PRD的前几页有对护理等级的定义和解释），帮助项目组&lt;strong&gt;提高沟通效率&lt;/strong&gt;（但学习成本相应地提高）&lt;/li&gt;
+&lt;li&gt;限界上下文：限界上下文是一个显式的语义和语境上的边界，领域模型便存在于边界之内。&lt;/li&gt;
+&lt;li&gt;聚合、聚合根：&lt;/li&gt;
+&lt;li&gt;充血模型、贫血模型&lt;/li&gt;
+&lt;/ul&gt;
 </description>
         </item>
         

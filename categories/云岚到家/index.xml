@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>云岚到家 on GAJ-Blog</title>
+        <link>https://example.com/categories/%E4%BA%91%E5%B2%9A%E5%88%B0%E5%AE%B6/</link>
+        <description>Recent content in 云岚到家 on GAJ-Blog</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>gajzj</copyright>
+        <lastBuildDate>Sun, 10 Nov 2024 16:02:00 +0800</lastBuildDate><atom:link href="https://example.com/categories/%E4%BA%91%E5%B2%9A%E5%88%B0%E5%AE%B6/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>云岚到家</title>
+        <link>https://example.com/p/%E4%BA%91%E5%B2%9A%E5%88%B0%E5%AE%B6/</link>
+        <pubDate>Sun, 10 Nov 2024 16:02:00 +0800</pubDate>
+        
+        <guid>https://example.com/p/%E4%BA%91%E5%B2%9A%E5%88%B0%E5%AE%B6/</guid>
+        <description>&lt;h1 id=&#34;云岚到家&#34;&gt;云岚到家
+&lt;/h1&gt;&lt;h2 id=&#34;项目介绍&#34;&gt;项目介绍
+&lt;/h2&gt;&lt;h3 id=&#34;项目背景&#34;&gt;项目背景
+&lt;/h3&gt;&lt;p&gt;互联网+家政&lt;/p&gt;
+&lt;h3 id=&#34;运营模式&#34;&gt;运营模式
+&lt;/h3&gt;&lt;p&gt;B2B2C与C2B2C的区别是：B2B2C中服务提供者是家政服务中介公司，在C2B2C中是服务提供者是拥有服务技能的服务人员（散户）。&lt;/p&gt;
+&lt;h3 id=&#34;业务流程&#34;&gt;业务流程
+&lt;/h3&gt;&lt;p&gt;&lt;img src=&#34;https://cdn.nlark.com/yuque/0/2024/png/1169676/1708411471272-69144ed7-f8fa-48c9-9598-6c6caa85b7b6.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_28%2Ctext_5rK554K45bCP5rOi%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10%2Fformat%2Cwebp&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image.png&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;核心流程就是：平台发布服务项目&amp;gt;用户端选择项目并下单、支付&amp;gt;散户、机构抢单&amp;gt;实施服务&amp;gt;完成服务、评价&lt;/p&gt;
+&lt;h2 id=&#34;开发区域服务模块&#34;&gt;开发区域服务模块
+&lt;/h2&gt;&lt;h3 id=&#34;查询区域服务&#34;&gt;查询区域服务
+&lt;/h3&gt;&lt;h4 id=&#34;接口设计&#34;&gt;接口设计
+&lt;/h4&gt;&lt;p&gt;分页查询接口&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;基础参数：pageNum、pageSize、orderBy、isAsc&lt;/li&gt;
+&lt;li&gt;业务参数：动态查询的条件&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;添加接口&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;分析目标数据表中每个字段的数据来源，决定传入参数&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>
