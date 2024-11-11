@@ -250,7 +250,8 @@
         <li><a href="#q4redis数据类型">Q4：Redis数据类型</a></li>
         <li><a href="#q5redis三剑客以及如何解决">Q5：Redis三剑客以及如何解决</a></li>
         <li><a href="#q6redis数据持久化">Q6：Redis数据持久化</a></li>
-        <li><a href="#q7">Q7：</a></li>
+        <li><a href="#q7redis集群方案">Q7：redis集群方案</a></li>
+        <li><a href="#q8springmvc执行流程和常用注解">Q8：springmvc执行流程和常用注解</a></li>
       </ol>
     </li>
     <li><a href="#day4">day4</a></li>
@@ -709,6 +710,7 @@
 <li>雪崩：短时间大量的key同时失效
 <ul>
 <li>key：固定+随机时间</li>
+<li>缓存预热</li>
 <li>redis架构升级</li>
 </ul>
 </li>
@@ -730,8 +732,18 @@
 </ul>
 </li>
 </ul>
-<h3 id="q7">Q7：
-</h3><h2 id="day4">day4
+<h3 id="q7redis集群方案">Q7：redis集群方案
+</h3><blockquote>
+<p>主从复制、哨兵模式、分片</p>
+</blockquote>
+<p>主从：降低读写压力</p>
+<p>哨兵模式：故障恢复（这里有个哨兵选举流程需要展开）</p>
+<p>分片：提高存储上限（hash插槽分配原理）</p>
+<h3 id="q8springmvc执行流程和常用注解">Q8：springmvc执行流程和常用注解
+</h3><blockquote>
+<p>结合d1q4的拓展点</p>
+</blockquote>
+<h2 id="day4">day4
 </h2><blockquote>
 <p>看MQ、云岚秒杀、优惠卷</p>
 </blockquote>

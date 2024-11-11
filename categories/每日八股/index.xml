@@ -403,6 +403,7 @@
 &lt;li&gt;雪崩：短时间大量的key同时失效
 &lt;ul&gt;
 &lt;li&gt;key：固定+随机时间&lt;/li&gt;
+&lt;li&gt;缓存预热&lt;/li&gt;
 &lt;li&gt;redis架构升级&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
@@ -424,8 +425,18 @@
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id=&#34;q7&#34;&gt;Q7：
-&lt;/h3&gt;&lt;h2 id=&#34;day4&#34;&gt;day4
+&lt;h3 id=&#34;q7redis集群方案&#34;&gt;Q7：redis集群方案
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;主从复制、哨兵模式、分片&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;主从：降低读写压力&lt;/p&gt;
+&lt;p&gt;哨兵模式：故障恢复（这里有个哨兵选举流程需要展开）&lt;/p&gt;
+&lt;p&gt;分片：提高存储上限（hash插槽分配原理）&lt;/p&gt;
+&lt;h3 id=&#34;q8springmvc执行流程和常用注解&#34;&gt;Q8：springmvc执行流程和常用注解
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;结合d1q4的拓展点&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&#34;day4&#34;&gt;day4
 &lt;/h2&gt;&lt;blockquote&gt;
 &lt;p&gt;看MQ、云岚秒杀、优惠卷&lt;/p&gt;
 &lt;/blockquote&gt;
