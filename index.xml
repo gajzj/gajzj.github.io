@@ -34,16 +34,187 @@
 &lt;h2 id=&#34;开发区域服务模块&#34;&gt;开发区域服务模块
 &lt;/h2&gt;&lt;h3 id=&#34;查询区域服务&#34;&gt;查询区域服务
 &lt;/h3&gt;&lt;h4 id=&#34;接口设计&#34;&gt;接口设计
-&lt;/h4&gt;&lt;p&gt;分页查询接口&lt;/p&gt;
+&lt;/h4&gt;&lt;p&gt;分页查询接口设计&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;基础参数：pageNum、pageSize、orderBy、isAsc&lt;/li&gt;
 &lt;li&gt;业务参数：动态查询的条件&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;添加接口&lt;/p&gt;
+&lt;p&gt;添加接口设计&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;分析目标数据表中每个字段的数据来源，决定传入参数&lt;/li&gt;
 &lt;/ul&gt;
-</description>
+&lt;p&gt;修改接口设计&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;通过页面原型分析有哪些数据可以修改，然后找到表中的数据源以及和它们有关联的数据&lt;/li&gt;
+&lt;li&gt;修改接口需要针对具体的某一条数据，所以肯定有id、除此之外还有各种需要更改的字段&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;客户管理&#34;&gt;客户管理
+&lt;/h2&gt;&lt;h3 id=&#34;登录验证码如何区分业务类型&#34;&gt;登录验证码如何区分业务类型
+&lt;/h3&gt;&lt;p&gt;用的String做key，存到redis，过期时间是5分钟&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/%E4%BA%91%E5%B2%9A%E5%88%B0%E5%AE%B6/index.assets/image-20241112104745561.png&#34;
+	width=&#34;434&#34;
+	height=&#34;139&#34;
+	srcset=&#34;https://example.com/p/%E4%BA%91%E5%B2%9A%E5%88%B0%E5%AE%B6/index.assets/image-20241112104745561_hu6372995650428578565.png 480w, https://example.com/p/%E4%BA%91%E5%B2%9A%E5%88%B0%E5%AE%B6/index.assets/image-20241112104745561_hu4896460843427156462.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20241112104745561&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;312&#34;
+		data-flex-basis=&#34;749px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/%E4%BA%91%E5%B2%9A%E5%88%B0%E5%AE%B6/index.assets/image-20241112104813999.png&#34;
+	width=&#34;411&#34;
+	height=&#34;120&#34;
+	srcset=&#34;https://example.com/p/%E4%BA%91%E5%B2%9A%E5%88%B0%E5%AE%B6/index.assets/image-20241112104813999_hu6369788312700890884.png 480w, https://example.com/p/%E4%BA%91%E5%B2%9A%E5%88%B0%E5%AE%B6/index.assets/image-20241112104813999_hu8223155841627023516.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20241112104813999&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;342&#34;
+		data-flex-basis=&#34;822px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;h3 id=&#34;短信发送&#34;&gt;短信发送
+&lt;/h3&gt;&lt;p&gt;开通短信服务&amp;gt;导入阿里的sdk&amp;gt;提供电话号码、短信签名、模板编号（有流控）&lt;/p&gt;
+&lt;h3 id=&#34;机构端登录注册实现&#34;&gt;机构端登录、注册实现
+&lt;/h3&gt;&lt;p&gt;机构端限定账号密码登录&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;前端输入账号密码，发送请求&lt;/li&gt;
+&lt;li&gt;后端校验数据完整性、正确性、是否禁用
+&lt;ul&gt;
+&lt;li&gt;密码匹配&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;生成token返回&lt;/li&gt;
+&lt;li&gt;后续请求携带token（header中）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;注册时需要提供手机号和验证码&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;校验验证码
+&lt;ul&gt;
+&lt;li&gt;手机号、业务类型&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;校验当前手机号是否已经被注册&lt;/li&gt;
+&lt;li&gt;密码加密方式BCrypt（B、C、rypt）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;机构账号密码找回&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;入参
+&lt;ul&gt;
+&lt;li&gt;手机号、业务验证码、新密码&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;校验手机号账号是否存在&lt;/li&gt;
+&lt;li&gt;验证码是否正确&lt;/li&gt;
+&lt;li&gt;密码加密（BCrypt）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;用户端定位交互流程&#34;&gt;用户端定位交互流程
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;小程序端调用微信方法获取经纬度返回给后端&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;后端调用高德地图接口返回详细信息&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;region表的city_code是提前从高德地图上下载的全国区域信息，转为json交由前端保存&lt;/p&gt;
+&lt;p&gt;在添加区域时直接从json中展示所有的区域列表&lt;/p&gt;
+&lt;h3 id=&#34;地址簿&#34;&gt;地址簿
+&lt;/h3&gt;&lt;p&gt;新增地址簿&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;前端调用手机定位获取当前位置&lt;/li&gt;
+&lt;li&gt;然后提交经纬度获取地址的详细信息&lt;/li&gt;
+&lt;li&gt;将地理位置的信息、联系人的信息一起传给新增地址接口&lt;/li&gt;
+&lt;li&gt;后端执行新增地址逻辑&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;查询、编辑、删除、设置默认地址&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;略&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;我的账户设置&#34;&gt;我的账户设置
+&lt;/h3&gt;&lt;p&gt;跳过&lt;/p&gt;
+&lt;h2 id=&#34;小程序门户-缓存&#34;&gt;小程序门户-缓存
+&lt;/h2&gt;&lt;p&gt;门户的要求&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;动态更新&lt;/li&gt;
+&lt;li&gt;加载速度快、访问频率高&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Web门户&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;将门户页面生成静态页面发布到CDN服务器&lt;/li&gt;
+&lt;li&gt;将静态资源也都放到&lt;strong&gt;CDN&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;html的动态数据通过异步请求后端&lt;strong&gt;缓存服务器&lt;/strong&gt;（reids）&lt;/li&gt;
+&lt;li&gt;负载均衡，多个&lt;strong&gt;nginx&lt;/strong&gt;共同提供服务（高可用、高性能）&lt;/li&gt;
+&lt;li&gt;前端也做缓存
+&lt;ul&gt;
+&lt;li&gt;LocalStorage&lt;/li&gt;
+&lt;li&gt;SessionStorage&lt;/li&gt;
+&lt;li&gt;Cookie&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;移动应用门户&lt;/strong&gt;&lt;/p&gt;
+&lt;h3 id=&#34;缓存技术方案&#34;&gt;缓存技术方案
+&lt;/h3&gt;&lt;p&gt;有哪些信息需要缓存&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;首页的各种列表和列表中的不同项目&lt;/li&gt;
+&lt;li&gt;热门的列表&lt;/li&gt;
+&lt;li&gt;类型列表&lt;/li&gt;
+&lt;li&gt;服务详细信息&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;spring-cache&#34;&gt;Spring Cache
+&lt;/h3&gt;&lt;p&gt;集成Lettuce客户端与Redis服务器通信，基于AOP&lt;/p&gt;
+&lt;p&gt;cacheManager&lt;/p&gt;
+&lt;p&gt;@CacheEvict、@CachePut、@EnableCaching&lt;/p&gt;
+&lt;h3 id=&#34;缓存穿透击穿雪崩&#34;&gt;缓存穿透、击穿、雪崩
+&lt;/h3&gt;&lt;p&gt;穿透&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;校验、缓存空值、布隆过滤器&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;击穿：热点数据失效后瞬间请求打到数据库&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;使用锁
+&lt;ul&gt;
+&lt;li&gt;分布式锁控制只有一个线程与查询数据库&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;热点数据不过期&lt;/li&gt;
+&lt;li&gt;缓存预热
+&lt;ul&gt;
+&lt;li&gt;提前预热、定时预热&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;热点数据查询降级处理&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;雪崩&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;过期时间+随机值&lt;/li&gt;
+&lt;li&gt;定时预热&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;缓存不一致&#34;&gt;缓存不一致
+&lt;/h3&gt;&lt;p&gt;写数据库和写缓存不一致即&lt;strong&gt;双写一致&lt;/strong&gt;（网络卡顿导致并发写的场景下写入旧值）&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;使用分布式锁&lt;/li&gt;
+&lt;li&gt;延迟双删
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;先删除缓存&lt;/strong&gt;再写数据库然后&lt;strong&gt;再次删除缓存&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;异步同步
+&lt;ul&gt;
+&lt;li&gt;Canal+MQ异步任务方式&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;服务搜索&#34;&gt;服务搜索
+&lt;/h2&gt;&lt;h3 id=&#34;服务搜索技术方案&#34;&gt;服务搜索技术方案
+&lt;/h3&gt;</description>
         </item>
         <item>
         <title>JVM相关面试题</title>
@@ -2491,6 +2662,122 @@
 &lt;/h2&gt;&lt;blockquote&gt;
 &lt;p&gt;看MQ、云岚秒杀、优惠卷&lt;/p&gt;
 &lt;/blockquote&gt;
+&lt;h3 id=&#34;q1什么场景下你们用mq&#34;&gt;Q1：什么场景下你们用MQ
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;其实就是是否理解异步和同步，以及有它的优点&lt;/p&gt;
+&lt;p&gt;扯到异步调用的时候可以去带过一下其他的消息中间件&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;同步&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/%E6%AF%8F%E6%97%A5%E5%85%AB%E8%82%A1/index.assets/image-20241113145604595.png&#34;
+	width=&#34;900&#34;
+	height=&#34;493&#34;
+	srcset=&#34;https://example.com/p/%E6%AF%8F%E6%97%A5%E5%85%AB%E8%82%A1/index.assets/image-20241113145604595_hu12931243403802827944.png 480w, https://example.com/p/%E6%AF%8F%E6%97%A5%E5%85%AB%E8%82%A1/index.assets/image-20241113145604595_hu16899941488563117361.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20241113145604595&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;182&#34;
+		data-flex-basis=&#34;438px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;异步&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/%E6%AF%8F%E6%97%A5%E5%85%AB%E8%82%A1/index.assets/image-20241113145632572.png&#34;
+	width=&#34;1012&#34;
+	height=&#34;359&#34;
+	srcset=&#34;https://example.com/p/%E6%AF%8F%E6%97%A5%E5%85%AB%E8%82%A1/index.assets/image-20241113145632572_hu2933011480670642604.png 480w, https://example.com/p/%E6%AF%8F%E6%97%A5%E5%85%AB%E8%82%A1/index.assets/image-20241113145632572_hu15731027870915228808.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20241113145632572&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;281&#34;
+		data-flex-basis=&#34;676px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;异步通信优点&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;耦合度低&lt;/li&gt;
+&lt;li&gt;吞吐量提升&lt;/li&gt;
+&lt;li&gt;故障隔离&lt;/li&gt;
+&lt;li&gt;流量削峰&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;缺点&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;依赖于Broker（消息服务器）的可靠性、安全性、吞吐能力&lt;/li&gt;
+&lt;li&gt;架构复杂了，业务没有明显的流程线，不好追踪管理&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;q2你们项目为什么用mq&#34;&gt;Q2：你们项目为什么用MQ
+&lt;/h3&gt;&lt;p&gt;&lt;img src=&#34;https://example.com/p/%E6%AF%8F%E6%97%A5%E5%85%AB%E8%82%A1/index.assets/image-20241113145957459.png&#34;
+	width=&#34;970&#34;
+	height=&#34;382&#34;
+	srcset=&#34;https://example.com/p/%E6%AF%8F%E6%97%A5%E5%85%AB%E8%82%A1/index.assets/image-20241113145957459_hu15905244567374609702.png 480w, https://example.com/p/%E6%AF%8F%E6%97%A5%E5%85%AB%E8%82%A1/index.assets/image-20241113145957459_hu2657717627631594184.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20241113145957459&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;253&#34;
+		data-flex-basis=&#34;609px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;h3 id=&#34;q3mq有哪几种交换机模式你们用的哪种&#34;&gt;Q3：MQ有哪几种交换机模式，你们用的哪种
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;FanoutExchanage&lt;/li&gt;
+&lt;li&gt;DirectExchanage&lt;/li&gt;
+&lt;li&gt;TopicExchanage&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;q4mq如何保证消息不丢失&#34;&gt;Q4：MQ如何保证消息不丢失
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;分为三种情况，发送端、MQ自己、消费端&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.yuque.com/yzxb/index/uhwxnv0n5wcmd226&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;6-MQ篇 (yuque.com)&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;发布者确认机制&lt;/li&gt;
+&lt;li&gt;发布者回执机制&lt;/li&gt;
+&lt;li&gt;MQ持久化&lt;/li&gt;
+&lt;li&gt;消费者确认机制，消费者失败重试机制&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;进一步的放丢失方案&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/%E6%AF%8F%E6%97%A5%E5%85%AB%E8%82%A1/index.assets/image-20241113151009061.png&#34;
+	width=&#34;959&#34;
+	height=&#34;292&#34;
+	srcset=&#34;https://example.com/p/%E6%AF%8F%E6%97%A5%E5%85%AB%E8%82%A1/index.assets/image-20241113151009061_hu12670985402470632247.png 480w, https://example.com/p/%E6%AF%8F%E6%97%A5%E5%85%AB%E8%82%A1/index.assets/image-20241113151009061_hu6009523065227154668.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20241113151009061&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;328&#34;
+		data-flex-basis=&#34;788px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;h3 id=&#34;q5消息积压如何解决&#34;&gt;Q5：消息积压如何解决
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;提高消费能力&lt;/li&gt;
+&lt;li&gt;增加消费者&lt;/li&gt;
+&lt;li&gt;扩大队列容积（LazyQueue）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;q6rabbitmq如何保证消费的顺序性-&#34;&gt;Q6：RabbitMQ如何保证消费的顺序性 ?
+&lt;/h3&gt;&lt;h3 id=&#34;q7springioc&#34;&gt;Q7：SpringIOC
+&lt;/h3&gt;&lt;h3 id=&#34;q8springaop&#34;&gt;Q8：SpringAOP
+&lt;/h3&gt;&lt;h3 id=&#34;q9三级缓存循环依赖&#34;&gt;Q9：三级缓存（循环依赖）
+&lt;/h3&gt;&lt;h3 id=&#34;q10设计模式&#34;&gt;Q10：设计模式
+&lt;/h3&gt;&lt;h3 id=&#34;q11事务失效场景&#34;&gt;Q11：事务失效场景
+&lt;/h3&gt;&lt;h2 id=&#34;day5&#34;&gt;day5
+&lt;/h2&gt;&lt;blockquote&gt;
+&lt;p&gt;还是MQ+&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;+++&lt;/p&gt;
+&lt;p&gt;q1：服务保护&lt;/p&gt;
+&lt;p&gt;Sentinel、GateWay、MQ削峰填谷&lt;/p&gt;
+&lt;p&gt;q2：用什么做单元测试&lt;/p&gt;
+&lt;p&gt;Junit、MockITO&lt;/p&gt;
 </description>
         </item>
         <item>

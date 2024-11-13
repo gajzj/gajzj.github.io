@@ -440,6 +440,122 @@
 &lt;/h2&gt;&lt;blockquote&gt;
 &lt;p&gt;看MQ、云岚秒杀、优惠卷&lt;/p&gt;
 &lt;/blockquote&gt;
+&lt;h3 id=&#34;q1什么场景下你们用mq&#34;&gt;Q1：什么场景下你们用MQ
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;其实就是是否理解异步和同步，以及有它的优点&lt;/p&gt;
+&lt;p&gt;扯到异步调用的时候可以去带过一下其他的消息中间件&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;同步&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/%E6%AF%8F%E6%97%A5%E5%85%AB%E8%82%A1/index.assets/image-20241113145604595.png&#34;
+	width=&#34;900&#34;
+	height=&#34;493&#34;
+	srcset=&#34;https://example.com/p/%E6%AF%8F%E6%97%A5%E5%85%AB%E8%82%A1/index.assets/image-20241113145604595_hu12931243403802827944.png 480w, https://example.com/p/%E6%AF%8F%E6%97%A5%E5%85%AB%E8%82%A1/index.assets/image-20241113145604595_hu16899941488563117361.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20241113145604595&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;182&#34;
+		data-flex-basis=&#34;438px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;异步&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/%E6%AF%8F%E6%97%A5%E5%85%AB%E8%82%A1/index.assets/image-20241113145632572.png&#34;
+	width=&#34;1012&#34;
+	height=&#34;359&#34;
+	srcset=&#34;https://example.com/p/%E6%AF%8F%E6%97%A5%E5%85%AB%E8%82%A1/index.assets/image-20241113145632572_hu2933011480670642604.png 480w, https://example.com/p/%E6%AF%8F%E6%97%A5%E5%85%AB%E8%82%A1/index.assets/image-20241113145632572_hu15731027870915228808.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20241113145632572&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;281&#34;
+		data-flex-basis=&#34;676px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;异步通信优点&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;耦合度低&lt;/li&gt;
+&lt;li&gt;吞吐量提升&lt;/li&gt;
+&lt;li&gt;故障隔离&lt;/li&gt;
+&lt;li&gt;流量削峰&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;缺点&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;依赖于Broker（消息服务器）的可靠性、安全性、吞吐能力&lt;/li&gt;
+&lt;li&gt;架构复杂了，业务没有明显的流程线，不好追踪管理&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;q2你们项目为什么用mq&#34;&gt;Q2：你们项目为什么用MQ
+&lt;/h3&gt;&lt;p&gt;&lt;img src=&#34;https://example.com/p/%E6%AF%8F%E6%97%A5%E5%85%AB%E8%82%A1/index.assets/image-20241113145957459.png&#34;
+	width=&#34;970&#34;
+	height=&#34;382&#34;
+	srcset=&#34;https://example.com/p/%E6%AF%8F%E6%97%A5%E5%85%AB%E8%82%A1/index.assets/image-20241113145957459_hu15905244567374609702.png 480w, https://example.com/p/%E6%AF%8F%E6%97%A5%E5%85%AB%E8%82%A1/index.assets/image-20241113145957459_hu2657717627631594184.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20241113145957459&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;253&#34;
+		data-flex-basis=&#34;609px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;h3 id=&#34;q3mq有哪几种交换机模式你们用的哪种&#34;&gt;Q3：MQ有哪几种交换机模式，你们用的哪种
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;FanoutExchanage&lt;/li&gt;
+&lt;li&gt;DirectExchanage&lt;/li&gt;
+&lt;li&gt;TopicExchanage&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;q4mq如何保证消息不丢失&#34;&gt;Q4：MQ如何保证消息不丢失
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;分为三种情况，发送端、MQ自己、消费端&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.yuque.com/yzxb/index/uhwxnv0n5wcmd226&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;6-MQ篇 (yuque.com)&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;发布者确认机制&lt;/li&gt;
+&lt;li&gt;发布者回执机制&lt;/li&gt;
+&lt;li&gt;MQ持久化&lt;/li&gt;
+&lt;li&gt;消费者确认机制，消费者失败重试机制&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;进一步的放丢失方案&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/%E6%AF%8F%E6%97%A5%E5%85%AB%E8%82%A1/index.assets/image-20241113151009061.png&#34;
+	width=&#34;959&#34;
+	height=&#34;292&#34;
+	srcset=&#34;https://example.com/p/%E6%AF%8F%E6%97%A5%E5%85%AB%E8%82%A1/index.assets/image-20241113151009061_hu12670985402470632247.png 480w, https://example.com/p/%E6%AF%8F%E6%97%A5%E5%85%AB%E8%82%A1/index.assets/image-20241113151009061_hu6009523065227154668.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20241113151009061&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;328&#34;
+		data-flex-basis=&#34;788px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;h3 id=&#34;q5消息积压如何解决&#34;&gt;Q5：消息积压如何解决
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;提高消费能力&lt;/li&gt;
+&lt;li&gt;增加消费者&lt;/li&gt;
+&lt;li&gt;扩大队列容积（LazyQueue）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;q6rabbitmq如何保证消费的顺序性-&#34;&gt;Q6：RabbitMQ如何保证消费的顺序性 ?
+&lt;/h3&gt;&lt;h3 id=&#34;q7springioc&#34;&gt;Q7：SpringIOC
+&lt;/h3&gt;&lt;h3 id=&#34;q8springaop&#34;&gt;Q8：SpringAOP
+&lt;/h3&gt;&lt;h3 id=&#34;q9三级缓存循环依赖&#34;&gt;Q9：三级缓存（循环依赖）
+&lt;/h3&gt;&lt;h3 id=&#34;q10设计模式&#34;&gt;Q10：设计模式
+&lt;/h3&gt;&lt;h3 id=&#34;q11事务失效场景&#34;&gt;Q11：事务失效场景
+&lt;/h3&gt;&lt;h2 id=&#34;day5&#34;&gt;day5
+&lt;/h2&gt;&lt;blockquote&gt;
+&lt;p&gt;还是MQ+&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;+++&lt;/p&gt;
+&lt;p&gt;q1：服务保护&lt;/p&gt;
+&lt;p&gt;Sentinel、GateWay、MQ削峰填谷&lt;/p&gt;
+&lt;p&gt;q2：用什么做单元测试&lt;/p&gt;
+&lt;p&gt;Junit、MockITO&lt;/p&gt;
 </description>
         </item>
         
