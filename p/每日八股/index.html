@@ -278,7 +278,9 @@
         <li><a href="#q3那你讲讲取消超时订单的方案">Q3：那你讲讲取消超时订单的方案</a></li>
         <li><a href="#q4如何解决消息积压">Q4：如何解决消息积压</a></li>
         <li><a href="#q5redis的set和zset">Q5：redis的set和zset</a></li>
-        <li><a href="#q6">Q6：</a></li>
+        <li><a href="#q6点赞服务设计">Q6：点赞服务设计</a></li>
+        <li><a href="#q7同时点赞怎么办">Q7：同时点赞怎么办</a></li>
+        <li><a href="#q8同时点赞和取消点赞怎么办">Q8：同时点赞和取消点赞怎么办</a></li>
       </ol>
     </li>
   </ol>
@@ -1009,7 +1011,15 @@
 </h3><blockquote>
 <p>通过这个问题去了解set和zset的数据结构如何</p>
 </blockquote>
-<p>reidis的set：以商品id为key，value存的是点赞用户的id，也是就是说，一个商品id对应一个set，set里面包含多个userid表示给这个商品点赞的用户，这样就是实现了不重复。</p>
+<p>reidis的set：</p>
+<ul>
+<li>
+<p>以商品id为key，也是就是说，一个商品id对应一个set</p>
+</li>
+<li>
+<p>value存的是点赞用户的id，set里面包含多个userid表示给这个商品点赞的用户，这样就是实现了不重复。</p>
+</li>
+</ul>
 <p><img src="/p/%E6%AF%8F%E6%97%A5%E5%85%AB%E8%82%A1/index.assets/image-20241114170338964.png"
 	width="732"
 	height="217"
@@ -1043,8 +1053,78 @@
 		data-flex-basis="763px"
 	
 ></p>
-<h3 id="q6">Q6：
-</h3>
+<h3 id="q6点赞服务设计">Q6：点赞服务设计
+</h3><blockquote>
+<p>先介绍总体设计，然后是消息发送和订阅的交换机队列模型，最后是流程（介绍redis的缓存set点赞，zset点赞数）</p>
+<p>思考问题：同时点赞怎么办，同时一个点赞一个取消怎么办</p>
+</blockquote>
+<p>总体设计：</p>
+<ul>
+<li>点赞是一个<strong>通用服务</strong>，不同的系统都需要点赞数，比如我们的商品需要点赞数，评论需要点赞数
+<ul>
+<li>为了满足点赞的<strong>高频写入特点</strong>，点赞系统只记录点赞本身的行为数据，对于业务的统计，都交给业务方存储</li>
+<li>为了满足点赞的<strong>通用性</strong>，我们通过异步的方式，用MQ发布点赞消息（direct、topic交换机），点赞消息包含<strong>业务id和点赞数量</strong></li>
+</ul>
+</li>
+</ul>
+<p><img src="/p/%E6%AF%8F%E6%97%A5%E5%85%AB%E8%82%A1/index.assets/image-20241114172425041.png"
+	width="672"
+	height="369"
+	srcset="/p/%E6%AF%8F%E6%97%A5%E5%85%AB%E8%82%A1/index.assets/image-20241114172425041_hu8285190696643862037.png 480w, /p/%E6%AF%8F%E6%97%A5%E5%85%AB%E8%82%A1/index.assets/image-20241114172425041_hu6871392471419452252.png 1024w"
+	loading="lazy"
+	
+		alt="image-20241114172425041"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="182"
+		data-flex-basis="437px"
+	
+></p>
+<p>然后是MQ模型的设计（交换机，bingkey）</p>
+<p><img src="/p/%E6%AF%8F%E6%97%A5%E5%85%AB%E8%82%A1/index.assets/image-20241114172600190.png"
+	width="735"
+	height="273"
+	srcset="/p/%E6%AF%8F%E6%97%A5%E5%85%AB%E8%82%A1/index.assets/image-20241114172600190_hu10915775714599378998.png 480w, /p/%E6%AF%8F%E6%97%A5%E5%85%AB%E8%82%A1/index.assets/image-20241114172600190_hu2800731360242388289.png 1024w"
+	loading="lazy"
+	
+		alt="image-20241114172600190"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="269"
+		data-flex-basis="646px"
+	
+></p>
+<p>最后是整个流程（redis的set、zset设计在上一题）</p>
+<ul>
+<li>用户点赞触发流程开始，前端提交点赞信息给我们后端，</li>
+<li>查询redis缓存看当前这个key（假设是一个文章id）下的member（用户id）是否存在，不存在就新增（俩个线程同时触发点赞，开始都没查到member存在，但写入的时候因为set去重只会有一个写入，所以这里已经实现了幂等）</li>
+<li>统计点赞数量，写到zset里面，通过定时读取缓存的任务发送到mq交给下流业务费统计</li>
+</ul>
+<p><img src="/p/%E6%AF%8F%E6%97%A5%E5%85%AB%E8%82%A1/index.assets/image-20241114174920568.png"
+	width="762"
+	height="530"
+	srcset="/p/%E6%AF%8F%E6%97%A5%E5%85%AB%E8%82%A1/index.assets/image-20241114174920568_hu4495224589648861689.png 480w, /p/%E6%AF%8F%E6%97%A5%E5%85%AB%E8%82%A1/index.assets/image-20241114174920568_hu4107003843676993934.png 1024w"
+	loading="lazy"
+	
+		alt="image-20241114174920568"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="143"
+		data-flex-basis="345px"
+	
+></p>
+<h3 id="q7同时点赞怎么办">Q7：同时点赞怎么办
+</h3><blockquote>
+<p>首先点赞被触发两次其实问题不大，只要记录数对了，就可以，set既然已经完成去重</p>
+</blockquote>
+<h3 id="q8同时点赞和取消点赞怎么办">Q8：同时点赞和取消点赞怎么办
+</h3><blockquote>
+<p>明确这个问题的后果是什么：可能是先执行点赞后取消也可能先取消后点赞，那么对应同一个操作（把这个操作看作（点赞，取消点赞，时间）为一个操作）会对应俩种结果</p>
+</blockquote>
+
 </section>
 
 

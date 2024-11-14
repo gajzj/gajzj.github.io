@@ -3045,7 +3045,15 @@
 &lt;/h3&gt;&lt;blockquote&gt;
 &lt;p&gt;通过这个问题去了解set和zset的数据结构如何&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;p&gt;reidis的set：以商品id为key，value存的是点赞用户的id，也是就是说，一个商品id对应一个set，set里面包含多个userid表示给这个商品点赞的用户，这样就是实现了不重复。&lt;/p&gt;
+&lt;p&gt;reidis的set：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;以商品id为key，也是就是说，一个商品id对应一个set&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;value存的是点赞用户的id，set里面包含多个userid表示给这个商品点赞的用户，这样就是实现了不重复。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
 &lt;p&gt;&lt;img src=&#34;https://example.com/p/%E6%AF%8F%E6%97%A5%E5%85%AB%E8%82%A1/index.assets/image-20241114170338964.png&#34;
 	width=&#34;732&#34;
 	height=&#34;217&#34;
@@ -3079,8 +3087,78 @@
 		data-flex-basis=&#34;763px&#34;
 	
 &gt;&lt;/p&gt;
-&lt;h3 id=&#34;q6&#34;&gt;Q6：
-&lt;/h3&gt;</description>
+&lt;h3 id=&#34;q6点赞服务设计&#34;&gt;Q6：点赞服务设计
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;先介绍总体设计，然后是消息发送和订阅的交换机队列模型，最后是流程（介绍redis的缓存set点赞，zset点赞数）&lt;/p&gt;
+&lt;p&gt;思考问题：同时点赞怎么办，同时一个点赞一个取消怎么办&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;总体设计：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;点赞是一个&lt;strong&gt;通用服务&lt;/strong&gt;，不同的系统都需要点赞数，比如我们的商品需要点赞数，评论需要点赞数
+&lt;ul&gt;
+&lt;li&gt;为了满足点赞的&lt;strong&gt;高频写入特点&lt;/strong&gt;，点赞系统只记录点赞本身的行为数据，对于业务的统计，都交给业务方存储&lt;/li&gt;
+&lt;li&gt;为了满足点赞的&lt;strong&gt;通用性&lt;/strong&gt;，我们通过异步的方式，用MQ发布点赞消息（direct、topic交换机），点赞消息包含&lt;strong&gt;业务id和点赞数量&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/%E6%AF%8F%E6%97%A5%E5%85%AB%E8%82%A1/index.assets/image-20241114172425041.png&#34;
+	width=&#34;672&#34;
+	height=&#34;369&#34;
+	srcset=&#34;https://example.com/p/%E6%AF%8F%E6%97%A5%E5%85%AB%E8%82%A1/index.assets/image-20241114172425041_hu8285190696643862037.png 480w, https://example.com/p/%E6%AF%8F%E6%97%A5%E5%85%AB%E8%82%A1/index.assets/image-20241114172425041_hu6871392471419452252.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20241114172425041&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;182&#34;
+		data-flex-basis=&#34;437px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;然后是MQ模型的设计（交换机，bingkey）&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/%E6%AF%8F%E6%97%A5%E5%85%AB%E8%82%A1/index.assets/image-20241114172600190.png&#34;
+	width=&#34;735&#34;
+	height=&#34;273&#34;
+	srcset=&#34;https://example.com/p/%E6%AF%8F%E6%97%A5%E5%85%AB%E8%82%A1/index.assets/image-20241114172600190_hu10915775714599378998.png 480w, https://example.com/p/%E6%AF%8F%E6%97%A5%E5%85%AB%E8%82%A1/index.assets/image-20241114172600190_hu2800731360242388289.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20241114172600190&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;269&#34;
+		data-flex-basis=&#34;646px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;最后是整个流程（redis的set、zset设计在上一题）&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;用户点赞触发流程开始，前端提交点赞信息给我们后端，&lt;/li&gt;
+&lt;li&gt;查询redis缓存看当前这个key（假设是一个文章id）下的member（用户id）是否存在，不存在就新增（俩个线程同时触发点赞，开始都没查到member存在，但写入的时候因为set去重只会有一个写入，所以这里已经实现了幂等）&lt;/li&gt;
+&lt;li&gt;统计点赞数量，写到zset里面，通过定时读取缓存的任务发送到mq交给下流业务费统计&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/%E6%AF%8F%E6%97%A5%E5%85%AB%E8%82%A1/index.assets/image-20241114174920568.png&#34;
+	width=&#34;762&#34;
+	height=&#34;530&#34;
+	srcset=&#34;https://example.com/p/%E6%AF%8F%E6%97%A5%E5%85%AB%E8%82%A1/index.assets/image-20241114174920568_hu4495224589648861689.png 480w, https://example.com/p/%E6%AF%8F%E6%97%A5%E5%85%AB%E8%82%A1/index.assets/image-20241114174920568_hu4107003843676993934.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20241114174920568&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;143&#34;
+		data-flex-basis=&#34;345px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;h3 id=&#34;q7同时点赞怎么办&#34;&gt;Q7：同时点赞怎么办
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;首先点赞被触发两次其实问题不大，只要记录数对了，就可以，set既然已经完成去重&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&#34;q8同时点赞和取消点赞怎么办&#34;&gt;Q8：同时点赞和取消点赞怎么办
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;明确这个问题的后果是什么：可能是先执行点赞后取消也可能先取消后点赞，那么对应同一个操作（把这个操作看作（点赞，取消点赞，时间）为一个操作）会对应俩种结果&lt;/p&gt;
+&lt;/blockquote&gt;
+</description>
         </item>
         <item>
         <title>RabbitMQ</title>
