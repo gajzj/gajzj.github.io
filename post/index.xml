@@ -2410,7 +2410,7 @@
 &lt;li&gt;单体的耦合度太高，同时无法很好的承载高并发，简单的水平拓展成本过高（也不治本），需要&lt;strong&gt;拆分服务&lt;/strong&gt;&lt;/li&gt;
 &lt;li&gt;而服务与服务之间需要远程调用，需要统一的&lt;strong&gt;注册中心和配置中心&lt;/strong&gt;（人工维护太繁琐）&lt;/li&gt;
 &lt;li&gt;服务于服务之间的调用，并不必须同步，可以采取引入&lt;strong&gt;消息队列&lt;/strong&gt;完成异步调用&lt;/li&gt;
-&lt;li&gt;用户的请求需要统一的服务网关来路由（注意这里路由是个动词），以及负载均衡&lt;/li&gt;
+&lt;li&gt;用户的请求需要统一的服务网关来路由（注意这里路由是个动词），以及负载均衡，拦截增强（比如鉴权）&lt;/li&gt;
 &lt;li&gt;服务集群的增长，带来了更多的数据，对我们的数据、缓存有更高的挑战，所以需要&lt;strong&gt;分布式缓存、分库分表、分布式搜索&lt;/strong&gt;&lt;/li&gt;
 &lt;li&gt;集群规模增大带来，debug不局限于某一台服务，需要&lt;strong&gt;分布式日志服务&lt;/strong&gt;和&lt;strong&gt;系统监控链路追踪&lt;/strong&gt;&lt;/li&gt;
 &lt;li&gt;引入自动化部署（DevOps）来做到持续开发、持续交付，降低部署维护成本&lt;/li&gt;
@@ -2992,7 +2992,7 @@
 &lt;p&gt;Junit、MockITO&lt;/p&gt;
 &lt;h2 id=&#34;day5&#34;&gt;day5
 &lt;/h2&gt;&lt;blockquote&gt;
-&lt;p&gt;还是MQ+点赞&lt;/p&gt;
+&lt;p&gt;MQ+点赞&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;h3 id=&#34;q1怎么保证mq消息不丢失&#34;&gt;Q1：怎么保证MQ消息不丢失
 &lt;/h3&gt;&lt;blockquote&gt;
@@ -3150,15 +3150,50 @@
 		data-flex-basis=&#34;345px&#34;
 	
 &gt;&lt;/p&gt;
-&lt;h3 id=&#34;q7同时点赞怎么办&#34;&gt;Q7：同时点赞怎么办
+&lt;h3 id=&#34;q7定时任务这里为什么要删除bizid和点赞总数&#34;&gt;Q7：定时任务这里为什么要删除bizid和点赞总数
+&lt;/h3&gt;&lt;p&gt;为了每次推送的都是变化量，同时可以防止内存溢出&lt;/p&gt;
+&lt;h3 id=&#34;q8同时点赞怎么办&#34;&gt;Q8：同时点赞怎么办
 &lt;/h3&gt;&lt;blockquote&gt;
 &lt;p&gt;首先点赞被触发两次其实问题不大，只要记录数对了，就可以，set既然已经完成去重&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;h3 id=&#34;q8同时点赞和取消点赞怎么办&#34;&gt;Q8：同时点赞和取消点赞怎么办
+&lt;h3 id=&#34;q9同时点赞和取消点赞怎么办&#34;&gt;Q9：同时点赞和取消点赞怎么办
 &lt;/h3&gt;&lt;blockquote&gt;
 &lt;p&gt;明确这个问题的后果是什么：可能是先执行点赞后取消也可能先取消后点赞，那么对应同一个操作（把这个操作看作（点赞，取消点赞，时间）为一个操作）会对应俩种结果&lt;/p&gt;
 &lt;/blockquote&gt;
-</description>
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Redis pipelining&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;这里做了合并写的处理&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;分布式锁&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;用业务id（文章id、商品id）作为键，生成一个锁标识（比如UUID）。可以使用SETNX命令，如果返回1表示成功获取锁，返回0表示锁被占用&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;q10每次点赞成功都会触发查询点赞统计总数如何优化&#34;&gt;Q10：每次点赞成功都会触发查询点赞统计总数，如何优化
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;Redis pipelining通过批处理redis命令来优化往返时间&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Redis pipelining通过一次发出多个命令而无需等待对每个单独命令的响应来提高性能的技术&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;这里还可能涉及到的问题：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;redis容量的问题&lt;/li&gt;
+&lt;li&gt;redis持久化频率的问题&lt;/li&gt;
+&lt;li&gt;redis相关命令&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;day6&#34;&gt;day6
+&lt;/h2&gt;&lt;blockquote&gt;
+&lt;p&gt;redis、mysql相关问题再来一遍&lt;/p&gt;
+&lt;p&gt;优惠卷&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&#34;q1缓存一致性&#34;&gt;Q1：缓存一致性
+&lt;/h3&gt;</description>
         </item>
         <item>
         <title>RabbitMQ</title>
