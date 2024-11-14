@@ -10,7 +10,7 @@
 <meta property='og:description' content="Spring IoC ">
 <meta property='og:url' content='https://example.com/p/spring-ioc/'>
 <meta property='og:site_name' content='GAJ-Blog'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2024-09-26T16:02:00&#43;08:00'/><meta property='article:modified_time' content='2024-09-26T16:02:00&#43;08:00'/>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='spring' /><meta property='article:published_time' content='2024-09-12T16:02:00&#43;08:00'/><meta property='article:modified_time' content='2024-09-12T16:02:00&#43;08:00'/>
 <meta name="twitter:title" content="Spring IoC">
 <meta name="twitter:description" content="Spring IoC ">
     <link rel="shortcut icon" href="/favicon.ico" />
@@ -199,44 +199,7 @@
     </ol>
 </aside>
 
-    <aside class="sidebar right-sidebar sticky">
-        
-            
-                
-    <section class="widget archives">
-        <div class="widget-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <line x1="5" y1="9" x2="19" y2="9" />
-  <line x1="5" y1="15" x2="19" y2="15" />
-  <line x1="11" y1="4" x2="7" y2="20" />
-  <line x1="17" y1="4" x2="13" y2="20" />
-</svg>
-
-
-
-        </div>
-        <h2 class="widget-title section-title">目录</h2>
-        
-        <div class="widget--toc">
-            <nav id="TableOfContents">
-  <ol>
-    <li>
-      <ol>
-        <li><a href="#对于集合务必注释表明集合元素对应的具体语境">对于集合，务必注释表明集合元素对应的具体语境</a></li>
-        <li><a href="#对于复杂数据类型的返回值应当在注释中给出返回示例">对于复杂数据类型的返回值，应当在注释中给出返回示例</a></li>
-        <li><a href="#对于写在-xxxmapperxml务必在每个-sql-操作前写注释隔开xml-的可读性很差不要雪上加霜">对于写在 XxxMapper.xml，务必在每个 sql 操作前写注释隔开，xml 的可读性很差，不要雪上加霜</a></li>
-      </ol>
-    </li>
-  </ol>
-</nav>
-        </div>
-    </section>
-
-            
-        
-    </aside>
-
+    
 
             <main class="main full-width">
     <article class="main-article">
@@ -246,8 +209,8 @@
     
     <header class="article-category">
         
-            <a href="/categories/%E4%BB%A3%E7%A0%81%E8%A7%84%E8%8C%83/" >
-                代码规范
+            <a href="/categories/spring/" >
+                Spring
             </a>
         
     </header>
@@ -277,7 +240,7 @@
   <path d="M3 11h16" />
   <path d="M18 16.496v1.504l1 1" />
 </svg>
-                <time class="article-time--published">09-26,  2024</time>
+                <time class="article-time--published">09-12,  2024</time>
             </div>
         
 
@@ -293,91 +256,19 @@
     <section class="article-content">
     
     
-    <h1 id="代码规范">代码规范
-</h1><p>很零散，暂时不做整理，先将就着看</p>
-<p>注意对每个规范要求的力度如：</p>
-<ul>
-<li>务必</li>
-<li>应当</li>
-<li>可以</li>
-</ul>
-<h3 id="对于集合务必注释表明集合元素对应的具体语境">对于集合，务必注释表明集合元素对应的具体语境
-</h3><p>如：</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="c1">// 跟踪所有活动订单: Order ID =&gt; OrderEntity</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">final</span><span class="w"> </span><span class="n">ConcurrentHashMap</span><span class="o">&lt;</span><span class="n">Long</span><span class="p">,</span><span class="w"> </span><span class="n">OrderEntity</span><span class="o">&gt;</span><span class="w"> </span><span class="n">activeOrders</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">ConcurrentHashMap</span><span class="o">&lt;&gt;</span><span class="p">();</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c1">// 跟踪用户活动订单: User ID =&gt; Map(Order ID =&gt; OrderEntity)</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">final</span><span class="w"> </span><span class="n">ConcurrentHashMap</span><span class="o">&lt;</span><span class="n">Long</span><span class="p">,</span><span class="w"> </span><span class="n">ConcurrentHashMap</span><span class="o">&lt;</span><span class="n">Long</span><span class="p">,</span><span class="w"> </span><span class="n">OrderEntity</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">userOrders</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">ConcurrentHashMap</span><span class="o">&lt;&gt;</span><span class="p">();</span><span class="w">
-</span></span></span></code></pre></td></tr></table>
-</div>
-</div><h3 id="对于复杂数据类型的返回值应当在注释中给出返回示例">对于复杂数据类型的返回值，应当在注释中给出返回示例
-</h3><p>如：</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="w">    </span><span class="cm">/**
-</span></span></span><span class="line"><span class="cl"><span class="cm">     * 统计信息
-</span></span></span><span class="line"><span class="cl"><span class="cm">     *
-</span></span></span><span class="line"><span class="cl"><span class="cm">     * @return 返回的数据结构类似
-</span></span></span><span class="line"><span class="cl"><span class="cm">     * &lt;pre&gt; {@code
-</span></span></span><span class="line"><span class="cl"><span class="cm">     * [
-</span></span></span><span class="line"><span class="cl"><span class="cm">     * {&#34;pos&#34;: &#34;班主任&#34;, &#34;total&#34;: 5},
-</span></span></span><span class="line"><span class="cl"><span class="cm">     * {&#34;pos&#34;: &#34;学工主管&#34;, &#34;total&#34;: 2},
-</span></span></span><span class="line"><span class="cl"><span class="cm">     * {&#34;pos&#34;: &#34;咨询师&#34;, &#34;total&#34;: 3}
-</span></span></span><span class="line"><span class="cl"><span class="cm">     * ]
-</span></span></span><span class="line"><span class="cl"><span class="cm">     * } &lt;pre&gt;
-</span></span></span><span class="line"><span class="cl"><span class="cm">     */</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nd">@MapKey</span><span class="p">(</span><span class="s">&#34;pos&#34;</span><span class="p">)</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">List</span><span class="o">&lt;</span><span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span><span class="w"> </span><span class="n">Object</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="nf">countEmpJobData</span><span class="p">();</span><span class="w">
-</span></span></span></code></pre></td></tr></table>
-</div>
-</div><h3 id="对于写在-xxxmapperxml务必在每个-sql-操作前写注释隔开xml-的可读性很差不要雪上加霜">对于写在 XxxMapper.xml，务必在每个 sql 操作前写注释隔开，xml 的可读性很差，不要雪上加霜
-</h3><p>如:</p>
-<p><img src="/p/spring-ioc/index.assets/image-20240926171427194.png"
-	width="862"
-	height="559"
-	srcset="/p/spring-ioc/index.assets/image-20240926171427194_hu6148662528252553966.png 480w, /p/spring-ioc/index.assets/image-20240926171427194_hu17790162117415341256.png 1024w"
-	loading="lazy"
-	
-		alt="image-20240926171427194"
-	
-	
-		class="gallery-image" 
-		data-flex-grow="154"
-		data-flex-basis="370px"
-	
-></p>
-<p>是不是非常的清爽</p>
-
+    <h1 id="spring-ioc">Spring IoC
+</h1>
 </section>
 
 
     <footer class="article-footer">
     
+    <section class="article-tags">
+        
+            <a href="/tags/spring/">Spring</a>
+        
+    </section>
+
 
     </footer>
 
@@ -412,6 +303,41 @@
     
 
     
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/p/springmvc/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">springMVC</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/spring/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">spring</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
 
      
     

@@ -214,7 +214,154 @@
 &lt;/ul&gt;
 &lt;h2 id=&#34;服务搜索&#34;&gt;服务搜索
 &lt;/h2&gt;&lt;h3 id=&#34;服务搜索技术方案&#34;&gt;服务搜索技术方案
-&lt;/h3&gt;</description>
+&lt;/h3&gt;&lt;p&gt;分词关键字搜索&lt;/p&gt;
+&lt;p&gt;Elasticsearch是基于倒排索引的原理，正排索引是从文章中找词，倒排索引是根据词去找文章&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://cdn.nlark.com/yuque/0/2024/jpeg/1169676/1708766787224-7366260f-49cb-4189-b153-c51c65bff3c7.jpeg?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_34%2Ctext_5rK554K45bCP5rOi%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10%2Fformat%2Cwebp%2Fresize%2Cw_937%2Climit_0%2Finterlace%2C1&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;img&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;h3 id=&#34;索引同步方案&#34;&gt;索引同步方案
+&lt;/h3&gt;&lt;p&gt;方案1：添加服务信息维护索引&lt;/p&gt;
+&lt;p&gt;在Service方法中添加维护ES索引的代码&lt;/p&gt;
+&lt;p&gt;方案2：使用Canal+MQ&lt;/p&gt;
+&lt;p&gt;Mysql主从数据同步原理&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;master、slave&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;主从数据同步是一种数据库复制技术&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;写数据先向主服务器写&lt;/li&gt;
+&lt;li&gt;写成功后同步到从服务器&lt;/li&gt;
+&lt;li&gt;主从数据库同步流程
+&lt;ul&gt;
+&lt;li&gt;&lt;img src=&#34;https://example.com/p/%E4%BA%91%E5%B2%9A%E5%88%B0%E5%AE%B6/index.assets/image-20241113194338480.png&#34;
+	width=&#34;944&#34;
+	height=&#34;796&#34;
+	srcset=&#34;https://example.com/p/%E4%BA%91%E5%B2%9A%E5%88%B0%E5%AE%B6/index.assets/image-20241113194338480_hu9558839266934732661.png 480w, https://example.com/p/%E4%BA%91%E5%B2%9A%E5%88%B0%E5%AE%B6/index.assets/image-20241113194338480_hu7544216915693610526.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20241113194338480&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;118&#34;
+		data-flex-basis=&#34;284px&#34;
+	
+&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Canal实现原理&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/%E4%BA%91%E5%B2%9A%E5%88%B0%E5%AE%B6/index.assets/image-20241113194456751.png&#34;
+	width=&#34;834&#34;
+	height=&#34;724&#34;
+	srcset=&#34;https://example.com/p/%E4%BA%91%E5%B2%9A%E5%88%B0%E5%AE%B6/index.assets/image-20241113194456751_hu6855926193138491222.png 480w, https://example.com/p/%E4%BA%91%E5%B2%9A%E5%88%B0%E5%AE%B6/index.assets/image-20241113194456751_hu3096571901932341757.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20241113194456751&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;115&#34;
+		data-flex-basis=&#34;276px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;索引同步方案&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/%E4%BA%91%E5%B2%9A%E5%88%B0%E5%AE%B6/index.assets/image-20241113194927402.png&#34;
+	width=&#34;937&#34;
+	height=&#34;682&#34;
+	srcset=&#34;https://example.com/p/%E4%BA%91%E5%B2%9A%E5%88%B0%E5%AE%B6/index.assets/image-20241113194927402_hu5694483979435074512.png 480w, https://example.com/p/%E4%BA%91%E5%B2%9A%E5%88%B0%E5%AE%B6/index.assets/image-20241113194927402_hu5711922681188395428.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20241113194927402&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;137&#34;
+		data-flex-basis=&#34;329px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;在这个过程中MQ必须保证可靠性&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;mq技术方案&#34;&gt;MQ技术方案
+&lt;/h2&gt;&lt;h3 id=&#34;保证生产消息可靠性&#34;&gt;保证生产消息可靠性
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;本地失败重试&lt;/li&gt;
+&lt;li&gt;失败消息入库（达到失败次数入库）&lt;/li&gt;
+&lt;li&gt;失败消息人工处理、失败消息自动处理任务调度&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://cdn.nlark.com/yuque/0/2024/svg/1169676/1708767028738-d30ce85a-2065-4e62-a549-ae8b68530e74.svg&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;14.svg&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;@Retryable注解实现执行失败进行重试&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nd&#34;&gt;@Retryable&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;value&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;MqException&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;class&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;// 抛出指定异常时重试&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;		&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;maxAttempts&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;3&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;// 最大重试次数、默认三次&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;		&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;backoff&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;nd&#34;&gt;@Backoff&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;value&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;3000&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;mutiplier&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;5&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;),&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;// 重试等待策略（每次重试乘以系数）&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;		&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;recover&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;saveFailMag&amp;#34;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;// 设置回调方法名，重试耗尽时执行&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;ConfirmCallback：消息成功投递到交换机会返回ack，失败会返回nack&lt;/p&gt;
+&lt;p&gt;Return回调：消息成功到达交换机，但没到队列，调用回调方法&lt;/p&gt;
+&lt;h3 id=&#34;保证消费信息可靠性&#34;&gt;保证消费信息可靠性
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;设置消息持久化，发送消息设置deliveryMode = 2&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;none模式下，消息投递是不可靠的，可能丢失&lt;/li&gt;
+&lt;li&gt;auto模式类似事务机制，出现异常时返回nack，消息回滚到mq；没有异常，返回ack&lt;/li&gt;
+&lt;li&gt;manual：自己根据业务情况，判断什么时候该ack&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;自动ack模式，失败重试三次后投递到失败队列&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;保证消息幂等性&#34;&gt;保证消息幂等性
+&lt;/h3&gt;&lt;p&gt;&lt;strong&gt;幂等性是指不论执行多少次，其结果一致&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;针对不同场景，不同解决方案&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;查询操作：本身具有幂等性&lt;/li&gt;
+&lt;li&gt;添加操作：有可能会重复添加记录，通过设置唯一约束老保证&lt;/li&gt;
+&lt;li&gt;更新操作：更新操作应当只允许更新成功一次，使用token机制
+&lt;ul&gt;
+&lt;li&gt;发送消息前生成一个token写入redis，收到消息后解析出token，从redis查询token&lt;/li&gt;
+&lt;li&gt;查询到则说明没有消费，此时更新，更新成功后删除token缓存&lt;/li&gt;
+&lt;li&gt;当重复消费时，token会被删除，所以不会执行&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;删除操作：与更新类似&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;配置数据同步环境&#34;&gt;配置数据同步环境
+&lt;/h2&gt;&lt;h2 id=&#34;索引同步&#34;&gt;索引同步
+&lt;/h2&gt;</description>
         </item>
         
     </channel>

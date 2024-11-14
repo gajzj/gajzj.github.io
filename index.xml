@@ -214,7 +214,154 @@
 &lt;/ul&gt;
 &lt;h2 id=&#34;服务搜索&#34;&gt;服务搜索
 &lt;/h2&gt;&lt;h3 id=&#34;服务搜索技术方案&#34;&gt;服务搜索技术方案
-&lt;/h3&gt;</description>
+&lt;/h3&gt;&lt;p&gt;分词关键字搜索&lt;/p&gt;
+&lt;p&gt;Elasticsearch是基于倒排索引的原理，正排索引是从文章中找词，倒排索引是根据词去找文章&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://cdn.nlark.com/yuque/0/2024/jpeg/1169676/1708766787224-7366260f-49cb-4189-b153-c51c65bff3c7.jpeg?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_34%2Ctext_5rK554K45bCP5rOi%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10%2Fformat%2Cwebp%2Fresize%2Cw_937%2Climit_0%2Finterlace%2C1&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;img&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;h3 id=&#34;索引同步方案&#34;&gt;索引同步方案
+&lt;/h3&gt;&lt;p&gt;方案1：添加服务信息维护索引&lt;/p&gt;
+&lt;p&gt;在Service方法中添加维护ES索引的代码&lt;/p&gt;
+&lt;p&gt;方案2：使用Canal+MQ&lt;/p&gt;
+&lt;p&gt;Mysql主从数据同步原理&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;master、slave&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;主从数据同步是一种数据库复制技术&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;写数据先向主服务器写&lt;/li&gt;
+&lt;li&gt;写成功后同步到从服务器&lt;/li&gt;
+&lt;li&gt;主从数据库同步流程
+&lt;ul&gt;
+&lt;li&gt;&lt;img src=&#34;https://example.com/p/%E4%BA%91%E5%B2%9A%E5%88%B0%E5%AE%B6/index.assets/image-20241113194338480.png&#34;
+	width=&#34;944&#34;
+	height=&#34;796&#34;
+	srcset=&#34;https://example.com/p/%E4%BA%91%E5%B2%9A%E5%88%B0%E5%AE%B6/index.assets/image-20241113194338480_hu9558839266934732661.png 480w, https://example.com/p/%E4%BA%91%E5%B2%9A%E5%88%B0%E5%AE%B6/index.assets/image-20241113194338480_hu7544216915693610526.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20241113194338480&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;118&#34;
+		data-flex-basis=&#34;284px&#34;
+	
+&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Canal实现原理&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/%E4%BA%91%E5%B2%9A%E5%88%B0%E5%AE%B6/index.assets/image-20241113194456751.png&#34;
+	width=&#34;834&#34;
+	height=&#34;724&#34;
+	srcset=&#34;https://example.com/p/%E4%BA%91%E5%B2%9A%E5%88%B0%E5%AE%B6/index.assets/image-20241113194456751_hu6855926193138491222.png 480w, https://example.com/p/%E4%BA%91%E5%B2%9A%E5%88%B0%E5%AE%B6/index.assets/image-20241113194456751_hu3096571901932341757.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20241113194456751&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;115&#34;
+		data-flex-basis=&#34;276px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;索引同步方案&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/%E4%BA%91%E5%B2%9A%E5%88%B0%E5%AE%B6/index.assets/image-20241113194927402.png&#34;
+	width=&#34;937&#34;
+	height=&#34;682&#34;
+	srcset=&#34;https://example.com/p/%E4%BA%91%E5%B2%9A%E5%88%B0%E5%AE%B6/index.assets/image-20241113194927402_hu5694483979435074512.png 480w, https://example.com/p/%E4%BA%91%E5%B2%9A%E5%88%B0%E5%AE%B6/index.assets/image-20241113194927402_hu5711922681188395428.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20241113194927402&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;137&#34;
+		data-flex-basis=&#34;329px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;在这个过程中MQ必须保证可靠性&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;mq技术方案&#34;&gt;MQ技术方案
+&lt;/h2&gt;&lt;h3 id=&#34;保证生产消息可靠性&#34;&gt;保证生产消息可靠性
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;本地失败重试&lt;/li&gt;
+&lt;li&gt;失败消息入库（达到失败次数入库）&lt;/li&gt;
+&lt;li&gt;失败消息人工处理、失败消息自动处理任务调度&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://cdn.nlark.com/yuque/0/2024/svg/1169676/1708767028738-d30ce85a-2065-4e62-a549-ae8b68530e74.svg&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;14.svg&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;@Retryable注解实现执行失败进行重试&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nd&#34;&gt;@Retryable&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;value&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;MqException&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;class&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;// 抛出指定异常时重试&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;		&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;maxAttempts&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;3&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;// 最大重试次数、默认三次&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;		&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;backoff&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;nd&#34;&gt;@Backoff&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;value&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;3000&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;mutiplier&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;5&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;),&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;// 重试等待策略（每次重试乘以系数）&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;		&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;recover&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;saveFailMag&amp;#34;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;// 设置回调方法名，重试耗尽时执行&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;ConfirmCallback：消息成功投递到交换机会返回ack，失败会返回nack&lt;/p&gt;
+&lt;p&gt;Return回调：消息成功到达交换机，但没到队列，调用回调方法&lt;/p&gt;
+&lt;h3 id=&#34;保证消费信息可靠性&#34;&gt;保证消费信息可靠性
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;设置消息持久化，发送消息设置deliveryMode = 2&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;none模式下，消息投递是不可靠的，可能丢失&lt;/li&gt;
+&lt;li&gt;auto模式类似事务机制，出现异常时返回nack，消息回滚到mq；没有异常，返回ack&lt;/li&gt;
+&lt;li&gt;manual：自己根据业务情况，判断什么时候该ack&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;自动ack模式，失败重试三次后投递到失败队列&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;保证消息幂等性&#34;&gt;保证消息幂等性
+&lt;/h3&gt;&lt;p&gt;&lt;strong&gt;幂等性是指不论执行多少次，其结果一致&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;针对不同场景，不同解决方案&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;查询操作：本身具有幂等性&lt;/li&gt;
+&lt;li&gt;添加操作：有可能会重复添加记录，通过设置唯一约束老保证&lt;/li&gt;
+&lt;li&gt;更新操作：更新操作应当只允许更新成功一次，使用token机制
+&lt;ul&gt;
+&lt;li&gt;发送消息前生成一个token写入redis，收到消息后解析出token，从redis查询token&lt;/li&gt;
+&lt;li&gt;查询到则说明没有消费，此时更新，更新成功后删除token缓存&lt;/li&gt;
+&lt;li&gt;当重复消费时，token会被删除，所以不会执行&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;删除操作：与更新类似&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;配置数据同步环境&#34;&gt;配置数据同步环境
+&lt;/h2&gt;&lt;h2 id=&#34;索引同步&#34;&gt;索引同步
+&lt;/h2&gt;</description>
         </item>
         <item>
         <title>JVM相关面试题</title>
@@ -2765,20 +2912,175 @@
 &lt;/ul&gt;
 &lt;h3 id=&#34;q6rabbitmq如何保证消费的顺序性-&#34;&gt;Q6：RabbitMQ如何保证消费的顺序性 ?
 &lt;/h3&gt;&lt;h3 id=&#34;q7springioc&#34;&gt;Q7：SpringIOC
-&lt;/h3&gt;&lt;h3 id=&#34;q8springaop&#34;&gt;Q8：SpringAOP
-&lt;/h3&gt;&lt;h3 id=&#34;q9三级缓存循环依赖&#34;&gt;Q9：三级缓存（循环依赖）
-&lt;/h3&gt;&lt;h3 id=&#34;q10设计模式&#34;&gt;Q10：设计模式
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;IOC的俩种实现&lt;/p&gt;
+&lt;p&gt;相关问题：Bean的生命周期&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;BeanFactory&lt;/li&gt;
+&lt;li&gt;ApplicationContext&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;q8springaop&#34;&gt;Q8：SpringAOP
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;CGLIB和JDK的动态代理&lt;/p&gt;
+&lt;p&gt;相关问题：AOP相关注解&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&#34;q9三级缓存循环依赖&#34;&gt;Q9：三级缓存（循环依赖）
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;Spring三级缓存主要是为了优雅的解决循环依赖的问题，同时也能通过缓存提高性能&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;一级缓存&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;存储&lt;strong&gt;完全初始化好的单例bean&lt;/strong&gt;（已经注入所有的属性，完成初始化方法的操作）&lt;/li&gt;
+&lt;li&gt;是一个ConcurrentHashMap&amp;lt;String, Object&amp;gt;，Key是Bean名称，Value是Bean实例&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;二级缓存&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;存储早期创建的单例bean，&lt;strong&gt;还没有完成所有的初始化&lt;/strong&gt;，但已经可以被其他bean引用。&lt;/li&gt;
+&lt;li&gt;数据结构同一级缓存&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;三级缓存&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;存储的是创建Bean的工厂对象&lt;/li&gt;
+&lt;li&gt;数据结构是一个ConcurrentHashMap&amp;lt;String, Object&amp;gt;，键是 Bean 的名称，值是&lt;code&gt;ObjectFactory&lt;/code&gt;对象&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;以&lt;strong&gt;一个例子来说明三级缓存的执行流程&lt;/strong&gt;：Bean A、Bean B存在A依赖B，B依赖A的情况，此时&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;A的创建过程
+&lt;ul&gt;
+&lt;li&gt;Spring开始创建A的时候，会先检查&lt;strong&gt;一级缓存&lt;/strong&gt;，发现没有A，然后开始实例化A（&lt;strong&gt;调用A的构造函数&lt;/strong&gt;）&lt;/li&gt;
+&lt;li&gt;实例化A后，发现A存在循环依赖的问题，于是把&lt;strong&gt;A的工厂对象放入三级缓存&lt;/strong&gt;中&lt;/li&gt;
+&lt;li&gt;然后Spring给A注入属性，发现需要注入B（且三级缓存中没有B的工厂对象），就暂停A的创建，开始创建B&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;B的创建
+&lt;ul&gt;
+&lt;li&gt;创建B时，先看&lt;strong&gt;一级缓存&lt;/strong&gt;，没有，调用构造函数实例化&lt;/li&gt;
+&lt;li&gt;返现B循环依赖，把B的工&lt;strong&gt;厂对象放入三级缓存&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;当给B注入属性时，发现需要A，就去一级缓存找，没有就找二级缓存，也没有就找到三级缓存中A的工厂对象，通过这个工厂对象获取A的早期实例，然后将A放入二级缓存&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;此时B完成创建，放入一级缓存&lt;/li&gt;
+&lt;li&gt;回到A，A从一级缓存中拿到B，完成创建，放入一级缓存&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;简单来说，就是B拿了个A的套壳，完成了创建放入一级缓存，然后A就能顺利创建，此时B拿的A也完成了创建&lt;/strong&gt;&lt;/p&gt;
+&lt;h3 id=&#34;q10设计模式&#34;&gt;Q10：设计模式
 &lt;/h3&gt;&lt;h3 id=&#34;q11事务失效场景&#34;&gt;Q11：事务失效场景
-&lt;/h3&gt;&lt;h2 id=&#34;day5&#34;&gt;day5
-&lt;/h2&gt;&lt;blockquote&gt;
-&lt;p&gt;还是MQ+&lt;/p&gt;
+&lt;/h3&gt;&lt;h3 id=&#34;q12mq消息可靠性&#34;&gt;Q12：MQ消息可靠性
+&lt;/h3&gt;&lt;p&gt;&lt;img src=&#34;https://example.com/p/%E6%AF%8F%E6%97%A5%E5%85%AB%E8%82%A1/index.assets/image-20241113202043738.png&#34;
+	width=&#34;987&#34;
+	height=&#34;674&#34;
+	srcset=&#34;https://example.com/p/%E6%AF%8F%E6%97%A5%E5%85%AB%E8%82%A1/index.assets/image-20241113202043738_hu3121173068814285928.png 480w, https://example.com/p/%E6%AF%8F%E6%97%A5%E5%85%AB%E8%82%A1/index.assets/image-20241113202043738_hu10766936849562874345.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20241113202043738&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;146&#34;
+		data-flex-basis=&#34;351px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;h3 id=&#34;q13消息幂等性&#34;&gt;Q13：消息幂等性
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;参照本博客云岚到家的&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;p&gt;+++&lt;/p&gt;
 &lt;p&gt;q1：服务保护&lt;/p&gt;
 &lt;p&gt;Sentinel、GateWay、MQ削峰填谷&lt;/p&gt;
 &lt;p&gt;q2：用什么做单元测试&lt;/p&gt;
 &lt;p&gt;Junit、MockITO&lt;/p&gt;
-</description>
+&lt;h2 id=&#34;day5&#34;&gt;day5
+&lt;/h2&gt;&lt;blockquote&gt;
+&lt;p&gt;还是MQ+点赞&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&#34;q1怎么保证mq消息不丢失&#34;&gt;Q1：怎么保证MQ消息不丢失
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;三个点&lt;/p&gt;
+&lt;p&gt;额外的保证，失败消息落库，定时任务重投，超过重投次数转人工&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;生产者确认机制（每个消息指定为一ID）&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;publish-confirm：消息是否到交换机&lt;/li&gt;
+&lt;li&gt;publish-return：消息是否到队列&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;MQ消息持久化防止MQ宕机&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;MQ自身做了队列持久化、消息持久化、交换机持久化&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;消费者确认机制&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;消费者&lt;strong&gt;获取消息并处理消息&lt;/strong&gt;后发送ACK回执
+&lt;ul&gt;
+&lt;li&gt;一般auto ack，spring根据是否有异常帮我们决定是ack还是nack&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;q2了解过mq的延迟消息吗&#34;&gt;Q2：了解过MQ的延迟消息吗
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;延迟消息通过官方插件可以实现&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;过去我们做过一些&lt;strong&gt;取消超时订单&lt;/strong&gt;的业务场景有实施过这个方案&lt;/p&gt;
+&lt;h3 id=&#34;q3那你讲讲取消超时订单的方案&#34;&gt;Q3：那你讲讲取消超时订单的方案
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;RabbitMQ延迟消息、redis过期时间、定时任务（xxljob）&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;关于RabbitMQ延迟消息&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;创建订单时，发送一个带有延迟时间的消息到mq的延迟队列，&lt;strong&gt;当延迟时间结束，就会把消息投到对应的目标队列&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;关于redis过期时间的方案&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;redis的键可以设置过期时间。&lt;strong&gt;当订单创建的时候&lt;/strong&gt;，以订单ID为键存到redis。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;当键过期时&lt;/strong&gt;，通过redis的过期回调机制、或者定时扫描过期键的方式来触发取消订单的操作&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;xxljob定时任务操订单表，查是否超时，触发取消逻辑&lt;/p&gt;
+&lt;p&gt;还可以懒加载的形式触发取消&lt;/p&gt;
+&lt;h3 id=&#34;q4如何解决消息积压&#34;&gt;Q4：如何解决消息积压
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;提高消费速度，增加更多消费者&lt;/li&gt;
+&lt;li&gt;扩容（最终方案）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;q5redis的set和zset&#34;&gt;Q5：redis的set和zset
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;通过这个问题去了解set和zset的数据结构如何&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;reidis的set：以商品id为key，value存的是点赞用户的id，也是就是说，一个商品id对应一个set，set里面包含多个userid表示给这个商品点赞的用户，这样就是实现了不重复。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/%E6%AF%8F%E6%97%A5%E5%85%AB%E8%82%A1/index.assets/image-20241114170338964.png&#34;
+	width=&#34;732&#34;
+	height=&#34;217&#34;
+	srcset=&#34;https://example.com/p/%E6%AF%8F%E6%97%A5%E5%85%AB%E8%82%A1/index.assets/image-20241114170338964_hu8965381684585442403.png 480w, https://example.com/p/%E6%AF%8F%E6%97%A5%E5%85%AB%E8%82%A1/index.assets/image-20241114170338964_hu14644127139112320381.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20241114170338964&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;337&#34;
+		data-flex-basis=&#34;809px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;redis的zset：以点赞为例子，&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;有给文章点赞的，有给评论点赞的，一个点赞类型对应一个zset，key就是：like:wz(业务也是就点赞+类型也就是文章)&lt;/li&gt;
+&lt;li&gt;以文章的点赞为例，有多个文章，那么zset的member就存的是文章id，score就是它的点赞数&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/%E6%AF%8F%E6%97%A5%E5%85%AB%E8%82%A1/index.assets/image-20241114170350123.png&#34;
+	width=&#34;748&#34;
+	height=&#34;235&#34;
+	srcset=&#34;https://example.com/p/%E6%AF%8F%E6%97%A5%E5%85%AB%E8%82%A1/index.assets/image-20241114170350123_hu14685443581975736989.png 480w, https://example.com/p/%E6%AF%8F%E6%97%A5%E5%85%AB%E8%82%A1/index.assets/image-20241114170350123_hu7544475994254060718.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20241114170350123&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;318&#34;
+		data-flex-basis=&#34;763px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;h3 id=&#34;q6&#34;&gt;Q6：
+&lt;/h3&gt;</description>
         </item>
         <item>
         <title>RabbitMQ</title>
@@ -3186,93 +3488,6 @@
 &lt;/h3&gt;&lt;p&gt;监听了配置，就需要用到&lt;code&gt;org.springframework.cloud.gateway.route.RouteDefinitionWriter&lt;/code&gt;这个接口来更新路由也就是RouteDefinition&lt;/p&gt;
 &lt;h3 id=&#34;333实现动态路由&#34;&gt;3.3.3.实现动态路由
 &lt;/h3&gt;</description>
-        </item>
-        <item>
-        <title>Spring IoC</title>
-        <link>https://example.com/p/spring-ioc/</link>
-        <pubDate>Thu, 26 Sep 2024 16:02:00 +0800</pubDate>
-        
-        <guid>https://example.com/p/spring-ioc/</guid>
-        <description>&lt;h1 id=&#34;代码规范&#34;&gt;代码规范
-&lt;/h1&gt;&lt;p&gt;很零散，暂时不做整理，先将就着看&lt;/p&gt;
-&lt;p&gt;注意对每个规范要求的力度如：&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;务必&lt;/li&gt;
-&lt;li&gt;应当&lt;/li&gt;
-&lt;li&gt;可以&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&#34;对于集合务必注释表明集合元素对应的具体语境&#34;&gt;对于集合，务必注释表明集合元素对应的具体语境
-&lt;/h3&gt;&lt;p&gt;如：&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
-&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
-&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;// 跟踪所有活动订单: Order ID =&amp;gt; OrderEntity&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;    &lt;/span&gt;&lt;span class=&#34;kd&#34;&gt;final&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;ConcurrentHashMap&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Long&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;OrderEntity&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;activeOrders&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;new&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;ConcurrentHashMap&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;lt;&amp;gt;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;();&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;    &lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;// 跟踪用户活动订单: User ID =&amp;gt; Map(Order ID =&amp;gt; OrderEntity)&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;    &lt;/span&gt;&lt;span class=&#34;kd&#34;&gt;final&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;ConcurrentHashMap&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Long&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;ConcurrentHashMap&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Long&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;OrderEntity&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;gt;&amp;gt;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;userOrders&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;new&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;ConcurrentHashMap&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;lt;&amp;gt;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;();&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
-&lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;对于复杂数据类型的返回值应当在注释中给出返回示例&#34;&gt;对于复杂数据类型的返回值，应当在注释中给出返回示例
-&lt;/h3&gt;&lt;p&gt;如：&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
-&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
-&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;    &lt;/span&gt;&lt;span class=&#34;cm&#34;&gt;/**
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;cm&#34;&gt;     * 统计信息
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;cm&#34;&gt;     *
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;cm&#34;&gt;     * @return 返回的数据结构类似
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;cm&#34;&gt;     * &amp;lt;pre&amp;gt; {@code
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;cm&#34;&gt;     * [
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;cm&#34;&gt;     * {&amp;#34;pos&amp;#34;: &amp;#34;班主任&amp;#34;, &amp;#34;total&amp;#34;: 5},
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;cm&#34;&gt;     * {&amp;#34;pos&amp;#34;: &amp;#34;学工主管&amp;#34;, &amp;#34;total&amp;#34;: 2},
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;cm&#34;&gt;     * {&amp;#34;pos&amp;#34;: &amp;#34;咨询师&amp;#34;, &amp;#34;total&amp;#34;: 3}
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;cm&#34;&gt;     * ]
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;cm&#34;&gt;     * } &amp;lt;pre&amp;gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;cm&#34;&gt;     */&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;    &lt;/span&gt;&lt;span class=&#34;nd&#34;&gt;@MapKey&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;pos&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;    &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;List&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Map&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;String&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Object&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;gt;&amp;gt;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;countEmpJobData&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;();&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
-&lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;对于写在-xxxmapperxml务必在每个-sql-操作前写注释隔开xml-的可读性很差不要雪上加霜&#34;&gt;对于写在 XxxMapper.xml，务必在每个 sql 操作前写注释隔开，xml 的可读性很差，不要雪上加霜
-&lt;/h3&gt;&lt;p&gt;如:&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://example.com/p/spring-ioc/index.assets/image-20240926171427194.png&#34;
-	width=&#34;862&#34;
-	height=&#34;559&#34;
-	srcset=&#34;https://example.com/p/spring-ioc/index.assets/image-20240926171427194_hu6148662528252553966.png 480w, https://example.com/p/spring-ioc/index.assets/image-20240926171427194_hu17790162117415341256.png 1024w&#34;
-	loading=&#34;lazy&#34;
-	
-		alt=&#34;image-20240926171427194&#34;
-	
-	
-		class=&#34;gallery-image&#34; 
-		data-flex-grow=&#34;154&#34;
-		data-flex-basis=&#34;370px&#34;
-	
-&gt;&lt;/p&gt;
-&lt;p&gt;是不是非常的清爽&lt;/p&gt;
-</description>
         </item>
         <item>
         <title>springMVC</title>

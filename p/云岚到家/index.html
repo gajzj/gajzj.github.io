@@ -258,8 +258,18 @@
     <li><a href="#服务搜索">服务搜索</a>
       <ol>
         <li><a href="#服务搜索技术方案">服务搜索技术方案</a></li>
+        <li><a href="#索引同步方案">索引同步方案</a></li>
       </ol>
     </li>
+    <li><a href="#mq技术方案">MQ技术方案</a>
+      <ol>
+        <li><a href="#保证生产消息可靠性">保证生产消息可靠性</a></li>
+        <li><a href="#保证消费信息可靠性">保证消费信息可靠性</a></li>
+        <li><a href="#保证消息幂等性">保证消息幂等性</a></li>
+      </ol>
+    </li>
+    <li><a href="#配置数据同步环境">配置数据同步环境</a></li>
+    <li><a href="#索引同步">索引同步</a></li>
   </ol>
 </nav>
         </div>
@@ -526,7 +536,154 @@
 </ul>
 <h2 id="服务搜索">服务搜索
 </h2><h3 id="服务搜索技术方案">服务搜索技术方案
-</h3>
+</h3><p>分词关键字搜索</p>
+<p>Elasticsearch是基于倒排索引的原理，正排索引是从文章中找词，倒排索引是根据词去找文章</p>
+<p><img src="https://cdn.nlark.com/yuque/0/2024/jpeg/1169676/1708766787224-7366260f-49cb-4189-b153-c51c65bff3c7.jpeg?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_34%2Ctext_5rK554K45bCP5rOi%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10%2Fformat%2Cwebp%2Fresize%2Cw_937%2Climit_0%2Finterlace%2C1"
+	
+	
+	
+	loading="lazy"
+	
+		alt="img"
+	
+	
+></p>
+<h3 id="索引同步方案">索引同步方案
+</h3><p>方案1：添加服务信息维护索引</p>
+<p>在Service方法中添加维护ES索引的代码</p>
+<p>方案2：使用Canal+MQ</p>
+<p>Mysql主从数据同步原理</p>
+<ul>
+<li>
+<p>master、slave</p>
+</li>
+<li>
+<p>主从数据同步是一种数据库复制技术</p>
+<ul>
+<li>写数据先向主服务器写</li>
+<li>写成功后同步到从服务器</li>
+<li>主从数据库同步流程
+<ul>
+<li><img src="/p/%E4%BA%91%E5%B2%9A%E5%88%B0%E5%AE%B6/index.assets/image-20241113194338480.png"
+	width="944"
+	height="796"
+	srcset="/p/%E4%BA%91%E5%B2%9A%E5%88%B0%E5%AE%B6/index.assets/image-20241113194338480_hu9558839266934732661.png 480w, /p/%E4%BA%91%E5%B2%9A%E5%88%B0%E5%AE%B6/index.assets/image-20241113194338480_hu7544216915693610526.png 1024w"
+	loading="lazy"
+	
+		alt="image-20241113194338480"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="118"
+		data-flex-basis="284px"
+	
+></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>Canal实现原理</p>
+<p><img src="/p/%E4%BA%91%E5%B2%9A%E5%88%B0%E5%AE%B6/index.assets/image-20241113194456751.png"
+	width="834"
+	height="724"
+	srcset="/p/%E4%BA%91%E5%B2%9A%E5%88%B0%E5%AE%B6/index.assets/image-20241113194456751_hu6855926193138491222.png 480w, /p/%E4%BA%91%E5%B2%9A%E5%88%B0%E5%AE%B6/index.assets/image-20241113194456751_hu3096571901932341757.png 1024w"
+	loading="lazy"
+	
+		alt="image-20241113194456751"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="115"
+		data-flex-basis="276px"
+	
+></p>
+<p><strong>索引同步方案</strong></p>
+<p><img src="/p/%E4%BA%91%E5%B2%9A%E5%88%B0%E5%AE%B6/index.assets/image-20241113194927402.png"
+	width="937"
+	height="682"
+	srcset="/p/%E4%BA%91%E5%B2%9A%E5%88%B0%E5%AE%B6/index.assets/image-20241113194927402_hu5694483979435074512.png 480w, /p/%E4%BA%91%E5%B2%9A%E5%88%B0%E5%AE%B6/index.assets/image-20241113194927402_hu5711922681188395428.png 1024w"
+	loading="lazy"
+	
+		alt="image-20241113194927402"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="137"
+		data-flex-basis="329px"
+	
+></p>
+<p>在这个过程中MQ必须保证可靠性</p>
+</li>
+</ul>
+<h2 id="mq技术方案">MQ技术方案
+</h2><h3 id="保证生产消息可靠性">保证生产消息可靠性
+</h3><ul>
+<li>本地失败重试</li>
+<li>失败消息入库（达到失败次数入库）</li>
+<li>失败消息人工处理、失败消息自动处理任务调度</li>
+</ul>
+<p><img src="https://cdn.nlark.com/yuque/0/2024/svg/1169676/1708767028738-d30ce85a-2065-4e62-a549-ae8b68530e74.svg"
+	
+	
+	
+	loading="lazy"
+	
+		alt="14.svg"
+	
+	
+></p>
+<p>@Retryable注解实现执行失败进行重试</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@Retryable</span><span class="p">(</span><span class="n">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MqException</span><span class="p">.</span><span class="na">class</span><span class="p">,</span><span class="w"> </span><span class="c1">// 抛出指定异常时重试</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">		</span><span class="n">maxAttempts</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">3</span><span class="p">,</span><span class="w"> </span><span class="c1">// 最大重试次数、默认三次</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">		</span><span class="n">backoff</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nd">@Backoff</span><span class="p">(</span><span class="n">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">3000</span><span class="p">,</span><span class="w"> </span><span class="n">mutiplier</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">1</span><span class="p">.</span><span class="na">5</span><span class="p">),</span><span class="w"> </span><span class="c1">// 重试等待策略（每次重试乘以系数）</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">		</span><span class="n">recover</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&#34;saveFailMag&#34;</span><span class="w"> </span><span class="c1">// 设置回调方法名，重试耗尽时执行</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">)</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>ConfirmCallback：消息成功投递到交换机会返回ack，失败会返回nack</p>
+<p>Return回调：消息成功到达交换机，但没到队列，调用回调方法</p>
+<h3 id="保证消费信息可靠性">保证消费信息可靠性
+</h3><ul>
+<li>
+<p>设置消息持久化，发送消息设置deliveryMode = 2</p>
+<ul>
+<li>none模式下，消息投递是不可靠的，可能丢失</li>
+<li>auto模式类似事务机制，出现异常时返回nack，消息回滚到mq；没有异常，返回ack</li>
+<li>manual：自己根据业务情况，判断什么时候该ack</li>
+</ul>
+</li>
+<li>
+<p>自动ack模式，失败重试三次后投递到失败队列</p>
+</li>
+</ul>
+<h3 id="保证消息幂等性">保证消息幂等性
+</h3><p><strong>幂等性是指不论执行多少次，其结果一致</strong></p>
+<p>针对不同场景，不同解决方案</p>
+<ul>
+<li>查询操作：本身具有幂等性</li>
+<li>添加操作：有可能会重复添加记录，通过设置唯一约束老保证</li>
+<li>更新操作：更新操作应当只允许更新成功一次，使用token机制
+<ul>
+<li>发送消息前生成一个token写入redis，收到消息后解析出token，从redis查询token</li>
+<li>查询到则说明没有消费，此时更新，更新成功后删除token缓存</li>
+<li>当重复消费时，token会被删除，所以不会执行</li>
+</ul>
+</li>
+<li>删除操作：与更新类似</li>
+</ul>
+<h2 id="配置数据同步环境">配置数据同步环境
+</h2><h2 id="索引同步">索引同步
+</h2>
 </section>
 
 
