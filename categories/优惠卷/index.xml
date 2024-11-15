@@ -14,6 +14,7 @@
         
         <guid>https://example.com/p/%E4%BC%98%E6%83%A0%E5%8D%B7/</guid>
         <description>&lt;h1 id=&#34;优惠卷&#34;&gt;优惠卷
+&lt;/h1&gt;&lt;h1 id=&#34;涉及缓存预热定时任务超卖lua库存同步&#34;&gt;（涉及缓存预热、定时任务、超卖、lua、库存同步）
 &lt;/h1&gt;&lt;blockquote&gt;
 &lt;p&gt;为了讲明白优惠卷这个模块，首先要搞懂优惠卷的管理，然后才是优惠卷的领取、派发、核销（资源的产出、分配、消耗）&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -99,12 +100,52 @@
 &lt;/ul&gt;
 &lt;h2 id=&#34;用户抢卷&#34;&gt;用户抢卷
 &lt;/h2&gt;&lt;ul&gt;
-&lt;li&gt;（&lt;strong&gt;开始抢卷&lt;/strong&gt;）到了优惠卷发放时间用户进行抢卷&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;抢卷过程中&lt;/strong&gt;对优惠卷库存、对用户领取数量进行校验&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;抢卷成功&lt;/strong&gt;记录用户领取记录&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;用户查询活动相关情况&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;（&lt;strong&gt;开始抢卷&lt;/strong&gt;）到了优惠卷发放时间用户进行抢卷&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;抢卷过程中&lt;/strong&gt;对优惠卷库存、对用户领取数量进行校验&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;抢卷成功&lt;/strong&gt;记录用户领取记录&lt;/p&gt;
+&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id=&#34;超买问题&#34;&gt;超买问题
-&lt;/h3&gt;&lt;h3 id=&#34;超卖问题&#34;&gt;超卖问题
+&lt;h3 id=&#34;c端查询活动&#34;&gt;C端查询活动
+&lt;/h3&gt;&lt;p&gt;高并发，需要使用缓存，必须要考虑缓存一致性，防止缓存击穿&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/%E4%BC%98%E6%83%A0%E5%8D%B7/index.assets/image-20241115211531775.png&#34;
+	width=&#34;869&#34;
+	height=&#34;250&#34;
+	srcset=&#34;https://example.com/p/%E4%BC%98%E6%83%A0%E5%8D%B7/index.assets/image-20241115211531775_hu6940586824826391862.png 480w, https://example.com/p/%E4%BC%98%E6%83%A0%E5%8D%B7/index.assets/image-20241115211531775_hu2572717479316556044.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20241115211531775&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;347&#34;
+		data-flex-basis=&#34;834px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;通过引入&lt;strong&gt;俩个定时任务&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;定时更新活动状态：一分钟执行一次，存在一分钟的变更延迟&lt;/li&gt;
+&lt;li&gt;定时扫表预热活动：
+&lt;ul&gt;
+&lt;li&gt;预热进行中还未结束的活动&lt;/li&gt;
+&lt;li&gt;预热一个月内待开始的活动&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;定时任务存在活动状态转变的变更延迟如何解决&#34;&gt;定时任务存在活动状态转变的变更延迟，如何解决：
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;前端根据开始时间倒计时，达到时间就&lt;strong&gt;移到&lt;/strong&gt;进行中界面&lt;/li&gt;
+&lt;li&gt;然后请求后端时判断状态&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;超卖问题&#34;&gt;超卖问题
+&lt;/h3&gt;&lt;h3 id=&#34;超买问题&#34;&gt;超买问题
 &lt;/h3&gt;&lt;h2 id=&#34;优惠卷核销&#34;&gt;优惠卷核销
 &lt;/h2&gt;&lt;ul&gt;
 &lt;li&gt;下单时使用优惠卷，标记已使用或作废&lt;/li&gt;
@@ -113,18 +154,31 @@
 &lt;h1 id=&#34;相关问题&#34;&gt;相关问题
 &lt;/h1&gt;&lt;h2 id=&#34;q1如果我要优惠卷折扣或满减是分阶段的怎么办&#34;&gt;Q1：如果我要优惠卷折扣或满减是分阶段的怎么办
 &lt;/h2&gt;&lt;blockquote&gt;
-&lt;p&gt;我的天功能都写好了，产品突然变更需求一下子干蒙了；想起资源控制里在资源表里维护树形结构，于是在这里我们在活动表中维护链表结构来满足阶段性折扣&lt;/p&gt;
+&lt;p&gt;我的天功能都写好了，产品突然变更需求一下子干蒙了；想起资源控制里在资源表里维护树形结构，于是在这里我们在活动表中维护链表结构来满足阶段性折扣，&lt;strong&gt;只多了一个字段的代价，非常的划算&lt;/strong&gt;（当然也可以再多一张表做关联也行，这样减少了活动表的数据量，也很不错）&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;p&gt;假设我们功能都实现了，但是需求有变更，那可以这么处理&lt;/p&gt;
+&lt;p&gt;我们功能都实现了，但是需求有变更，那可以这么处理&lt;/p&gt;
 &lt;p&gt;这里必须要做优惠卷活动表字段的变动，增加一个字段&lt;strong&gt;存储优惠卷活动的id&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;即：阶段性折扣的优惠卷活动变成了&lt;strong&gt;链型存储&lt;/strong&gt;（可以都存根id，根id存1表示为根活动，存0则表示这个活动不是根活动（是一个普通），存某一个活动的id则表示是该id活动的&lt;strong&gt;子活动&lt;/strong&gt;），即一个活动包含子活动（对用户子活动无感知，我们只展示根活动）&lt;/p&gt;
+&lt;p&gt;（可以子节点统一储存根结点，也可以存储上一个阶段结点，应该还是统一存根好，可以一次查询取出）&lt;/p&gt;
 &lt;p&gt;然后前端的请求增加一个字段表示当前添加的活动是普通优惠卷活动还是分阶段的优惠卷活动，controller层做区分，service写多一个方法即可&lt;/p&gt;
+&lt;p&gt;还有一个问题待解决，这里我们活动表做了链型结构，但优惠卷表还是只存一个记录的（一个优惠卷哪怕分阶段也是一次性用完的），所以其他的相关操作大致不需要改变，就只需要在订单&lt;strong&gt;计算优惠金额的时候加上分阶段计算的逻辑&lt;/strong&gt;即可&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;或者还有一个无痛的处理方式，就是抢到分阶段的优惠卷时自动追加发放分级优惠卷，但这样观感是在太差了，毫无疑问的垃圾方案&lt;/p&gt;
+&lt;p&gt;而且还是没解决分段折扣如何存储的问题&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;blockquote&gt;
 &lt;p&gt;当然也可以把这个分阶段的需求拆分，就类似京东的分阶段优惠它其实不是靠优惠卷机制，而是另外的，需要和产品沟通&lt;/p&gt;
 &lt;p&gt;但存在一个问题，如果这个分阶段折扣或满减也是需要抢的，会存在大量的逻辑重复，和优惠卷整体太过相似，还不如多维护一个字段&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;strong&gt;总之，只靠多维护一个字段的代价，避免了产品设计的变更、避免了高度重复的功能代码、避免了更大范围的数据表结构变化，非常非常的好&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;del&gt;我真tm是个天才&lt;/del&gt;&lt;/p&gt;
+&lt;p&gt;好像也就只有这个做法比较合适&lt;/p&gt;
+&lt;h2 id=&#34;q2定时更新活动状态任务执行频次高且如果根据q1的表结构活动表将是一个数据量较大的表可能会出现定时任务执行时间相对较长的情况其实小电商平台里基本不可能出现&#34;&gt;Q2：定时更新活动状态任务执行频次高，且如果根据Q1的表结构活动表将是一个数据量较大的表，可能会出现定时任务执行时间相对较长的情况（其实小电商平台里基本不可能出现）
+&lt;/h2&gt;&lt;blockquote&gt;
+&lt;p&gt;前端倒计时+后端根据时间判断状态其实已经可以接受了&lt;/p&gt;
+&lt;p&gt;但仍可以参考&lt;a class=&#34;link&#34; href=&#34;https://juejin.cn/post/7339742783236702271&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;半小时到秒级，京东零售定时任务优化怎么做的？本文通过一个真实的线上案例总结了针对海量数据批处理任务的一些通用优化方法，除 - 掘金 (juejin.cn)&lt;/a&gt;多说些，因为&lt;strong&gt;一个健康的系统是不允许cpu常态占用高的&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;定位问题：任务执行时间长且CPU利用率高&lt;/p&gt;
 &lt;/blockquote&gt;
 </description>
         </item>
