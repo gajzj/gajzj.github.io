@@ -7,7 +7,15 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>gajzj</copyright>
-        <lastBuildDate>Thu, 14 Nov 2024 20:02:00 +0800</lastBuildDate><atom:link href="https://example.com/tags/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Fri, 15 Nov 2024 18:02:00 +0800</lastBuildDate><atom:link href="https://example.com/tags/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>超买超卖</title>
+        <link>https://example.com/tags/%E8%B6%85%E4%B9%B0%E8%B6%85%E5%8D%96/</link>
+        <pubDate>Fri, 15 Nov 2024 18:02:00 +0800</pubDate>
+        
+        <guid>https://example.com/tags/%E8%B6%85%E4%B9%B0%E8%B6%85%E5%8D%96/</guid>
+        <description></description>
+        </item>
+        <item>
         <title>Redis</title>
         <link>https://example.com/tags/redis/</link>
         <pubDate>Thu, 14 Nov 2024 20:02:00 +0800</pubDate>

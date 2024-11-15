@@ -131,7 +131,26 @@
 &lt;li&gt;优先级一致的情况下，&lt;strong&gt;判断offset，越大说明数据越新，优先级越高&lt;/strong&gt;&lt;/li&gt;
 &lt;li&gt;判断slave结点运行id大小，越小优先级越高&lt;/li&gt;
 &lt;/ul&gt;
-</description>
+&lt;h2 id=&#34;redis分片群&#34;&gt;Redis分片群
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;集群中有多个master结点，每个master根据插槽映射保存不同的数据&lt;/li&gt;
+&lt;li&gt;每个master有多个slave&lt;/li&gt;
+&lt;li&gt;master之间通过ping检测彼此健康状态&lt;/li&gt;
+&lt;li&gt;客户端请求可以访问任意集群结点，请求会在内部转发&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;散列插槽&#34;&gt;散列插槽
+&lt;/h3&gt;&lt;p&gt;redis把每个master映射到0~16383个插槽&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;key中包含&amp;quot;{}&amp;quot;，根据&amp;quot;{}&amp;ldquo;计算插槽值&lt;/li&gt;
+&lt;li&gt;key中不包含&amp;rdquo;{}&amp;quot;，整个key计算&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;CRC16计算hash对16384取余&lt;/p&gt;
+&lt;h3 id=&#34;集群伸缩&#34;&gt;集群伸缩
+&lt;/h3&gt;&lt;p&gt;添加新结点到redis时，默认是一个master，但插槽并没有分配，需要&lt;strong&gt;转移插槽&lt;/strong&gt;&lt;/p&gt;
+&lt;h2 id=&#34;故障转移&#34;&gt;故障转移
+&lt;/h2&gt;&lt;h3 id=&#34;自动故障转移&#34;&gt;自动故障转移
+&lt;/h3&gt;&lt;h3 id=&#34;手动故障转移&#34;&gt;手动故障转移
+&lt;/h3&gt;</description>
         </item>
         
     </channel>

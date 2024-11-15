@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>优惠卷 on GAJ-Blog</title>
+        <link>https://example.com/categories/%E4%BC%98%E6%83%A0%E5%8D%B7/</link>
+        <description>Recent content in 优惠卷 on GAJ-Blog</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>gajzj</copyright>
+        <lastBuildDate>Fri, 15 Nov 2024 18:02:00 +0800</lastBuildDate><atom:link href="https://example.com/categories/%E4%BC%98%E6%83%A0%E5%8D%B7/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>优惠卷</title>
+        <link>https://example.com/p/%E4%BC%98%E6%83%A0%E5%8D%B7/</link>
+        <pubDate>Fri, 15 Nov 2024 18:02:00 +0800</pubDate>
+        
+        <guid>https://example.com/p/%E4%BC%98%E6%83%A0%E5%8D%B7/</guid>
+        <description>&lt;h1 id=&#34;优惠卷&#34;&gt;优惠卷
+&lt;/h1&gt;&lt;blockquote&gt;
+&lt;p&gt;为了讲明白优惠卷这个模块，首先要搞懂优惠卷的管理，然后才是优惠卷的领取、派发、核销（资源的产出、分配、消耗）&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;首先明确一个概念，优惠卷是一种营销活动，活动都应该有开始、结束时间。&lt;/p&gt;
+&lt;h2 id=&#34;优惠卷管理&#34;&gt;优惠卷管理
+&lt;/h2&gt;&lt;p&gt;运营人员&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;添加优惠卷活动&lt;/li&gt;
+&lt;li&gt;修改优惠卷活动&lt;/li&gt;
+&lt;li&gt;撤销优惠卷活动&lt;/li&gt;
+&lt;li&gt;优惠卷统计等&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;数据流&#34;&gt;数据流
+&lt;/h3&gt;&lt;p&gt;&lt;strong&gt;优惠卷活动表&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;记录优惠卷活动信息，运营人员新增优惠卷活动写入此表&lt;/li&gt;
+&lt;li&gt;关键字段
+&lt;ul&gt;
+&lt;li&gt;活动id&lt;/li&gt;
+&lt;li&gt;活动名称&lt;/li&gt;
+&lt;li&gt;优惠卷类型&lt;/li&gt;
+&lt;li&gt;类型：满减、折扣&lt;/li&gt;
+&lt;li&gt;发放时间&lt;/li&gt;
+&lt;li&gt;状态：待生效、进行中、已失效、作废&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;优惠卷表&lt;/strong&gt;（记录用户和优惠卷的关联，存在数量限制）&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;记录用户领取的优惠卷，每个用户每种优惠卷只能领取一张，优惠卷总数不能超过库存&lt;/li&gt;
+&lt;li&gt;关键字段（这张表的主键是id代表优惠卷id）
+&lt;ul&gt;
+&lt;li&gt;用户id&lt;/li&gt;
+&lt;li&gt;活动id&lt;/li&gt;
+&lt;li&gt;折扣&lt;/li&gt;
+&lt;li&gt;优惠卷类型&lt;/li&gt;
+&lt;li&gt;有效期&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;优惠卷核销表&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;记录用户成功使用优惠卷的记录
+&lt;ul&gt;
+&lt;li&gt;关键字段
+&lt;ul&gt;
+&lt;li&gt;用户id&lt;/li&gt;
+&lt;li&gt;优惠卷id&lt;/li&gt;
+&lt;li&gt;订单id&lt;/li&gt;
+&lt;li&gt;核销时间&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;优惠卷退回表&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;用户取消订单会退回优惠卷，则向退回表添加记录并在核销表删除表示取消核销&lt;/li&gt;
+&lt;li&gt;关键字段
+&lt;ul&gt;
+&lt;li&gt;用户id&lt;/li&gt;
+&lt;li&gt;优惠卷id&lt;/li&gt;
+&lt;li&gt;退回时间&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;相关接口&#34;&gt;相关接口
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;新增优惠卷活动&lt;/li&gt;
+&lt;li&gt;查询优惠卷活动&lt;/li&gt;
+&lt;li&gt;修改优惠卷活动查询领取记录&lt;/li&gt;
+&lt;li&gt;撤销活动&lt;/li&gt;
+&lt;li&gt;自动变更活动状态（运营端）
+&lt;ul&gt;
+&lt;li&gt;定时任务每分钟执行一次（这里要求时效性要高）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;卷包：c端展示用户抢到的优惠卷
+&lt;ul&gt;
+&lt;li&gt;定时任务每小时执行一次&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;用户抢卷&#34;&gt;用户抢卷
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;（&lt;strong&gt;开始抢卷&lt;/strong&gt;）到了优惠卷发放时间用户进行抢卷&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;抢卷过程中&lt;/strong&gt;对优惠卷库存、对用户领取数量进行校验&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;抢卷成功&lt;/strong&gt;记录用户领取记录&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;超买问题&#34;&gt;超买问题
+&lt;/h3&gt;&lt;h3 id=&#34;超卖问题&#34;&gt;超卖问题
+&lt;/h3&gt;&lt;h2 id=&#34;优惠卷核销&#34;&gt;优惠卷核销
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;下单时使用优惠卷，标记已使用或作废&lt;/li&gt;
+&lt;li&gt;取消订单回退优惠卷&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;相关问题&#34;&gt;相关问题
+&lt;/h1&gt;&lt;h2 id=&#34;q1如果我要优惠卷折扣或满减是分阶段的怎么办&#34;&gt;Q1：如果我要优惠卷折扣或满减是分阶段的怎么办
+&lt;/h2&gt;&lt;blockquote&gt;
+&lt;p&gt;我的天功能都写好了，产品突然变更需求一下子干蒙了；想起资源控制里在资源表里维护树形结构，于是在这里我们在活动表中维护链表结构来满足阶段性折扣&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;假设我们功能都实现了，但是需求有变更，那可以这么处理&lt;/p&gt;
+&lt;p&gt;这里必须要做优惠卷活动表字段的变动，增加一个字段&lt;strong&gt;存储优惠卷活动的id&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;即：阶段性折扣的优惠卷活动变成了&lt;strong&gt;链型存储&lt;/strong&gt;（可以都存根id，根id存1表示为根活动，存0则表示这个活动不是根活动（是一个普通），存某一个活动的id则表示是该id活动的&lt;strong&gt;子活动&lt;/strong&gt;），即一个活动包含子活动（对用户子活动无感知，我们只展示根活动）&lt;/p&gt;
+&lt;p&gt;然后前端的请求增加一个字段表示当前添加的活动是普通优惠卷活动还是分阶段的优惠卷活动，controller层做区分，service写多一个方法即可&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;或者还有一个无痛的处理方式，就是抢到分阶段的优惠卷时自动追加发放分级优惠卷，但这样观感是在太差了，毫无疑问的垃圾方案&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;当然也可以把这个分阶段的需求拆分，就类似京东的分阶段优惠它其实不是靠优惠卷机制，而是另外的，需要和产品沟通&lt;/p&gt;
+&lt;p&gt;但存在一个问题，如果这个分阶段折扣或满减也是需要抢的，会存在大量的逻辑重复，和优惠卷整体太过相似，还不如多维护一个字段&lt;/p&gt;
+&lt;/blockquote&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>

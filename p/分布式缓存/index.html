@@ -241,6 +241,18 @@
         <li><a href="#选举流程">选举流程</a></li>
       </ol>
     </li>
+    <li><a href="#redis分片群">Redis分片群</a>
+      <ol>
+        <li><a href="#散列插槽">散列插槽</a></li>
+        <li><a href="#集群伸缩">集群伸缩</a></li>
+      </ol>
+    </li>
+    <li><a href="#故障转移">故障转移</a>
+      <ol>
+        <li><a href="#自动故障转移">自动故障转移</a></li>
+        <li><a href="#手动故障转移">手动故障转移</a></li>
+      </ol>
+    </li>
   </ol>
 </nav>
         </div>
@@ -424,7 +436,26 @@
 <li>优先级一致的情况下，<strong>判断offset，越大说明数据越新，优先级越高</strong></li>
 <li>判断slave结点运行id大小，越小优先级越高</li>
 </ul>
-
+<h2 id="redis分片群">Redis分片群
+</h2><ul>
+<li>集群中有多个master结点，每个master根据插槽映射保存不同的数据</li>
+<li>每个master有多个slave</li>
+<li>master之间通过ping检测彼此健康状态</li>
+<li>客户端请求可以访问任意集群结点，请求会在内部转发</li>
+</ul>
+<h3 id="散列插槽">散列插槽
+</h3><p>redis把每个master映射到0~16383个插槽</p>
+<ul>
+<li>key中包含&quot;{}&quot;，根据&quot;{}&ldquo;计算插槽值</li>
+<li>key中不包含&rdquo;{}&quot;，整个key计算</li>
+</ul>
+<p>CRC16计算hash对16384取余</p>
+<h3 id="集群伸缩">集群伸缩
+</h3><p>添加新结点到redis时，默认是一个master，但插槽并没有分配，需要<strong>转移插槽</strong></p>
+<h2 id="故障转移">故障转移
+</h2><h3 id="自动故障转移">自动故障转移
+</h3><h3 id="手动故障转移">手动故障转移
+</h3>
 </section>
 
 
