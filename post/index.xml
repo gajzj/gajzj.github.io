@@ -7,7 +7,133 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>gajzj</copyright>
-        <lastBuildDate>Sun, 10 Nov 2024 16:02:00 +0800</lastBuildDate><atom:link href="https://example.com/post/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Thu, 14 Nov 2024 20:02:00 +0800</lastBuildDate><atom:link href="https://example.com/post/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>分布式缓存</title>
+        <link>https://example.com/p/%E5%88%86%E5%B8%83%E5%BC%8F%E7%BC%93%E5%AD%98/</link>
+        <pubDate>Thu, 14 Nov 2024 20:02:00 +0800</pubDate>
+        
+        <guid>https://example.com/p/%E5%88%86%E5%B8%83%E5%BC%8F%E7%BC%93%E5%AD%98/</guid>
+        <description>&lt;h1 id=&#34;分布式缓存&#34;&gt;分布式缓存
+&lt;/h1&gt;&lt;h2 id=&#34;redis持久化数据丢失数据可靠性&#34;&gt;Redis持久化、数据丢失、数据可靠性
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;RDB：数据快照，把内存所有数据都存到磁盘&lt;/li&gt;
+&lt;li&gt;AOF：记录每一次写操作&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;rdb&#34;&gt;RDB
+&lt;/h3&gt;&lt;p&gt;fork子线程、copy-on-write，通过创建副本，写操作操作副本，读操作读原来的，读完之后就删掉原来的，fork之后就指向了副本&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/%E5%88%86%E5%B8%83%E5%BC%8F%E7%BC%93%E5%AD%98/index.assets/image-20241115095901067.png&#34;
+	width=&#34;1561&#34;
+	height=&#34;880&#34;
+	srcset=&#34;https://example.com/p/%E5%88%86%E5%B8%83%E5%BC%8F%E7%BC%93%E5%AD%98/index.assets/image-20241115095901067_hu5385396567918865765.png 480w, https://example.com/p/%E5%88%86%E5%B8%83%E5%BC%8F%E7%BC%93%E5%AD%98/index.assets/image-20241115095901067_hu3276114745978763737.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20241115095901067&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;177&#34;
+		data-flex-basis=&#34;425px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;二进制文件，体积小，磁盘IO和COW性能消耗大&lt;/p&gt;
+&lt;p&gt;有丢失风险&lt;/p&gt;
+&lt;h3 id=&#34;aof&#34;&gt;AOF
+&lt;/h3&gt;&lt;p&gt;刷盘策略：always、everySec、no&lt;/p&gt;
+&lt;p&gt;AOF重写：只记录同一个key的最后一次写操作&lt;/p&gt;
+&lt;h2 id=&#34;redis内存淘汰策略&#34;&gt;Redis内存淘汰策略
+&lt;/h2&gt;&lt;h2 id=&#34;redis主从&#34;&gt;redis主从
+&lt;/h2&gt;&lt;p&gt;slaveof指定作为谁的从结点&lt;/p&gt;
+&lt;h3 id=&#34;数据同步原理&#34;&gt;数据同步原理
+&lt;/h3&gt;&lt;p&gt;主从第一次同步时是全量同步&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;第一阶段&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;slave请求同步master（默认请求增量）&lt;/li&gt;
+&lt;li&gt;master判断是否第一次同步（第一次时master将不允许增量同步，而是全量同步）&lt;/li&gt;
+&lt;li&gt;是第一次则返回master版本信息&lt;/li&gt;
+&lt;li&gt;slave保存版本信息&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;第二阶段&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;master执行bgsave，生成rdb
+&lt;ul&gt;
+&lt;li&gt;执行rdb期间主节点可能会有写入操作，会用repl_baklog做补偿&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;发送rdb文件&lt;/li&gt;
+&lt;li&gt;slave清空本地数据，加载rdb（全量）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;第三阶段&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;master用repl_baklog同步给slave&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;slave重启后同步，执行增量&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;第一阶段
+&lt;ul&gt;
+&lt;li&gt;slave请求（offset）&lt;/li&gt;
+&lt;li&gt;master判断id是否一致&lt;/li&gt;
+&lt;li&gt;一致则继续&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;第二阶段
+&lt;ul&gt;
+&lt;li&gt;master去repl_baklog获取offset后的数据（能找到offset时做增量，被覆盖时做全量同步）&lt;/li&gt;
+&lt;li&gt;master发送offset后的命令&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;repl_baklog&lt;/strong&gt;大小有上限，写满后会覆盖最早数据。slave追不上的时候，不能再增量同步了，只能做&lt;strong&gt;全量同步&lt;/strong&gt;&lt;/p&gt;
+&lt;h3 id=&#34;主从同步优化&#34;&gt;主从同步优化
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;master启用无磁盘复制，避免全量同步时的磁盘io&lt;/li&gt;
+&lt;li&gt;redis单节点内存占用不能太大，减少rdb导致的过多磁盘io&lt;/li&gt;
+&lt;li&gt;适当提高repl_baklog大小，slave宕机时尽快恢复&lt;/li&gt;
+&lt;li&gt;master的从结点过多时，采用主从从的链式结构减少master压力&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;redis哨兵模式&#34;&gt;Redis哨兵模式
+&lt;/h2&gt;&lt;p&gt;哨兵可以监控我们当前redis集群状态&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;监控&lt;/li&gt;
+&lt;li&gt;故障恢复&lt;/li&gt;
+&lt;li&gt;通知&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;服务监控&#34;&gt;服务监控
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;主观下线：若某sentinel结点发现某实例（主节点）没有规定时间内响应则认为主观下线&lt;/li&gt;
+&lt;li&gt;客观下线：若超过指定数量（quorum）的sentinel都认为该实例主观下线，则客观下线&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;故障恢复选举新主结点&#34;&gt;故障恢复（选举新主结点）
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;现在先在哨兵中选举一个决策哨兵做决策（选举流程）&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;然后决策哨兵&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;选定一个slave作为新的master，执行slaveof no one（新老大）&lt;/li&gt;
+&lt;li&gt;然后让所有节点都执行slaveof 新master（拜新老大）&lt;/li&gt;
+&lt;li&gt;修改故障节点（挂掉的master）配置，添加slaveof 新master&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;选举流程&#34;&gt;选举流程
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;首先会判断每个slave与master断开时间长短，过长会排除该slave的资格&lt;/li&gt;
+&lt;li&gt;判断slave结点的&lt;strong&gt;slave-priority值&lt;/strong&gt;，越小优先级越高，0为不参加选举&lt;/li&gt;
+&lt;li&gt;优先级一致的情况下，&lt;strong&gt;判断offset，越大说明数据越新，优先级越高&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;判断slave结点运行id大小，越小优先级越高&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        </item>
+        <item>
         <title>云岚到家</title>
         <link>https://example.com/p/%E4%BA%91%E5%B2%9A%E5%88%B0%E5%AE%B6/</link>
         <pubDate>Sun, 10 Nov 2024 16:02:00 +0800</pubDate>
@@ -3192,7 +3318,8 @@
 &lt;p&gt;redis、mysql相关问题再来一遍&lt;/p&gt;
 &lt;p&gt;优惠卷&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;h3 id=&#34;q1缓存一致性&#34;&gt;Q1：缓存一致性
+&lt;h3 id=&#34;q1mq怎么防止消息重复消费消息幂等性&#34;&gt;Q1：MQ怎么防止消息重复消费（消息幂等性）
+&lt;/h3&gt;&lt;h3 id=&#34;q2缓存一致性&#34;&gt;Q2：缓存一致性
 &lt;/h3&gt;</description>
         </item>
         <item>

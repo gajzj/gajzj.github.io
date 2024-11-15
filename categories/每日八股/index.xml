@@ -823,7 +823,8 @@
 &lt;p&gt;redis、mysql相关问题再来一遍&lt;/p&gt;
 &lt;p&gt;优惠卷&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;h3 id=&#34;q1缓存一致性&#34;&gt;Q1：缓存一致性
+&lt;h3 id=&#34;q1mq怎么防止消息重复消费消息幂等性&#34;&gt;Q1：MQ怎么防止消息重复消费（消息幂等性）
+&lt;/h3&gt;&lt;h3 id=&#34;q2缓存一致性&#34;&gt;Q2：缓存一致性
 &lt;/h3&gt;</description>
         </item>
         
