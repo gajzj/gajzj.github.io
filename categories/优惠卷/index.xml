@@ -145,8 +145,82 @@
 &lt;li&gt;然后请求后端时判断状态&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h3 id=&#34;超卖问题&#34;&gt;超卖问题
-&lt;/h3&gt;&lt;h3 id=&#34;超买问题&#34;&gt;超买问题
-&lt;/h3&gt;&lt;h2 id=&#34;优惠卷核销&#34;&gt;优惠卷核销
+&lt;/h3&gt;&lt;p&gt;&lt;img src=&#34;https://example.com/p/%E4%BC%98%E6%83%A0%E5%8D%B7/index.assets/image-20241116094515648.png&#34;
+	width=&#34;725&#34;
+	height=&#34;723&#34;
+	srcset=&#34;https://example.com/p/%E4%BC%98%E6%83%A0%E5%8D%B7/index.assets/image-20241116094515648_hu17437810145320655254.png 480w, https://example.com/p/%E4%BC%98%E6%83%A0%E5%8D%B7/index.assets/image-20241116094515648_hu17704089551317386611.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20241116094515648&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;100&#34;
+		data-flex-basis=&#34;240px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;线程2更新&lt;strong&gt;覆盖&lt;/strong&gt;了线程1更新的库存值&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;悲观锁：用synchronized、ReentrantLock、数据库的排他锁（for update）&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;乐观锁：update 表名 set 字段=值,version=version+1 where  id =? and version =?&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;redis分布式锁方案：每个jvm的线程都去争抢同一个分布式锁，扣减库存先获取分布式锁，拿到锁再扣减库存，然后再释放锁&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;redis原子操作方案：避免申请锁与释放锁的交互&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;使用redis的decr命令扣减库存，redis的命令具有原子性&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://cdn.nlark.com/yuque/0/2024/png/1169676/1709697721665-58a02af7-7a0f-4ffa-a2aa-9253b33c1f86.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_69%2Ctext_5rK554K45bCP5rOi%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10%2Fformat%2Cwebp%2Fresize%2Cw_811%2Climit_0&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;whiteboard_exported_image (77).png&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;redis原子操作方案&#34;&gt;Redis原子操作方案
+&lt;/h3&gt;&lt;p&gt;在这个扣减库存的流程中&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;首先查询库存&lt;/li&gt;
+&lt;li&gt;判断库存大小，如果大于0则扣减库存，否则直接返回&lt;/li&gt;
+&lt;li&gt;记录抢卷成功的记录，用于判断用户不能重复抢卷的依据&lt;/li&gt;
+&lt;li&gt;记录抢卷同步的记录，用于后续的异步操作，将结果保存到数据库&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;上述操作必须保证1、2、3放在一起整体有原子性&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;MULTI事务命令&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;MULTI命令标记一个事务块的开始&lt;/li&gt;
+&lt;li&gt;然后将要执行的命令加入队列&lt;/li&gt;
+&lt;li&gt;最后EXEC执行&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;pipeline管道命令只是把多个redis指令一起发出去，减少往返时间，但不保证这些指令的原子性&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;redis+lua实现&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;lua脚本&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;有三个key
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;抢卷同步队列、资源库存、抢卷成功列表&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;三个key在redis集群环境下必须落在一个插槽上，所以用{相同内容}来保证这三个key留在一个redis上&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;俩个参数
+&lt;ul&gt;
+&lt;li&gt;活动id、用户id&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;先在成功列表查询用户是否已经抢过该优惠卷，抢过则直接返回&lt;/li&gt;
+&lt;li&gt;在库存资源判断对应的活动id的库存是否充足超买问题&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;优惠卷核销&#34;&gt;优惠卷核销
 &lt;/h2&gt;&lt;ul&gt;
 &lt;li&gt;下单时使用优惠卷，标记已使用或作废&lt;/li&gt;
 &lt;li&gt;取消订单回退优惠卷&lt;/li&gt;

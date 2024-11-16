@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html lang="zh-cn" dir="ltr">
     <head><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="Q1 private final Logger logger = LoggerFactory.getLogger(getClass());\n还是\nprivate statci final Logger logger = LoggerFactory.getLogger(ClassName.class);\n两种写法各有优缺点，选择哪一种取决于你的需求和项目风格。\nprivate final Logger logger = LoggerFactory.getLogger(getClass());\n优点：\n通用性高：可以用于任何类，无需手动更新类名（适合复制粘贴代码到其他类中时无需修改）。 适应继承：如果这个类被继承，getClass() 会返回子类的类型，日志会正确显示子类的类名。 缺点：\n">
-<title>随记</title>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="SQL调优经历 业务背景（需要更换） 优惠卷活动的状态更新，这里我们有俩个定时任务\n定时更新优惠卷活动的状态为进行中、结束 定时扫表预热活动 数据库 数据表\n我们的优惠卷活动和别家电商的优惠卷不太一样，我们的优惠卷分为俩种类型：\n">
+<title>sql调优经历</title>
 
-<link rel='canonical' href='https://example.com/p/%E9%9A%8F%E8%AE%B0/'>
+<link rel='canonical' href='https://example.com/p/sql%E8%B0%83%E4%BC%98%E7%BB%8F%E5%8E%86/'>
 
-<link rel="stylesheet" href="/scss/style.min.0304c6baf04e01a8fe70693791cb744d56a3578a3120a8796cefc66825aa39c7.css"><meta property='og:title' content="随记">
-<meta property='og:description' content="Q1 private final Logger logger = LoggerFactory.getLogger(getClass());\n还是\nprivate statci final Logger logger = LoggerFactory.getLogger(ClassName.class);\n两种写法各有优缺点，选择哪一种取决于你的需求和项目风格。\nprivate final Logger logger = LoggerFactory.getLogger(getClass());\n优点：\n通用性高：可以用于任何类，无需手动更新类名（适合复制粘贴代码到其他类中时无需修改）。 适应继承：如果这个类被继承，getClass() 会返回子类的类型，日志会正确显示子类的类名。 缺点：\n">
-<meta property='og:url' content='https://example.com/p/%E9%9A%8F%E8%AE%B0/'>
+<link rel="stylesheet" href="/scss/style.min.0304c6baf04e01a8fe70693791cb744d56a3578a3120a8796cefc66825aa39c7.css"><meta property='og:title' content="sql调优经历">
+<meta property='og:description' content="SQL调优经历 业务背景（需要更换） 优惠卷活动的状态更新，这里我们有俩个定时任务\n定时更新优惠卷活动的状态为进行中、结束 定时扫表预热活动 数据库 数据表\n我们的优惠卷活动和别家电商的优惠卷不太一样，我们的优惠卷分为俩种类型：\n">
+<meta property='og:url' content='https://example.com/p/sql%E8%B0%83%E4%BC%98%E7%BB%8F%E5%8E%86/'>
 <meta property='og:site_name' content='GAJ-Blog'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2024-09-12T16:02:00&#43;08:00'/><meta property='article:modified_time' content='2024-09-12T16:02:00&#43;08:00'/>
-<meta name="twitter:title" content="随记">
-<meta name="twitter:description" content="Q1 private final Logger logger = LoggerFactory.getLogger(getClass());\n还是\nprivate statci final Logger logger = LoggerFactory.getLogger(ClassName.class);\n两种写法各有优缺点，选择哪一种取决于你的需求和项目风格。\nprivate final Logger logger = LoggerFactory.getLogger(getClass());\n优点：\n通用性高：可以用于任何类，无需手动更新类名（适合复制粘贴代码到其他类中时无需修改）。 适应继承：如果这个类被继承，getClass() 会返回子类的类型，日志会正确显示子类的类名。 缺点：\n">
+<meta name="twitter:title" content="sql调优经历">
+<meta name="twitter:description" content="SQL调优经历 业务背景（需要更换） 优惠卷活动的状态更新，这里我们有俩个定时任务\n定时更新优惠卷活动的状态为进行中、结束 定时扫表预热活动 数据库 数据表\n我们的优惠卷活动和别家电商的优惠卷不太一样，我们的优惠卷分为俩种类型：\n">
     <link rel="shortcut icon" href="/favicon.ico" />
 
     </head>
@@ -221,16 +221,19 @@
         <div class="widget--toc">
             <nav id="TableOfContents">
   <ol>
-    <li><a href="#q1">Q1</a>
+    <li><a href="#业务背景需要更换">业务背景（需要更换）</a></li>
+    <li><a href="#数据库">数据库</a></li>
+    <li><a href="#问题现象">问题现象</a></li>
+    <li><a href="#优化">优化</a>
       <ol>
-        <li><a href="#推荐用法">推荐用法：</a></li>
+        <li><a href="#s1分析数据源调大步长缩短任务执行时间">S1：分析数据源，调大步长缩短任务执行时间</a></li>
+        <li><a href="#s2减少临时对象大小和无效日志避免ygc">S2：减少临时对象大小和无效日志，避免ygc</a></li>
+        <li><a href="#s3基于游标查询数据源数据库分片批量更新降低交互次数避免空跑">S3：基于游标查询数据源，数据库分片批量更新，降低交互次数，避免空跑</a></li>
+        <li><a href="#s4异构数据源做了冗余">S4：异构数据源，做了冗余</a></li>
+        <li><a href="#s5负载均衡消除所有风险">S5：负载均衡，消除所有风险</a></li>
       </ol>
     </li>
-    <li><a href="#单体项目平滑发布">单体项目平滑发布</a></li>
-    <li><a href="#广告投放定时任务">广告投放定时任务</a></li>
-    <li><a href="#限制堆外内存">限制堆外内存</a></li>
-    <li><a href="#深分页">深分页</a></li>
-    <li><a href="#服务器情况">服务器情况</a></li>
+    <li><a href="#优化效果汇总">优化效果汇总</a></li>
   </ol>
 </nav>
         </div>
@@ -258,7 +261,7 @@
 
     <div class="article-title-wrapper">
         <h2 class="article-title">
-            <a href="/p/%E9%9A%8F%E8%AE%B0/">随记</a>
+            <a href="/p/sql%E8%B0%83%E4%BC%98%E7%BB%8F%E5%8E%86/">sql调优经历</a>
         </h2>
     
         
@@ -296,96 +299,94 @@
     <section class="article-content">
     
     
-    <h2 id="q1">Q1
-</h2><blockquote>
-<p>private final Logger logger = LoggerFactory.getLogger(getClass());</p>
-<p>还是</p>
-<p>private statci final Logger logger = LoggerFactory.getLogger(ClassName.class);</p>
+    <h1 id="sql调优经历">SQL调优经历
+</h1><h2 id="业务背景需要更换">业务背景（需要更换）
+</h2><p>优惠卷活动的状态更新，这里我们有俩个定时任务</p>
+<ul>
+<li>定时更新优惠卷活动的状态为进行中、结束</li>
+<li>定时扫表预热活动</li>
+</ul>
+<h2 id="数据库">数据库
+</h2><p><strong>数据表</strong></p>
+<p>我们的优惠卷活动和别家电商的优惠卷不太一样，我们的优惠卷分为俩种类型：</p>
+<ul>
+<li>普通满减、折扣优惠卷</li>
+<li>分阶段满减、折扣优惠卷（越买越优惠）</li>
+</ul>
+<p>所以这里我们的优惠卷<strong>存在一个关联表</strong>，用于关联这种分阶段优惠的优惠阶段</p>
+<p>定位问题：优惠卷定时任务耗时长、cpu占用高的解决</p>
+<p><strong>数据库</strong>（这个活动表不会有这么大的数据量）</p>
+<p>64分片，一主一从，分片键是活动id</p>
+<p><strong>数据源</strong></p>
+<ul>
+<li>平台的优惠活动</li>
+<li>商家的店铺优惠活动</li>
+</ul>
+<p><strong>机器配置和垃圾回收器</strong></p>
+<p>单台机器用的8C16G（相关配置需要修改）</p>
+<p>-Xms8192m -Xmx8192m -XX:MaxMetaspaceSize=1024m -XX:MetaspaceSize=1024m -XX:MaxDirectMemorySize=1966m -XX:+<strong>UseG1GC</strong> -XX:<strong>MaxGCPauseMillis</strong>=200 -XX:<strong>ParallelGCThreads</strong>=8</p>
+<p><strong>定时更新活动状态逻辑</strong>（需要换个更复杂的场景）</p>
+<p>根据活动的状态</p>
+<ul>
+<li>将待生效的活动根据活动的时间（开始时间、结束时间）更新为进行中</li>
+<li>将待生效的、进行中的活动根据活动时间更新为结束</li>
+</ul>
+<h2 id="问题现象">问题现象
+</h2><p>我们的定时任务间隔一分钟，执行时间很长，40秒，cpu占用80%，虽然前端做了倒计时，但占用率太高不健康。</p>
+<h2 id="优化">优化
+</h2><h3 id="s1分析数据源调大步长缩短任务执行时间">S1：分析数据源，调大步长缩短任务执行时间
+</h3><p>（一次任务中分多步处理，而不是直接全部搜出来到内存，与云岚存在差异）</p>
+<p>数据源表里数据非常稀疏</p>
+<ul>
+<li>程序问题：（落入了别的来源的数据）</li>
+<li>历史问题：（）</li>
+</ul>
+<p>所以为了避免每次处理的数据较少，调大了步长，避免空跑</p>
+<p><strong>阶段性结果</strong>执行时间减少到了30秒（假设），但cpu顶着100%跑</p>
+<h3 id="s2减少临时对象大小和无效日志避免ygc">S2：减少临时对象大小和无效日志，避免ygc
+</h3><p>想法：对事务总线负载（mq）到多台机器，但耗费资源</p>
+<p>于是我们分析cpu高在哪里，理论上这个任务是<strong>IO型任务</strong>，cpu利用率低，仔细观察发现<strong>机器不断多次ygc</strong>。G1的ygc比1.8的默认回收期更好资源（G1要兼顾mixgc回收）。我们这的任务其实更适合用默认的垃圾回收器（Parallel）</p>
+<blockquote>
+<p>G1用于响应优先，默认的垃圾回收器则是吞吐量优先。</p>
 </blockquote>
-<p>两种写法各有优缺点，选择哪一种取决于你的需求和项目风格。</p>
-<ol>
-<li>
-<p><strong><code>private final Logger logger = LoggerFactory.getLogger(getClass());</code></strong></p>
-<p><strong>优点：</strong></p>
+<p>那么不断ygc肯定是我们<strong>产生了大量的临时对象导致的</strong></p>
+<p><strong>（1）去掉无效日志</strong></p>
+<p>java在序列化的时候会产生比原来的对象占用更多内存的临时变量</p>
+<p><strong>（2）减少临时对象占用的内存</strong></p>
+<p>代码对象的个数不能减少，于是我们减小了对象的大小，为这个定时任务写了专用的接口，每个接口<strong>只查我们需要的字段</strong></p>
+<p><strong>阶段性结果</strong>时间减少到了10秒（假设），cpu降到50%</p>
+<p>但每次任务执行，都给数据库带来了<strong>很高的qpm增长，有隐患</strong></p>
+<p>问题待解决</p>
 <ul>
-<li><strong>通用性高</strong>：可以用于任何类，无需手动更新类名（适合复制粘贴代码到其他类中时无需修改）。</li>
-<li><strong>适应继承</strong>：如果这个类被继承，<code>getClass()</code> 会返回子类的类型，日志会正确显示子类的类名。</li>
+<li>减少交互次数</li>
+<li>降低任务执行时间</li>
 </ul>
-<p><strong>缺点：</strong></p>
+<p>仍有很大的优化空间</p>
+<h3 id="s3基于游标查询数据源数据库分片批量更新降低交互次数避免空跑">S3：基于游标查询数据源，数据库分片批量更新，降低交互次数，避免空跑
+</h3><p>分析这么大的调用量用在了哪里，发现：活动表的<strong>MaxAutoPk非常大</strong>（10亿，太夸张了这个场景根本不能满足），所以即使调大了步长，交互次数仍然很多，<strong>继续调大步长会导致某个数据密集导致负载不均衡</strong></p>
+<p><strong>（1）使用mysql的游标查询</strong></p>
 <ul>
-<li><strong>运行时开销</strong>：<code>getClass()</code> 是在运行时确定的，虽然开销不大，但比静态方法稍微慢一些。</li>
+<li>表中要有唯一键，且基于唯一键查询排序（升序）</li>
+<li>取件查询满足查询条件记录越稀疏越有效</li>
 </ul>
-</li>
-<li>
-<p><strong><code>private static final Logger logger = LoggerFactory.getLogger(ClassName.class);</code></strong></p>
-<p><strong>优点：</strong></p>
-<ul>
-<li><strong>效率稍高</strong>：因为 <code>ClassName.class</code> 是在编译时确定的，性能上稍微优于 <code>getClass()</code>。</li>
-<li><strong>符合静态常量的惯例</strong>：<code>logger</code> 是静态的，通常被定义为 <code>static final</code>，符合惯例。</li>
-<li><strong>日志清晰</strong>：明确指定类名，在日志中始终使用这个类的名字，不管它是否被继承。</li>
-</ul>
-<p><strong>缺点：</strong></p>
-<ul>
-<li><strong>继承问题</strong>：如果类被继承，日志依然显示的是父类的类名，而不是子类的名字，这在需要记录子类日志时可能不是理想的选择。</li>
-<li><strong>类名需要手动更新</strong>：如果你复制这个类或重命名它，你需要手动更新 <code>ClassName</code>，否则会导致日志记录混乱。</li>
-</ul>
-</li>
-</ol>
-<h3 id="推荐用法">推荐用法：
-</h3><ul>
-<li><strong>使用 <code>static final</code> 和类名</strong> 的方式更为常见，尤其在不涉及继承的情况下。这种方式在性能上更高效，且更符合静态常量的使用习惯。</li>
-</ul>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">private static final Logger logger = LoggerFactory.getLogger(ClassName.class);
-</span></span></code></pre></td></tr></table>
-</div>
-</div><ul>
-<li>如果你的类可能会被继承并且你希望日志记录子类的类名，则可以考虑使用 <code>getClass()</code>：</li>
-</ul>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">private final Logger logger = LoggerFactory.getLogger(getClass());
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>总结：对于一般类，建议使用 <code>static final Logger</code> 和类名；如果有继承需求，使用 <code>getClass()</code> 更灵活</p>
-<h2 id="单体项目平滑发布">单体项目平滑发布
-</h2><ul>
-<li>
-<p>蓝绿发布</p>
-<p>单机多双结点</p>
-</li>
-<li>
-<p>k8s和docker</p>
-</li>
-</ul>
-<h2 id="广告投放定时任务">广告投放定时任务
-</h2><p><a class="link" href="https://www.bilibili.com/video/BV1xt421K78v/?spm_id_from=333.337.top_right_bar_window_history.content.click"  target="_blank" rel="noopener"
-    >从半小时到秒级-京东定时任务优化实战_哔哩哔哩_bilibili</a></p>
-<h2 id="限制堆外内存">限制堆外内存
-</h2><h2 id="深分页">深分页
-</h2><p>limit 5000000, 100 和 where id &gt; 5000000 limit 100</p>
-<h2 id="服务器情况">服务器情况
-</h2><p><img src="/p/%E9%9A%8F%E8%AE%B0/index.assets/image-20241109084522477.png"
-	width="528"
-	height="151"
-	srcset="/p/%E9%9A%8F%E8%AE%B0/index.assets/image-20241109084522477_hu14651569809227415220.png 480w, /p/%E9%9A%8F%E8%AE%B0/index.assets/image-20241109084522477_hu6506989586169050596.png 1024w"
-	loading="lazy"
-	
-		alt="image-20241109084522477"
-	
-	
-		class="gallery-image" 
-		data-flex-grow="349"
-		data-flex-basis="839px"
-	
-></p>
+<p><strong>（2）深度分页引起慢sql</strong>基于游标查询的sql不会有这个问题，每次直接定位到区间开始</p>
+<p><strong>（3）按数据库分片进行批量更新</strong></p>
+<p>基于游标查询导致每个步长都查出来比以前更多的数据，<strong>出现了长事务</strong>（这里不太契合场景，可以考虑把这个优化删掉）</p>
+<p>由于在批量更新的时候<strong>没有带分片键导致sql分发到了所有分片上</strong>， <strong>实际导致了长事务</strong></p>
+<p>于是我们<strong>按数据库分片对这些活动id进行分组</strong>，保证每个分组对应的单元id落到同一个分片</p>
+<p><strong>阶段性结果</strong>时间1秒，cpu50%。qpm降了很多</p>
+<p>问题</p>
+<p>cpu还是较高</p>
+<h3 id="s4异构数据源做了冗余">S4：异构数据源，做了冗余
+</h3><p>前面提到，分阶段优惠卷的关联关系用了一张关联表维护</p>
+<p>我们将整个管理表冗余到了活动表中，通过一种链表关系来维护分阶段的优惠活动，多了一个根活动的id，0时表示普通活动，具体id时表示对应的根活动id。</p>
+<blockquote>
+<p>要不还是倒过来把字段冗余出去一张表，但这样也不太好</p>
+</blockquote>
+<h3 id="s5负载均衡消除所有风险">S5：负载均衡，消除所有风险
+</h3><p>任务拆分，交给mq负载到多台机器上（mq重试机制不可靠，需要解决重试频率、识别无效重试、防止重试叠加）</p>
+<h2 id="优化效果汇总">优化效果汇总
+</h2><p>毫秒级，cpu占用增加1%</p>
 
 </section>
 
@@ -434,12 +435,12 @@
             
                 
 <article class="">
-    <a href="/p/sql%E8%B0%83%E4%BC%98%E7%BB%8F%E5%8E%86/">
+    <a href="/p/%E9%9A%8F%E8%AE%B0/">
         
         
 
         <div class="article-details">
-            <h2 class="article-title">sql调优经历</h2>
+            <h2 class="article-title">随记</h2>
         </div>
     </a>
 </article>

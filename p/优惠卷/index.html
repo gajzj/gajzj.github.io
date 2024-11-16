@@ -232,7 +232,7 @@
         <li><a href="#c端查询活动">C端查询活动</a></li>
         <li><a href="#定时任务存在活动状态转变的变更延迟如何解决">定时任务存在活动状态转变的变更延迟，如何解决：</a></li>
         <li><a href="#超卖问题">超卖问题</a></li>
-        <li><a href="#超买问题">超买问题</a></li>
+        <li><a href="#redis原子操作方案">Redis原子操作方案</a></li>
       </ol>
     </li>
     <li><a href="#优惠卷核销">优惠卷核销</a></li>
@@ -438,8 +438,82 @@
 <li>然后请求后端时判断状态</li>
 </ul>
 <h3 id="超卖问题">超卖问题
-</h3><h3 id="超买问题">超买问题
-</h3><h2 id="优惠卷核销">优惠卷核销
+</h3><p><img src="/p/%E4%BC%98%E6%83%A0%E5%8D%B7/index.assets/image-20241116094515648.png"
+	width="725"
+	height="723"
+	srcset="/p/%E4%BC%98%E6%83%A0%E5%8D%B7/index.assets/image-20241116094515648_hu17437810145320655254.png 480w, /p/%E4%BC%98%E6%83%A0%E5%8D%B7/index.assets/image-20241116094515648_hu17704089551317386611.png 1024w"
+	loading="lazy"
+	
+		alt="image-20241116094515648"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="100"
+		data-flex-basis="240px"
+	
+></p>
+<p>线程2更新<strong>覆盖</strong>了线程1更新的库存值</p>
+<ul>
+<li>
+<p>悲观锁：用synchronized、ReentrantLock、数据库的排他锁（for update）</p>
+</li>
+<li>
+<p>乐观锁：update 表名 set 字段=值,version=version+1 where  id =? and version =?</p>
+</li>
+<li>
+<p>redis分布式锁方案：每个jvm的线程都去争抢同一个分布式锁，扣减库存先获取分布式锁，拿到锁再扣减库存，然后再释放锁</p>
+</li>
+<li>
+<p>redis原子操作方案：避免申请锁与释放锁的交互</p>
+<ul>
+<li>使用redis的decr命令扣减库存，redis的命令具有原子性</li>
+</ul>
+<p><img src="https://cdn.nlark.com/yuque/0/2024/png/1169676/1709697721665-58a02af7-7a0f-4ffa-a2aa-9253b33c1f86.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_69%2Ctext_5rK554K45bCP5rOi%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10%2Fformat%2Cwebp%2Fresize%2Cw_811%2Climit_0"
+	
+	
+	
+	loading="lazy"
+	
+		alt="whiteboard_exported_image (77).png"
+	
+	
+></p>
+</li>
+</ul>
+<h3 id="redis原子操作方案">Redis原子操作方案
+</h3><p>在这个扣减库存的流程中</p>
+<ul>
+<li>首先查询库存</li>
+<li>判断库存大小，如果大于0则扣减库存，否则直接返回</li>
+<li>记录抢卷成功的记录，用于判断用户不能重复抢卷的依据</li>
+<li>记录抢卷同步的记录，用于后续的异步操作，将结果保存到数据库</li>
+</ul>
+<p>上述操作必须保证1、2、3放在一起整体有原子性</p>
+<p><strong>MULTI事务命令</strong></p>
+<ul>
+<li>MULTI命令标记一个事务块的开始</li>
+<li>然后将要执行的命令加入队列</li>
+<li>最后EXEC执行</li>
+</ul>
+<p>pipeline管道命令只是把多个redis指令一起发出去，减少往返时间，但不保证这些指令的原子性</p>
+<p><strong>redis+lua实现</strong></p>
+<p>lua脚本</p>
+<ul>
+<li>有三个key
+<ul>
+<li><strong>抢卷同步队列、资源库存、抢卷成功列表</strong></li>
+<li>三个key在redis集群环境下必须落在一个插槽上，所以用{相同内容}来保证这三个key留在一个redis上</li>
+</ul>
+</li>
+<li>俩个参数
+<ul>
+<li>活动id、用户id</li>
+</ul>
+</li>
+<li>先在成功列表查询用户是否已经抢过该优惠卷，抢过则直接返回</li>
+<li>在库存资源判断对应的活动id的库存是否充足超买问题</li>
+</ul>
+<h2 id="优惠卷核销">优惠卷核销
 </h2><ul>
 <li>下单时使用优惠卷，标记已使用或作废</li>
 <li>取消订单回退优惠卷</li>

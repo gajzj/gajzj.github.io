@@ -8,6 +8,102 @@
         <language>zh-cn</language>
         <copyright>gajzj</copyright>
         <lastBuildDate>Thu, 12 Sep 2024 16:02:00 +0800</lastBuildDate><atom:link href="https://example.com/categories/%E9%9A%8F%E8%AE%B0/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>sql调优经历</title>
+        <link>https://example.com/p/sql%E8%B0%83%E4%BC%98%E7%BB%8F%E5%8E%86/</link>
+        <pubDate>Thu, 12 Sep 2024 16:02:00 +0800</pubDate>
+        
+        <guid>https://example.com/p/sql%E8%B0%83%E4%BC%98%E7%BB%8F%E5%8E%86/</guid>
+        <description>&lt;h1 id=&#34;sql调优经历&#34;&gt;SQL调优经历
+&lt;/h1&gt;&lt;h2 id=&#34;业务背景需要更换&#34;&gt;业务背景（需要更换）
+&lt;/h2&gt;&lt;p&gt;优惠卷活动的状态更新，这里我们有俩个定时任务&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;定时更新优惠卷活动的状态为进行中、结束&lt;/li&gt;
+&lt;li&gt;定时扫表预热活动&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;数据库&#34;&gt;数据库
+&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;数据表&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;我们的优惠卷活动和别家电商的优惠卷不太一样，我们的优惠卷分为俩种类型：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;普通满减、折扣优惠卷&lt;/li&gt;
+&lt;li&gt;分阶段满减、折扣优惠卷（越买越优惠）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;所以这里我们的优惠卷&lt;strong&gt;存在一个关联表&lt;/strong&gt;，用于关联这种分阶段优惠的优惠阶段&lt;/p&gt;
+&lt;p&gt;定位问题：优惠卷定时任务耗时长、cpu占用高的解决&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;数据库&lt;/strong&gt;（这个活动表不会有这么大的数据量）&lt;/p&gt;
+&lt;p&gt;64分片，一主一从，分片键是活动id&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;数据源&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;平台的优惠活动&lt;/li&gt;
+&lt;li&gt;商家的店铺优惠活动&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;机器配置和垃圾回收器&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;单台机器用的8C16G（相关配置需要修改）&lt;/p&gt;
+&lt;p&gt;-Xms8192m -Xmx8192m -XX:MaxMetaspaceSize=1024m -XX:MetaspaceSize=1024m -XX:MaxDirectMemorySize=1966m -XX:+&lt;strong&gt;UseG1GC&lt;/strong&gt; -XX:&lt;strong&gt;MaxGCPauseMillis&lt;/strong&gt;=200 -XX:&lt;strong&gt;ParallelGCThreads&lt;/strong&gt;=8&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;定时更新活动状态逻辑&lt;/strong&gt;（需要换个更复杂的场景）&lt;/p&gt;
+&lt;p&gt;根据活动的状态&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;将待生效的活动根据活动的时间（开始时间、结束时间）更新为进行中&lt;/li&gt;
+&lt;li&gt;将待生效的、进行中的活动根据活动时间更新为结束&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;问题现象&#34;&gt;问题现象
+&lt;/h2&gt;&lt;p&gt;我们的定时任务间隔一分钟，执行时间很长，40秒，cpu占用80%，虽然前端做了倒计时，但占用率太高不健康。&lt;/p&gt;
+&lt;h2 id=&#34;优化&#34;&gt;优化
+&lt;/h2&gt;&lt;h3 id=&#34;s1分析数据源调大步长缩短任务执行时间&#34;&gt;S1：分析数据源，调大步长缩短任务执行时间
+&lt;/h3&gt;&lt;p&gt;（一次任务中分多步处理，而不是直接全部搜出来到内存，与云岚存在差异）&lt;/p&gt;
+&lt;p&gt;数据源表里数据非常稀疏&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;程序问题：（落入了别的来源的数据）&lt;/li&gt;
+&lt;li&gt;历史问题：（）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;所以为了避免每次处理的数据较少，调大了步长，避免空跑&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;阶段性结果&lt;/strong&gt;执行时间减少到了30秒（假设），但cpu顶着100%跑&lt;/p&gt;
+&lt;h3 id=&#34;s2减少临时对象大小和无效日志避免ygc&#34;&gt;S2：减少临时对象大小和无效日志，避免ygc
+&lt;/h3&gt;&lt;p&gt;想法：对事务总线负载（mq）到多台机器，但耗费资源&lt;/p&gt;
+&lt;p&gt;于是我们分析cpu高在哪里，理论上这个任务是&lt;strong&gt;IO型任务&lt;/strong&gt;，cpu利用率低，仔细观察发现&lt;strong&gt;机器不断多次ygc&lt;/strong&gt;。G1的ygc比1.8的默认回收期更好资源（G1要兼顾mixgc回收）。我们这的任务其实更适合用默认的垃圾回收器（Parallel）&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;G1用于响应优先，默认的垃圾回收器则是吞吐量优先。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;那么不断ygc肯定是我们&lt;strong&gt;产生了大量的临时对象导致的&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;（1）去掉无效日志&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;java在序列化的时候会产生比原来的对象占用更多内存的临时变量&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;（2）减少临时对象占用的内存&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;代码对象的个数不能减少，于是我们减小了对象的大小，为这个定时任务写了专用的接口，每个接口&lt;strong&gt;只查我们需要的字段&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;阶段性结果&lt;/strong&gt;时间减少到了10秒（假设），cpu降到50%&lt;/p&gt;
+&lt;p&gt;但每次任务执行，都给数据库带来了&lt;strong&gt;很高的qpm增长，有隐患&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;问题待解决&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;减少交互次数&lt;/li&gt;
+&lt;li&gt;降低任务执行时间&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;仍有很大的优化空间&lt;/p&gt;
+&lt;h3 id=&#34;s3基于游标查询数据源数据库分片批量更新降低交互次数避免空跑&#34;&gt;S3：基于游标查询数据源，数据库分片批量更新，降低交互次数，避免空跑
+&lt;/h3&gt;&lt;p&gt;分析这么大的调用量用在了哪里，发现：活动表的&lt;strong&gt;MaxAutoPk非常大&lt;/strong&gt;（10亿，太夸张了这个场景根本不能满足），所以即使调大了步长，交互次数仍然很多，&lt;strong&gt;继续调大步长会导致某个数据密集导致负载不均衡&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;（1）使用mysql的游标查询&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;表中要有唯一键，且基于唯一键查询排序（升序）&lt;/li&gt;
+&lt;li&gt;取件查询满足查询条件记录越稀疏越有效&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;（2）深度分页引起慢sql&lt;/strong&gt;基于游标查询的sql不会有这个问题，每次直接定位到区间开始&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;（3）按数据库分片进行批量更新&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;基于游标查询导致每个步长都查出来比以前更多的数据，&lt;strong&gt;出现了长事务&lt;/strong&gt;（这里不太契合场景，可以考虑把这个优化删掉）&lt;/p&gt;
+&lt;p&gt;由于在批量更新的时候&lt;strong&gt;没有带分片键导致sql分发到了所有分片上&lt;/strong&gt;， &lt;strong&gt;实际导致了长事务&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;于是我们&lt;strong&gt;按数据库分片对这些活动id进行分组&lt;/strong&gt;，保证每个分组对应的单元id落到同一个分片&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;阶段性结果&lt;/strong&gt;时间1秒，cpu50%。qpm降了很多&lt;/p&gt;
+&lt;p&gt;问题&lt;/p&gt;
+&lt;p&gt;cpu还是较高&lt;/p&gt;
+&lt;h3 id=&#34;s4异构数据源做了冗余&#34;&gt;S4：异构数据源，做了冗余
+&lt;/h3&gt;&lt;p&gt;前面提到，分阶段优惠卷的关联关系用了一张关联表维护&lt;/p&gt;
+&lt;p&gt;我们将整个管理表冗余到了活动表中，通过一种链表关系来维护分阶段的优惠活动，多了一个根活动的id，0时表示普通活动，具体id时表示对应的根活动id。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;要不还是倒过来把字段冗余出去一张表，但这样也不太好&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&#34;s5负载均衡消除所有风险&#34;&gt;S5：负载均衡，消除所有风险
+&lt;/h3&gt;&lt;p&gt;任务拆分，交给mq负载到多台机器上（mq重试机制不可靠，需要解决重试频率、识别无效重试、防止重试叠加）&lt;/p&gt;
+&lt;h2 id=&#34;优化效果汇总&#34;&gt;优化效果汇总
+&lt;/h2&gt;&lt;p&gt;毫秒级，cpu占用增加1%&lt;/p&gt;
+</description>
+        </item>
+        <item>
         <title>随记</title>
         <link>https://example.com/p/%E9%9A%8F%E8%AE%B0/</link>
         <pubDate>Thu, 12 Sep 2024 16:02:00 +0800</pubDate>
