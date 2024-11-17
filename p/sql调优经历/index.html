@@ -10,7 +10,7 @@
 <meta property='og:description' content="SQL调优经历 业务背景（需要更换） 优惠卷活动的状态更新，这里我们有俩个定时任务\n定时更新优惠卷活动的状态为进行中、结束 定时扫表预热活动 数据库 数据表\n我们的优惠卷活动和别家电商的优惠卷不太一样，我们的优惠卷分为俩种类型：\n">
 <meta property='og:url' content='https://example.com/p/sql%E8%B0%83%E4%BC%98%E7%BB%8F%E5%8E%86/'>
 <meta property='og:site_name' content='GAJ-Blog'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2024-09-12T16:02:00&#43;08:00'/><meta property='article:modified_time' content='2024-09-12T16:02:00&#43;08:00'/>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2024-11-16T16:02:00&#43;08:00'/><meta property='article:modified_time' content='2024-11-16T16:02:00&#43;08:00'/>
 <meta name="twitter:title" content="sql调优经历">
 <meta name="twitter:description" content="SQL调优经历 业务背景（需要更换） 优惠卷活动的状态更新，这里我们有俩个定时任务\n定时更新优惠卷活动的状态为进行中、结束 定时扫表预热活动 数据库 数据表\n我们的优惠卷活动和别家电商的优惠卷不太一样，我们的优惠卷分为俩种类型：\n">
     <link rel="shortcut icon" href="/favicon.ico" />
@@ -283,7 +283,7 @@
   <path d="M3 11h16" />
   <path d="M18 16.496v1.504l1 1" />
 </svg>
-                <time class="article-time--published">09-12,  2024</time>
+                <time class="article-time--published">11-16,  2024</time>
             </div>
         
 
@@ -333,6 +333,9 @@
 </ul>
 <h2 id="问题现象">问题现象
 </h2><p>我们的定时任务间隔一分钟，执行时间很长，40秒，cpu占用80%，虽然前端做了倒计时，但占用率太高不健康。</p>
+<blockquote>
+<p>按照这个问题假设估计我们数据量有可能会达到千万级</p>
+</blockquote>
 <h2 id="优化">优化
 </h2><h3 id="s1分析数据源调大步长缩短任务执行时间">S1：分析数据源，调大步长缩短任务执行时间
 </h3><p>（一次任务中分多步处理，而不是直接全部搜出来到内存，与云岚存在差异）</p>
@@ -373,7 +376,7 @@
 <p><strong>（3）按数据库分片进行批量更新</strong></p>
 <p>基于游标查询导致每个步长都查出来比以前更多的数据，<strong>出现了长事务</strong>（这里不太契合场景，可以考虑把这个优化删掉）</p>
 <p>由于在批量更新的时候<strong>没有带分片键导致sql分发到了所有分片上</strong>， <strong>实际导致了长事务</strong></p>
-<p>于是我们<strong>按数据库分片对这些活动id进行分组</strong>，保证每个分组对应的单元id落到同一个分片</p>
+<p>于是我们<strong>按数据库分片对这些活动id进行分组</strong>，保证每个分组对应的单元id落到同一个分片（不太理解，是不是类似redis的hash插槽，让我们优惠卷的三个key落到一个redis结点，这里让对应的ids落到对应的数据库分片）</p>
 <p><strong>阶段性结果</strong>时间1秒，cpu50%。qpm降了很多</p>
 <p>问题</p>
 <p>cpu还是较高</p>
@@ -385,6 +388,13 @@
 </blockquote>
 <h3 id="s5负载均衡消除所有风险">S5：负载均衡，消除所有风险
 </h3><p>任务拆分，交给mq负载到多台机器上（mq重试机制不可靠，需要解决重试频率、识别无效重试、防止重试叠加）</p>
+<blockquote>
+<p>mq的重试中，失败了只会投回队列，什么时候能再次消费不确定</p>
+<p>1、本地重试机制固定间隔重试，可以应对简单场景（也可以递增间隔重试、基于业务优先级重试）</p>
+<p>2、引入定时任务框架（Quartz、xxljob），但这里就任务套任务了不好</p>
+<p>3、结合分布式调度系统（zookeeper、etcd），利用zk的watcher机制来监控结点状态</p>
+<p>4、最终补偿机制：人工</p>
+</blockquote>
 <h2 id="优化效果汇总">优化效果汇总
 </h2><p>毫秒级，cpu占用增加1%</p>
 

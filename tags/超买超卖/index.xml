@@ -198,10 +198,13 @@
 &lt;p&gt;上述操作必须保证1、2、3放在一起整体有原子性&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;MULTI事务命令&lt;/strong&gt;&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;MULTI命令标记一个事务块的开始&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;MULTI命令&lt;/strong&gt;标记一个事务块的开始&lt;/li&gt;
 &lt;li&gt;然后将要执行的命令加入队列&lt;/li&gt;
-&lt;li&gt;最后EXEC执行&lt;/li&gt;
+&lt;li&gt;最后&lt;strong&gt;EXEC执行&lt;/strong&gt;&lt;/li&gt;
 &lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;multi不适合复杂的逻辑判断，它只会在所有命令执行完后拿到结果，不适合带业务逻辑判断&lt;/p&gt;
+&lt;/blockquote&gt;
 &lt;p&gt;pipeline管道命令只是把多个redis指令一起发出去，减少往返时间，但不保证这些指令的原子性&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;redis+lua实现&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;lua脚本&lt;/p&gt;
@@ -209,7 +212,7 @@
 &lt;li&gt;有三个key
 &lt;ul&gt;
 &lt;li&gt;&lt;strong&gt;抢卷同步队列、资源库存、抢卷成功列表&lt;/strong&gt;&lt;/li&gt;
-&lt;li&gt;三个key在redis集群环境下必须落在一个插槽上，所以用{相同内容}来保证这三个key留在一个redis上&lt;/li&gt;
+&lt;li&gt;在redis集群环境下执行lua脚本要求多个key&lt;strong&gt;必须落在一个插槽上&lt;/strong&gt;，所以用{相同内容}来保证这三个key留在一个redis上&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;li&gt;俩个参数
@@ -220,6 +223,22 @@
 &lt;li&gt;先在成功列表查询用户是否已经抢过该优惠卷，抢过则直接返回&lt;/li&gt;
 &lt;li&gt;在库存资源判断对应的活动id的库存是否充足超买问题&lt;/li&gt;
 &lt;/ul&gt;
+&lt;h3 id=&#34;抢卷整体方案&#34;&gt;抢卷整体方案
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;定时任务预热活动数据到redis&lt;/li&gt;
+&lt;li&gt;用户抢卷执行lua脚本，原子操作&lt;/li&gt;
+&lt;li&gt;抢卷结果异步地同步到mysql，同步完成删除redis的同步队列记录&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://cdn.nlark.com/yuque/0/2024/png/1169676/1709713832302-15dee1ad-702f-427c-8e99-0359acbbb740.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_57%2Ctext_5rK554K45bCP5rOi%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10%2Fformat%2Cwebp%2Fresize%2Cw_750%2Climit_0&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;whiteboard_exported_image (78).png&#34;
+	
+	
+&gt;&lt;/p&gt;
 &lt;h2 id=&#34;优惠卷核销&#34;&gt;优惠卷核销
 &lt;/h2&gt;&lt;ul&gt;
 &lt;li&gt;下单时使用优惠卷，标记已使用或作废&lt;/li&gt;
@@ -244,9 +263,7 @@
 &lt;p&gt;当然也可以把这个分阶段的需求拆分，就类似京东的分阶段优惠它其实不是靠优惠卷机制，而是另外的，需要和产品沟通&lt;/p&gt;
 &lt;p&gt;但存在一个问题，如果这个分阶段折扣或满减也是需要抢的，会存在大量的逻辑重复，和优惠卷整体太过相似，还不如多维护一个字段&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;p&gt;&lt;strong&gt;总之，只靠多维护一个字段的代价，避免了产品设计的变更、避免了高度重复的功能代码、避免了更大范围的数据表结构变化，非常非常的好&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;&lt;del&gt;我真tm是个天才&lt;/del&gt;&lt;/p&gt;
-&lt;p&gt;好像也就只有这个做法比较合适&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;总之，只靠多维护一个字段的代价，避免了产品设计的变更、避免了高度重复的功能代码、避免了更大范围的数据表结构变化&lt;/strong&gt;&lt;/p&gt;
 &lt;h2 id=&#34;q2定时更新活动状态任务执行频次高且如果根据q1的表结构活动表将是一个数据量较大的表可能会出现定时任务执行时间相对较长的情况其实小电商平台里基本不可能出现&#34;&gt;Q2：定时更新活动状态任务执行频次高，且如果根据Q1的表结构活动表将是一个数据量较大的表，可能会出现定时任务执行时间相对较长的情况（其实小电商平台里基本不可能出现）
 &lt;/h2&gt;&lt;blockquote&gt;
 &lt;p&gt;前端倒计时+后端根据时间判断状态其实已经可以接受了&lt;/p&gt;

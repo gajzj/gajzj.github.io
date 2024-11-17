@@ -7,10 +7,10 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>gajzj</copyright>
-        <lastBuildDate>Thu, 12 Sep 2024 16:02:00 +0800</lastBuildDate><atom:link href="https://example.com/categories/%E9%9A%8F%E8%AE%B0/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Sat, 16 Nov 2024 16:02:00 +0800</lastBuildDate><atom:link href="https://example.com/categories/%E9%9A%8F%E8%AE%B0/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>sql调优经历</title>
         <link>https://example.com/p/sql%E8%B0%83%E4%BC%98%E7%BB%8F%E5%8E%86/</link>
-        <pubDate>Thu, 12 Sep 2024 16:02:00 +0800</pubDate>
+        <pubDate>Sat, 16 Nov 2024 16:02:00 +0800</pubDate>
         
         <guid>https://example.com/p/sql%E8%B0%83%E4%BC%98%E7%BB%8F%E5%8E%86/</guid>
         <description>&lt;h1 id=&#34;sql调优经历&#34;&gt;SQL调优经历
@@ -47,6 +47,9 @@
 &lt;/ul&gt;
 &lt;h2 id=&#34;问题现象&#34;&gt;问题现象
 &lt;/h2&gt;&lt;p&gt;我们的定时任务间隔一分钟，执行时间很长，40秒，cpu占用80%，虽然前端做了倒计时，但占用率太高不健康。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;按照这个问题假设估计我们数据量有可能会达到千万级&lt;/p&gt;
+&lt;/blockquote&gt;
 &lt;h2 id=&#34;优化&#34;&gt;优化
 &lt;/h2&gt;&lt;h3 id=&#34;s1分析数据源调大步长缩短任务执行时间&#34;&gt;S1：分析数据源，调大步长缩短任务执行时间
 &lt;/h3&gt;&lt;p&gt;（一次任务中分多步处理，而不是直接全部搜出来到内存，与云岚存在差异）&lt;/p&gt;
@@ -87,7 +90,7 @@
 &lt;p&gt;&lt;strong&gt;（3）按数据库分片进行批量更新&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;基于游标查询导致每个步长都查出来比以前更多的数据，&lt;strong&gt;出现了长事务&lt;/strong&gt;（这里不太契合场景，可以考虑把这个优化删掉）&lt;/p&gt;
 &lt;p&gt;由于在批量更新的时候&lt;strong&gt;没有带分片键导致sql分发到了所有分片上&lt;/strong&gt;， &lt;strong&gt;实际导致了长事务&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;于是我们&lt;strong&gt;按数据库分片对这些活动id进行分组&lt;/strong&gt;，保证每个分组对应的单元id落到同一个分片&lt;/p&gt;
+&lt;p&gt;于是我们&lt;strong&gt;按数据库分片对这些活动id进行分组&lt;/strong&gt;，保证每个分组对应的单元id落到同一个分片（不太理解，是不是类似redis的hash插槽，让我们优惠卷的三个key落到一个redis结点，这里让对应的ids落到对应的数据库分片）&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;阶段性结果&lt;/strong&gt;时间1秒，cpu50%。qpm降了很多&lt;/p&gt;
 &lt;p&gt;问题&lt;/p&gt;
 &lt;p&gt;cpu还是较高&lt;/p&gt;
@@ -99,6 +102,13 @@
 &lt;/blockquote&gt;
 &lt;h3 id=&#34;s5负载均衡消除所有风险&#34;&gt;S5：负载均衡，消除所有风险
 &lt;/h3&gt;&lt;p&gt;任务拆分，交给mq负载到多台机器上（mq重试机制不可靠，需要解决重试频率、识别无效重试、防止重试叠加）&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;mq的重试中，失败了只会投回队列，什么时候能再次消费不确定&lt;/p&gt;
+&lt;p&gt;1、本地重试机制固定间隔重试，可以应对简单场景（也可以递增间隔重试、基于业务优先级重试）&lt;/p&gt;
+&lt;p&gt;2、引入定时任务框架（Quartz、xxljob），但这里就任务套任务了不好&lt;/p&gt;
+&lt;p&gt;3、结合分布式调度系统（zookeeper、etcd），利用zk的watcher机制来监控结点状态&lt;/p&gt;
+&lt;p&gt;4、最终补偿机制：人工&lt;/p&gt;
+&lt;/blockquote&gt;
 &lt;h2 id=&#34;优化效果汇总&#34;&gt;优化效果汇总
 &lt;/h2&gt;&lt;p&gt;毫秒级，cpu占用增加1%&lt;/p&gt;
 </description>

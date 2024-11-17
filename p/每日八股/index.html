@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html lang="zh-cn" dir="ltr">
     <head><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="每日八股 本文档只记录答题思路，旨在当面试时遇到时能快速切入重点，然后灵活的组织语言回答问题。同时，为了回答的流畅性，应当尽可能的学会怎么读这些英文单词，用英文表达\n">
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="每日八股（持续更新中） 本文档只记录答题思路，旨在当面试时遇到时能快速切入重点，然后灵活的组织语言回答问题。同时，为了回答的流畅性，应当尽可能的学会怎么读这些英文单词，用英文表达\n">
 <title>每日八股</title>
 
 <link rel='canonical' href='https://example.com/p/%E6%AF%8F%E6%97%A5%E5%85%AB%E8%82%A1/'>
 
 <link rel="stylesheet" href="/scss/style.min.0304c6baf04e01a8fe70693791cb744d56a3578a3120a8796cefc66825aa39c7.css"><meta property='og:title' content="每日八股">
-<meta property='og:description' content="每日八股 本文档只记录答题思路，旨在当面试时遇到时能快速切入重点，然后灵活的组织语言回答问题。同时，为了回答的流畅性，应当尽可能的学会怎么读这些英文单词，用英文表达\n">
+<meta property='og:description' content="每日八股（持续更新中） 本文档只记录答题思路，旨在当面试时遇到时能快速切入重点，然后灵活的组织语言回答问题。同时，为了回答的流畅性，应当尽可能的学会怎么读这些英文单词，用英文表达\n">
 <meta property='og:url' content='https://example.com/p/%E6%AF%8F%E6%97%A5%E5%85%AB%E8%82%A1/'>
 <meta property='og:site_name' content='GAJ-Blog'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='每日八股' /><meta property='article:published_time' content='2024-11-09T16:02:00&#43;08:00'/><meta property='article:modified_time' content='2024-11-09T16:02:00&#43;08:00'/>
 <meta name="twitter:title" content="每日八股">
-<meta name="twitter:description" content="每日八股 本文档只记录答题思路，旨在当面试时遇到时能快速切入重点，然后灵活的组织语言回答问题。同时，为了回答的流畅性，应当尽可能的学会怎么读这些英文单词，用英文表达\n">
+<meta name="twitter:description" content="每日八股（持续更新中） 本文档只记录答题思路，旨在当面试时遇到时能快速切入重点，然后灵活的组织语言回答问题。同时，为了回答的流畅性，应当尽可能的学会怎么读这些英文单词，用英文表达\n">
     <link rel="shortcut icon" href="/favicon.ico" />
 
     </head>
@@ -289,6 +289,15 @@
       <ol>
         <li><a href="#q1mq怎么防止消息重复消费消息幂等性">Q1：MQ怎么防止消息重复消费（消息幂等性）</a></li>
         <li><a href="#q2缓存一致性">Q2：缓存一致性</a></li>
+        <li><a href="#q3优惠卷方案中有几个定时任务">Q3：优惠卷方案中有几个定时任务</a></li>
+        <li><a href="#q4优惠卷方案中表设计怎么样的">Q4：优惠卷方案中表设计怎么样的</a></li>
+        <li><a href="#q5优惠卷方案中redis的数据结构是怎么样的">Q5：优惠卷方案中redis的数据结构是怎么样的</a></li>
+        <li><a href="#q6优惠卷为了防止超卖超领是怎么做的">Q6：优惠卷为了防止超卖超领是怎么做的</a></li>
+        <li><a href="#q7lua脚本的逻辑是怎么样的">Q7：lua脚本的逻辑是怎么样的</a></li>
+        <li><a href="#q8为什么要让这三个key落在同一个redis节点上怎么实现">Q8：为什么要让这三个key落在同一个redis节点上，怎么实现</a></li>
+        <li><a href="#q9抢卷成功队列如何同步到数据库这里如果消息发送消费失败怎么办">Q9：抢卷成功队列如何同步到数据库，这里如果消息发送、消费失败怎么办</a></li>
+        <li><a href="#q10通过定时任务修改活动状态有延迟怎么解决的">Q10：通过定时任务修改活动状态有延迟，怎么解决的</a></li>
+        <li><a href="#q11">Q11：</a></li>
       </ol>
     </li>
   </ol>
@@ -356,7 +365,7 @@
     <section class="article-content">
     
     
-    <h1 id="每日八股">每日八股
+    <h1 id="每日八股持续更新中">每日八股（持续更新中）
 </h1><blockquote>
 <p>本文档只记录答题思路，旨在当面试时遇到时能快速切入重点，然后灵活的组织语言回答问题。同时，为了回答的流畅性，应当尽可能的学会怎么读这些英文单词，用英文表达</p>
 </blockquote>
@@ -1168,6 +1177,35 @@
 </blockquote>
 <h3 id="q1mq怎么防止消息重复消费消息幂等性">Q1：MQ怎么防止消息重复消费（消息幂等性）
 </h3><h3 id="q2缓存一致性">Q2：缓存一致性
+</h3><h3 id="q3优惠卷方案中有几个定时任务">Q3：优惠卷方案中有几个定时任务
+</h3><blockquote>
+<p>俩个，预热和同步</p>
+</blockquote>
+<h3 id="q4优惠卷方案中表设计怎么样的">Q4：优惠卷方案中表设计怎么样的
+</h3><h3 id="q5优惠卷方案中redis的数据结构是怎么样的">Q5：优惠卷方案中redis的数据结构是怎么样的
+</h3><blockquote>
+<p>四种key，一个String、三个Hash</p>
+</blockquote>
+<p>优惠卷活动信息</p>
+<p>优惠卷活动库存</p>
+<p>优惠卷成功队列</p>
+<p>抢卷成功队列</p>
+<h3 id="q6优惠卷为了防止超卖超领是怎么做的">Q6：优惠卷为了防止超卖超领是怎么做的
+</h3><h3 id="q7lua脚本的逻辑是怎么样的">Q7：lua脚本的逻辑是怎么样的
+</h3><h3 id="q8为什么要让这三个key落在同一个redis节点上怎么实现">Q8：为什么要让这三个key落在同一个redis节点上，怎么实现
+</h3><h3 id="q9抢卷成功队列如何同步到数据库这里如果消息发送消费失败怎么办">Q9：抢卷成功队列如何同步到数据库，这里如果消息发送、消费失败怎么办
+</h3><blockquote>
+<p>MQ重试</p>
+<p>开启本地重试</p>
+<p>超过重试次数落库，人工处理</p>
+</blockquote>
+<p>抢卷完可能马上就去秒杀了，要在这里做数据分析错开时间</p>
+<h3 id="q10通过定时任务修改活动状态有延迟怎么解决的">Q10：通过定时任务修改活动状态有延迟，怎么解决的
+</h3><blockquote>
+<p>前端控制</p>
+<p>后端判断</p>
+</blockquote>
+<h3 id="q11">Q11：
 </h3>
 </section>
 

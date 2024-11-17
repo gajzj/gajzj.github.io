@@ -13,7 +13,7 @@
         <pubDate>Sat, 09 Nov 2024 16:02:00 +0800</pubDate>
         
         <guid>https://example.com/p/%E6%AF%8F%E6%97%A5%E5%85%AB%E8%82%A1/</guid>
-        <description>&lt;h1 id=&#34;每日八股&#34;&gt;每日八股
+        <description>&lt;h1 id=&#34;每日八股持续更新中&#34;&gt;每日八股（持续更新中）
 &lt;/h1&gt;&lt;blockquote&gt;
 &lt;p&gt;本文档只记录答题思路，旨在当面试时遇到时能快速切入重点，然后灵活的组织语言回答问题。同时，为了回答的流畅性，应当尽可能的学会怎么读这些英文单词，用英文表达&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -825,6 +825,35 @@
 &lt;/blockquote&gt;
 &lt;h3 id=&#34;q1mq怎么防止消息重复消费消息幂等性&#34;&gt;Q1：MQ怎么防止消息重复消费（消息幂等性）
 &lt;/h3&gt;&lt;h3 id=&#34;q2缓存一致性&#34;&gt;Q2：缓存一致性
+&lt;/h3&gt;&lt;h3 id=&#34;q3优惠卷方案中有几个定时任务&#34;&gt;Q3：优惠卷方案中有几个定时任务
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;俩个，预热和同步&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&#34;q4优惠卷方案中表设计怎么样的&#34;&gt;Q4：优惠卷方案中表设计怎么样的
+&lt;/h3&gt;&lt;h3 id=&#34;q5优惠卷方案中redis的数据结构是怎么样的&#34;&gt;Q5：优惠卷方案中redis的数据结构是怎么样的
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;四种key，一个String、三个Hash&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;优惠卷活动信息&lt;/p&gt;
+&lt;p&gt;优惠卷活动库存&lt;/p&gt;
+&lt;p&gt;优惠卷成功队列&lt;/p&gt;
+&lt;p&gt;抢卷成功队列&lt;/p&gt;
+&lt;h3 id=&#34;q6优惠卷为了防止超卖超领是怎么做的&#34;&gt;Q6：优惠卷为了防止超卖超领是怎么做的
+&lt;/h3&gt;&lt;h3 id=&#34;q7lua脚本的逻辑是怎么样的&#34;&gt;Q7：lua脚本的逻辑是怎么样的
+&lt;/h3&gt;&lt;h3 id=&#34;q8为什么要让这三个key落在同一个redis节点上怎么实现&#34;&gt;Q8：为什么要让这三个key落在同一个redis节点上，怎么实现
+&lt;/h3&gt;&lt;h3 id=&#34;q9抢卷成功队列如何同步到数据库这里如果消息发送消费失败怎么办&#34;&gt;Q9：抢卷成功队列如何同步到数据库，这里如果消息发送、消费失败怎么办
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;MQ重试&lt;/p&gt;
+&lt;p&gt;开启本地重试&lt;/p&gt;
+&lt;p&gt;超过重试次数落库，人工处理&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;抢卷完可能马上就去秒杀了，要在这里做数据分析错开时间&lt;/p&gt;
+&lt;h3 id=&#34;q10通过定时任务修改活动状态有延迟怎么解决的&#34;&gt;Q10：通过定时任务修改活动状态有延迟，怎么解决的
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;前端控制&lt;/p&gt;
+&lt;p&gt;后端判断&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&#34;q11&#34;&gt;Q11：
 &lt;/h3&gt;</description>
         </item>
         
