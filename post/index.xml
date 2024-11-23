@@ -7,18 +7,98 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>gajzj</copyright>
-        <lastBuildDate>Sat, 16 Nov 2024 16:02:00 +0800</lastBuildDate><atom:link href="https://example.com/post/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Mon, 18 Nov 2024 18:02:00 +0800</lastBuildDate><atom:link href="https://example.com/post/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>Elasticsearch</title>
+        <link>https://example.com/p/elasticsearch/</link>
+        <pubDate>Mon, 18 Nov 2024 18:02:00 +0800</pubDate>
+        
+        <guid>https://example.com/p/elasticsearch/</guid>
+        <description>&lt;h1 id=&#34;elasticsearch&#34;&gt;Elasticsearch
+&lt;/h1&gt;&lt;h2 id=&#34;elk技术栈&#34;&gt;ELK技术栈
+&lt;/h2&gt;&lt;p&gt;elasticsearch结合kibana、Logstash、Beats，也就是elastic stack（ELK）。&lt;/p&gt;
+&lt;h2 id=&#34;倒排索引&#34;&gt;倒排索引
+&lt;/h2&gt;&lt;p&gt;对于这样的索引&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/elasticsearch/index.assets/image-20241118172118293.png&#34;
+	width=&#34;438&#34;
+	height=&#34;328&#34;
+	srcset=&#34;https://example.com/p/elasticsearch/index.assets/image-20241118172118293_hu14248592217782362382.png 480w, https://example.com/p/elasticsearch/index.assets/image-20241118172118293_hu6810811565797171227.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20241118172118293&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;133&#34;
+		data-flex-basis=&#34;320px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;如果基于title做模糊查询，只能逐行扫描，也就是全表扫描，海量数据的情况下性能非常的低。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;基于倒排索引的情况&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;将每一个文档的数据利用算法分词，得到词条&lt;/li&gt;
+&lt;li&gt;创建表，每行数据包含词条、词条所在的文档id、位置信息&lt;/li&gt;
+&lt;li&gt;因为词条唯一性，可以给词条创建索引，例如hash表结构索引&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/elasticsearch/index.assets/image-20241118173242821.png&#34;
+	width=&#34;1129&#34;
+	height=&#34;428&#34;
+	srcset=&#34;https://example.com/p/elasticsearch/index.assets/image-20241118173242821_hu1502936773458425190.png 480w, https://example.com/p/elasticsearch/index.assets/image-20241118173242821_hu3492639432525606880.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20241118173242821&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;263&#34;
+		data-flex-basis=&#34;633px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;倒排索引搜索流程&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/elasticsearch/index.assets/image-20241118174052987.png&#34;
+	width=&#34;1147&#34;
+	height=&#34;721&#34;
+	srcset=&#34;https://example.com/p/elasticsearch/index.assets/image-20241118174052987_hu13701598822929316175.png 480w, https://example.com/p/elasticsearch/index.assets/image-20241118174052987_hu10551520740203683649.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20241118174052987&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;159&#34;
+		data-flex-basis=&#34;381px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;O(1)&lt;/p&gt;
+</description>
+        </item>
+        <item>
         <title>sql调优经历</title>
         <link>https://example.com/p/sql%E8%B0%83%E4%BC%98%E7%BB%8F%E5%8E%86/</link>
         <pubDate>Sat, 16 Nov 2024 16:02:00 +0800</pubDate>
         
         <guid>https://example.com/p/sql%E8%B0%83%E4%BC%98%E7%BB%8F%E5%8E%86/</guid>
         <description>&lt;h1 id=&#34;sql调优经历&#34;&gt;SQL调优经历
-&lt;/h1&gt;&lt;h2 id=&#34;业务背景需要更换&#34;&gt;业务背景（需要更换）
-&lt;/h2&gt;&lt;p&gt;优惠卷活动的状态更新，这里我们有俩个定时任务&lt;/p&gt;
+&lt;/h1&gt;&lt;blockquote&gt;
+&lt;p&gt;这是一个压测环境下的调优&lt;/p&gt;
+&lt;p&gt;结合了非常多的高频面试问题点：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;SQL调优&lt;/li&gt;
+&lt;li&gt;线程池&lt;/li&gt;
+&lt;li&gt;redis集群&lt;/li&gt;
+&lt;li&gt;lua&lt;/li&gt;
+&lt;li&gt;数据表设计的权衡&lt;/li&gt;
+&lt;li&gt;定时任务&lt;/li&gt;
+&lt;li&gt;GC&lt;/li&gt;
+&lt;li&gt;一致性&lt;/li&gt;
+&lt;li&gt;MQ&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&#34;业务背景测试环境需要补充具体的数据分配&#34;&gt;业务背景（测试环境，需要补充具体的数据分配）
+&lt;/h2&gt;&lt;p&gt;优惠卷活动的状态更新，这里我们有俩个定时任务（三个）&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;定时更新优惠卷活动的状态为进行中、结束&lt;/li&gt;
 &lt;li&gt;定时扫表预热活动&lt;/li&gt;
+&lt;li&gt;定时从redis取优惠卷同步数据同步数据库&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2 id=&#34;数据库&#34;&gt;数据库
 &lt;/h2&gt;&lt;p&gt;&lt;strong&gt;数据表&lt;/strong&gt;&lt;/p&gt;
@@ -62,7 +142,7 @@
 &lt;p&gt;&lt;strong&gt;阶段性结果&lt;/strong&gt;执行时间减少到了30秒（假设），但cpu顶着100%跑&lt;/p&gt;
 &lt;h3 id=&#34;s2减少临时对象大小和无效日志避免ygc&#34;&gt;S2：减少临时对象大小和无效日志，避免ygc
 &lt;/h3&gt;&lt;p&gt;想法：对事务总线负载（mq）到多台机器，但耗费资源&lt;/p&gt;
-&lt;p&gt;于是我们分析cpu高在哪里，理论上这个任务是&lt;strong&gt;IO型任务&lt;/strong&gt;，cpu利用率低，仔细观察发现&lt;strong&gt;机器不断多次ygc&lt;/strong&gt;。G1的ygc比1.8的默认回收期更好资源（G1要兼顾mixgc回收）。我们这的任务其实更适合用默认的垃圾回收器（Parallel）&lt;/p&gt;
+&lt;p&gt;于是我们分析cpu高在哪里，理论上这个任务是&lt;strong&gt;IO型任务&lt;/strong&gt;，cpu利用率低，仔细观察发现&lt;strong&gt;机器不断多次ygc&lt;/strong&gt;。G1的ygc比1.8的默认回收期更耗资源（G1要兼顾mixgc回收）。我们这的任务其实更适合用默认的垃圾回收器（Parallel）&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;G1用于响应优先，默认的垃圾回收器则是吞吐量优先。&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -91,16 +171,19 @@
 &lt;p&gt;基于游标查询导致每个步长都查出来比以前更多的数据，&lt;strong&gt;出现了长事务&lt;/strong&gt;（这里不太契合场景，可以考虑把这个优化删掉）&lt;/p&gt;
 &lt;p&gt;由于在批量更新的时候&lt;strong&gt;没有带分片键导致sql分发到了所有分片上&lt;/strong&gt;， &lt;strong&gt;实际导致了长事务&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;于是我们&lt;strong&gt;按数据库分片对这些活动id进行分组&lt;/strong&gt;，保证每个分组对应的单元id落到同一个分片（不太理解，是不是类似redis的hash插槽，让我们优惠卷的三个key落到一个redis结点，这里让对应的ids落到对应的数据库分片）&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;阶段性结果&lt;/strong&gt;时间1秒，cpu50%。qpm降了很多&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;结合优惠卷同步的来讲&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;strong&gt;阶段性结果&lt;/strong&gt;时间2秒，cpu50%。qpm降了很多&lt;/p&gt;
 &lt;p&gt;问题&lt;/p&gt;
 &lt;p&gt;cpu还是较高&lt;/p&gt;
-&lt;h3 id=&#34;s4异构数据源做了冗余&#34;&gt;S4：异构数据源，做了冗余
+&lt;h3 id=&#34;s4异构数据源做了冗余当前的场景把关联表冗余进来绝对会更差&#34;&gt;S4：异构数据源，做了冗余（当前的场景把关联表冗余进来绝对会更差）
 &lt;/h3&gt;&lt;p&gt;前面提到，分阶段优惠卷的关联关系用了一张关联表维护&lt;/p&gt;
 &lt;p&gt;我们将整个管理表冗余到了活动表中，通过一种链表关系来维护分阶段的优惠活动，多了一个根活动的id，0时表示普通活动，具体id时表示对应的根活动id。&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;要不还是倒过来把字段冗余出去一张表，但这样也不太好&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;h3 id=&#34;s5负载均衡消除所有风险&#34;&gt;S5：负载均衡，消除所有风险
+&lt;h3 id=&#34;s5负载均衡消除所有风险也可以不做&#34;&gt;S5：负载均衡，消除所有风险（也可以不做）
 &lt;/h3&gt;&lt;p&gt;任务拆分，交给mq负载到多台机器上（mq重试机制不可靠，需要解决重试频率、识别无效重试、防止重试叠加）&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;mq的重试中，失败了只会投回队列，什么时候能再次消费不确定&lt;/p&gt;
@@ -281,14 +364,18 @@
 &lt;ul&gt;
 &lt;li&gt;使用redis的decr命令扣减库存，redis的命令具有原子性&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;img src=&#34;https://cdn.nlark.com/yuque/0/2024/png/1169676/1709697721665-58a02af7-7a0f-4ffa-a2aa-9253b33c1f86.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_69%2Ctext_5rK554K45bCP5rOi%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10%2Fformat%2Cwebp%2Fresize%2Cw_811%2Climit_0&#34;
-	
-	
-	
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/%E4%BC%98%E6%83%A0%E5%8D%B7/index.assets/1709697721665-58a02af7-7a0f-4ffa-a2aa-9253b33c1f86.png&#34;
+	width=&#34;811&#34;
+	height=&#34;463&#34;
+	srcset=&#34;https://example.com/p/%E4%BC%98%E6%83%A0%E5%8D%B7/index.assets/1709697721665-58a02af7-7a0f-4ffa-a2aa-9253b33c1f86_hu7648951743567544303.png 480w, https://example.com/p/%E4%BC%98%E6%83%A0%E5%8D%B7/index.assets/1709697721665-58a02af7-7a0f-4ffa-a2aa-9253b33c1f86_hu11678255789925416637.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;whiteboard_exported_image (77).png&#34;
 	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;175&#34;
+		data-flex-basis=&#34;420px&#34;
 	
 &gt;&lt;/p&gt;
 &lt;/li&gt;
@@ -345,11 +432,152 @@
 	
 	
 &gt;&lt;/p&gt;
-&lt;h2 id=&#34;优惠卷核销&#34;&gt;优惠卷核销
+&lt;h2 id=&#34;抢卷结果同步将redis结果同步到mysql&#34;&gt;抢卷结果同步（将redis结果同步到mysql）
+&lt;/h2&gt;&lt;h3 id=&#34;基本思路&#34;&gt;基本思路
+&lt;/h3&gt;&lt;p&gt;在抢卷的lua脚本中已经完成了同步队列的写入，同步要做的就是从redis中取出然后插入到mysql，最后删除redis对应的数据（双写一致）。&lt;/p&gt;
+&lt;p&gt;性能？&lt;/p&gt;
+&lt;p&gt;同步队列的key为：QUEUE:COUPON:SEIZE:SYNC:{活动id % 10}，&lt;strong&gt;最多有10个同步队列&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;使用多线程每个线程处理一个同步队列（也可以做负载均衡给其他的优惠卷服务器，本案例中使用的是多线程处理）&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;如何批量从redis中取数据&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;redisTemplate.opsForHash().scan(H key, ScanOptions options)&lt;/code&gt;scan方法通过游标的方式实现从hash中批量获取数据（批处理减少了往返时间）&lt;/p&gt;
+&lt;h3 id=&#34;redisson分布式锁&#34;&gt;Redisson分布式锁
+&lt;/h3&gt;&lt;p&gt;假如同步队列1中数据很多，定时任务第二轮调用的时候线程1还在处理队列1，但第二轮开始又会从同步队列1开始分配线程去处理，此时会导致**多个线程处理同一个队列的数据，造成重复&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;原生的redis加锁存在：超时、误删、业务续期的问题&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;误删&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;SET lock thread1 NX EX 10&lt;/p&gt;
+&lt;p&gt;写入锁的时候将线程存入value，然后在删除锁的时候判断标识是否为当前线程&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;超时释放&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;即使删除锁的时候判断，仍然会存在判断之后发生阻塞，导致超时释放，醒来后又再次误释放了&lt;/p&gt;
+&lt;h4 id=&#34;误删的原因&#34;&gt;误删的原因
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;超时释放（必须做，不然会死锁宕机）&lt;/li&gt;
+&lt;li&gt;判断锁标识、删除锁俩个动作不是原子操作（读 - 写只要分开，高并发场景下就一定有问题）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Redission分布式锁框架&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;使用tryLock方法，传递三个参数
+&lt;ul&gt;
+&lt;li&gt;waitTime&lt;/li&gt;
+&lt;li&gt;leaseTime&lt;/li&gt;
+&lt;li&gt;TimeUnit&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;tryLock方法返回值
+&lt;ul&gt;
+&lt;li&gt;true&lt;/li&gt;
+&lt;li&gt;false&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;释放锁
+&lt;ul&gt;
+&lt;li&gt;在try里执行tryLock，finally中释放锁&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;看门狗机制&#34;&gt;看门狗机制
+&lt;/h4&gt;&lt;p&gt;避免任务执行时间超过锁自动释放的时间时，&lt;strong&gt;锁释放了但任务还没有结束&lt;/strong&gt;，有新的线程去获取锁。&lt;/p&gt;
+&lt;p&gt;看门狗机制就是用于监测和维护锁的超时时间，确保任务执行完之前对锁自动续期。（存在问题，一直自动续期就成死锁了）。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;看门狗首先判断锁是否存在&lt;/li&gt;
+&lt;li&gt;不存在将不续期，程序执行unlock()时会将它的延迟任务取消，此时看门狗线程结束任务&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;数据同步组件以后看&#34;&gt;数据同步组件（以后看）
+&lt;/h3&gt;&lt;h2 id=&#34;优惠卷核销&#34;&gt;优惠卷核销
 &lt;/h2&gt;&lt;ul&gt;
 &lt;li&gt;下单时使用优惠卷，标记已使用或作废&lt;/li&gt;
 &lt;li&gt;取消订单回退优惠卷&lt;/li&gt;
+&lt;li&gt;使用优惠卷时查询可以使用的优惠卷列表
+&lt;ul&gt;
+&lt;li&gt;属于当前用户&lt;/li&gt;
+&lt;li&gt;订单金额满足优惠卷的使用去接&lt;/li&gt;
+&lt;li&gt;优惠卷没有过期、没有使用&lt;/li&gt;
 &lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;获取可用优惠卷&#34;&gt;获取可用优惠卷
+&lt;/h3&gt;&lt;p&gt;调用链的编排&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/%E4%BC%98%E6%83%A0%E5%8D%B7/index.assets/image-20241121092240784.png&#34;
+	width=&#34;1009&#34;
+	height=&#34;299&#34;
+	srcset=&#34;https://example.com/p/%E4%BC%98%E6%83%A0%E5%8D%B7/index.assets/image-20241121092240784_hu16346397756503986477.png 480w, https://example.com/p/%E4%BC%98%E6%83%A0%E5%8D%B7/index.assets/image-20241121092240784_hu17923476262536255860.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20241121092240784&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;337&#34;
+		data-flex-basis=&#34;809px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/%E4%BC%98%E6%83%A0%E5%8D%B7/index.assets/image-20241121092222535.png&#34;
+	width=&#34;974&#34;
+	height=&#34;185&#34;
+	srcset=&#34;https://example.com/p/%E4%BC%98%E6%83%A0%E5%8D%B7/index.assets/image-20241121092222535_hu8437825210757368541.png 480w, https://example.com/p/%E4%BC%98%E6%83%A0%E5%8D%B7/index.assets/image-20241121092222535_hu7963896890833799704.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20241121092222535&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;526&#34;
+		data-flex-basis=&#34;1263px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;最终决定是否给用户优惠的是订单服务&lt;/strong&gt;，所以应该由订单发起&lt;/p&gt;
+&lt;p&gt;具体逻辑较为繁琐，反正就是从数据库取出可以使用的优惠卷，用户选完之后判断优惠金额，满减的和折扣的&lt;/p&gt;
+&lt;h3 id=&#34;优惠卷核销-1&#34;&gt;优惠卷核销
+&lt;/h3&gt;&lt;p&gt;&lt;img src=&#34;https://example.com/p/%E4%BC%98%E6%83%A0%E5%8D%B7/index.assets/image-20241121093153982.png&#34;
+	width=&#34;965&#34;
+	height=&#34;712&#34;
+	srcset=&#34;https://example.com/p/%E4%BC%98%E6%83%A0%E5%8D%B7/index.assets/image-20241121093153982_hu526413733025393269.png 480w, https://example.com/p/%E4%BC%98%E6%83%A0%E5%8D%B7/index.assets/image-20241121093153982_hu12616436777187240555.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20241121093153982&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;135&#34;
+		data-flex-basis=&#34;325px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;数据流&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://cdn.nlark.com/yuque/0/2024/png/1169676/1709717251919-097417e0-5f91-47d9-8e55-dcf23f981986.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_60%2Ctext_5rK554K45bCP5rOi%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10%2Fformat%2Cwebp%2Fresize%2Cw_937%2Climit_0&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image.png&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;正向和逆向&lt;/strong&gt;&lt;/p&gt;
+&lt;h3 id=&#34;分布式事务&#34;&gt;分布式事务
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;本地事务&lt;/li&gt;
+&lt;li&gt;分布式事务
+&lt;ul&gt;
+&lt;li&gt;跨服务&lt;/li&gt;
+&lt;li&gt;跨数据源&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;以下单时核销优惠卷为例，订单服务&lt;strong&gt;先&lt;/strong&gt;向优惠卷发起核销请求，核销成功后&lt;strong&gt;再&lt;/strong&gt;写入订单。但假如优惠卷核销成功，但之后订单服务发生异常导致订单回滚，优惠卷实际上没有回滚，需要&lt;strong&gt;通过分布式事务来控制二者统一回滚&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;事务特性&lt;strong&gt;ACID&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;A：原子性&lt;/li&gt;
+&lt;li&gt;C：一致性&lt;/li&gt;
+&lt;li&gt;I：隔离性&lt;/li&gt;
+&lt;li&gt;D：持久性&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;cap原理&#34;&gt;CAP原理
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;C：一致性&lt;/li&gt;
+&lt;li&gt;A：可用性&lt;/li&gt;
+&lt;li&gt;P：分区容错性&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;CAP三点无法同时满足、默认满足P分布式容错&lt;/p&gt;
 &lt;h1 id=&#34;相关问题&#34;&gt;相关问题
 &lt;/h1&gt;&lt;h2 id=&#34;q1如果我要优惠卷折扣或满减是分阶段的怎么办&#34;&gt;Q1：如果我要优惠卷折扣或满减是分阶段的怎么办
 &lt;/h2&gt;&lt;blockquote&gt;
@@ -377,6 +605,8 @@
     &gt;半小时到秒级，京东零售定时任务优化怎么做的？本文通过一个真实的线上案例总结了针对海量数据批处理任务的一些通用优化方法，除 - 掘金 (juejin.cn)&lt;/a&gt;多说些，因为&lt;strong&gt;一个健康的系统是不允许cpu常态占用高的&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;定位问题：任务执行时间长且CPU利用率高&lt;/p&gt;
 &lt;/blockquote&gt;
+&lt;h2 id=&#34;q3是否有高负载的风险&#34;&gt;Q3：是否有高负载的风险？
+&lt;/h2&gt;&lt;p&gt;当前抢卷是交由redis集群处理，对于优惠卷管理、结果同步到mysql是优惠卷服务器做的，相对来说热点事件做了分离，不容易产生高负载。并且对于整个抢卷模块来说，优先增加的是redis集群的机器（要应对高峰期的用户抢卷请求），因为redis是用来消费这些抢卷请求的，服务器本身只是做个请求转发，抢卷处理逻辑在redis，所以对于服务器的cpu负载是不高的（抢卷这里对优惠卷服务器是网络IO密集），但仍需要注意OOM，同时要考虑将优惠卷服务器和redis客户端luttce解耦，用异步回调的方式&lt;/p&gt;
 </description>
         </item>
         <item>
@@ -3742,27 +3972,82 @@
 &lt;h2 id=&#34;day6&#34;&gt;day6
 &lt;/h2&gt;&lt;blockquote&gt;
 &lt;p&gt;redis、mysql相关问题再来一遍&lt;/p&gt;
-&lt;p&gt;优惠卷&lt;/p&gt;
+&lt;p&gt;优惠卷流程问题&lt;/p&gt;
+&lt;p&gt;优惠卷细节问题（不要求非常精确，主要是辅助流程理解）&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;h3 id=&#34;q1mq怎么防止消息重复消费消息幂等性&#34;&gt;Q1：MQ怎么防止消息重复消费（消息幂等性）
 &lt;/h3&gt;&lt;h3 id=&#34;q2缓存一致性&#34;&gt;Q2：缓存一致性
 &lt;/h3&gt;&lt;h3 id=&#34;q3优惠卷方案中有几个定时任务&#34;&gt;Q3：优惠卷方案中有几个定时任务
 &lt;/h3&gt;&lt;blockquote&gt;
 &lt;p&gt;俩个，预热和同步&lt;/p&gt;
+&lt;p&gt;频次、xxljob相关问题&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;h3 id=&#34;q4优惠卷方案中表设计怎么样的&#34;&gt;Q4：优惠卷方案中表设计怎么样的
-&lt;/h3&gt;&lt;h3 id=&#34;q5优惠卷方案中redis的数据结构是怎么样的&#34;&gt;Q5：优惠卷方案中redis的数据结构是怎么样的
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;四张表，如果有分级优惠卷可以升级为五张或则加入根id字段&lt;/p&gt;
+&lt;p&gt;每张表都有什么关键字段&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;strong&gt;优惠卷活动表&lt;/strong&gt;：记录活动详情、库存&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;活动类型&lt;/li&gt;
+&lt;li&gt;发放开始、结束时间&lt;/li&gt;
+&lt;li&gt;库存&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;优惠卷表&lt;/strong&gt;：记录优惠卷为哪个用户拥有&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;活动id、用户id（优惠卷的拥有者）&lt;/li&gt;
+&lt;li&gt;优惠卷使用状态&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;优惠卷核销表&lt;/strong&gt;：记录哪个用户的哪个订单使用了哪个优惠卷&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;优惠卷id、用户id、活动id、订单号&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;优惠卷退回表&lt;/strong&gt;：记录优惠卷退回记录&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;优惠卷id、用户id、退回时间&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;q4-1优惠卷模块数据流是怎么样的&#34;&gt;Q4-1：优惠卷模块数据流是怎么样的
+&lt;/h3&gt;&lt;p&gt;&lt;img src=&#34;https://cdn.nlark.com/yuque/0/2024/png/1169676/1709539597954-02a38eed-e5b2-461f-8aeb-977bf645600a.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_51%2Ctext_5rK554K45bCP5rOi%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10%2Fformat%2Cwebp&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;whiteboard_exported_image (59).png&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;h3 id=&#34;q5优惠卷方案中redis的数据结构是怎么样的&#34;&gt;Q5：优惠卷方案中redis的数据结构是怎么样的
 &lt;/h3&gt;&lt;blockquote&gt;
 &lt;p&gt;四种key，一个String、三个Hash&lt;/p&gt;
+&lt;p&gt;大key、小key、value都是什么&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;p&gt;优惠卷活动信息&lt;/p&gt;
 &lt;p&gt;优惠卷活动库存&lt;/p&gt;
 &lt;p&gt;优惠卷成功队列&lt;/p&gt;
 &lt;p&gt;抢卷成功队列&lt;/p&gt;
 &lt;h3 id=&#34;q6优惠卷为了防止超卖超领是怎么做的&#34;&gt;Q6：优惠卷为了防止超卖超领是怎么做的
-&lt;/h3&gt;&lt;h3 id=&#34;q7lua脚本的逻辑是怎么样的&#34;&gt;Q7：lua脚本的逻辑是怎么样的
-&lt;/h3&gt;&lt;h3 id=&#34;q8为什么要让这三个key落在同一个redis节点上怎么实现&#34;&gt;Q8：为什么要让这三个key落在同一个redis节点上，怎么实现
-&lt;/h3&gt;&lt;h3 id=&#34;q9抢卷成功队列如何同步到数据库这里如果消息发送消费失败怎么办&#34;&gt;Q9：抢卷成功队列如何同步到数据库，这里如果消息发送、消费失败怎么办
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;预热、redis+lua&lt;/p&gt;
+&lt;p&gt;没有选择的方案&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&#34;q7lua脚本的逻辑是怎么样的&#34;&gt;Q7：lua脚本的逻辑是怎么样的
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;首先验证抢卷成功队列中是否有对应的用户id（抢卷成功队列大小key、value是怎么样的）&lt;/li&gt;
+&lt;li&gt;然后查询活动库存是否充足（库存大小key、value是怎么样的的），充足则继续&lt;/li&gt;
+&lt;li&gt;向成功队列插入数据&lt;/li&gt;
+&lt;li&gt;减库存&lt;/li&gt;
+&lt;li&gt;写入抢卷同步队列&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;每一步都对应一个错误代码，都是什么&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&#34;q8为什么要让这三个key落在同一个redis节点上怎么实现&#34;&gt;Q8：为什么要让这三个key落在同一个redis节点上，怎么实现
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;lua脚本报错，{同样内容}保证这三个key落到一个节点&lt;/p&gt;
+&lt;p&gt;redis分片集群的散列插槽&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&#34;q9抢卷成功队列如何同步到数据库这里如果消息发送消费失败怎么办&#34;&gt;Q9：抢卷成功队列如何同步到数据库，这里如果消息发送、消费失败怎么办
 &lt;/h3&gt;&lt;blockquote&gt;
 &lt;p&gt;MQ重试&lt;/p&gt;
 &lt;p&gt;开启本地重试&lt;/p&gt;
@@ -3774,8 +4059,163 @@
 &lt;p&gt;前端控制&lt;/p&gt;
 &lt;p&gt;后端判断&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;h3 id=&#34;q11&#34;&gt;Q11：
-&lt;/h3&gt;</description>
+&lt;h3 id=&#34;q11你们的优惠卷活动有做预约吗&#34;&gt;Q11：你们的优惠卷活动有做预约吗
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;预约方案怎么做&lt;/p&gt;
+&lt;p&gt;预约方案有什么好处&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.bilibili.com/video/BV1LHDFY4Eka/?spm_id_from=333.880.my_history.page.click&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;预约机制对秒杀系统的重要性_哔哩哔哩_bilibili&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&#34;qfinal优惠卷怎么组织语言回答&#34;&gt;QFinal：优惠卷怎么组织语言回答
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;上述诸多问题如何组织回答问题&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;strong&gt;相关如何组织问题的核心在于：如何抽象逻辑&lt;/strong&gt;（也是如何抽象出通解的过程）&lt;/p&gt;
+&lt;p&gt;对于当前优惠卷的问题，无非就是&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;定义系统的资源模型&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;资源的产出&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;资源的争抢&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;资源的使用&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;对于分布式环境下，争抢无疑是最需要重点关注的一点&lt;/p&gt;
+&lt;p&gt;资源模型&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;表结构、关键字段&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;资源产出&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;如何管理的问题：优惠卷管理问题&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;资源的争抢&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;争抢的应对
+&lt;ul&gt;
+&lt;li&gt;预热，系统的高效性保证：预热任务问题&lt;/li&gt;
+&lt;li&gt;争抢的正确性保证：分布式环境下资源分配串行化、一致性、高效性
+&lt;ul&gt;
+&lt;li&gt;高效性：redis缓存&lt;/li&gt;
+&lt;li&gt;串行化（正确性）：lua原子操作&lt;/li&gt;
+&lt;li&gt;一致性：异步同步&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;上述步骤中分离了数据，所以需要保障系统的一致性问题（资源分布带来的一致性挑战）：异步同步程序&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;资源的使用&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;订单、核销、退回&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;剩下的无非就是逐步细化这个问题的拆分&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&#34;day7&#34;&gt;day7
+&lt;/h2&gt;&lt;blockquote&gt;
+&lt;p&gt;分布式事务控制&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&#34;q1cap和base理论了解吗&#34;&gt;Q1：CAP和Base理论了解吗
+&lt;/h3&gt;&lt;h3 id=&#34;q1-1nacos作为注册中心是cp还是ap作为配置中心呢&#34;&gt;Q1-1：Nacos作为注册中心是CP还是AP，作为配置中心呢
+&lt;/h3&gt;&lt;p&gt;&lt;img src=&#34;https://example.com/p/%E6%AF%8F%E6%97%A5%E5%85%AB%E8%82%A1/index.assets/image-20241117094418870.png&#34;
+	width=&#34;787&#34;
+	height=&#34;269&#34;
+	srcset=&#34;https://example.com/p/%E6%AF%8F%E6%97%A5%E5%85%AB%E8%82%A1/index.assets/image-20241117094418870_hu14324993689648444282.png 480w, https://example.com/p/%E6%AF%8F%E6%97%A5%E5%85%AB%E8%82%A1/index.assets/image-20241117094418870_hu11370265517840344424.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20241117094418870&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;292&#34;
+		data-flex-basis=&#34;702px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;h3 id=&#34;q2seata的xa模式&#34;&gt;Q2：Seata的XA模式
+&lt;/h3&gt;&lt;h3 id=&#34;q3seata的at模式&#34;&gt;Q3：Seata的AT模式
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;和XA最大的区别&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;区别在于rm执行完先提交，通过生成undo_log（更新前后快照）来做恢复&lt;/p&gt;
+&lt;h3 id=&#34;q3-1at模式的脏写问题&#34;&gt;Q3-1：AT模式的脏写问题
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;提交和恢复不在一块，不再具有原子性&lt;/p&gt;
+&lt;p&gt;全局锁&lt;/p&gt;
+&lt;p&gt;非seata事务&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/%E6%AF%8F%E6%97%A5%E5%85%AB%E8%82%A1/index.assets/image-20241117114259966.png&#34;
+	width=&#34;776&#34;
+	height=&#34;408&#34;
+	srcset=&#34;https://example.com/p/%E6%AF%8F%E6%97%A5%E5%85%AB%E8%82%A1/index.assets/image-20241117114259966_hu18057114111707664139.png 480w, https://example.com/p/%E6%AF%8F%E6%97%A5%E5%85%AB%E8%82%A1/index.assets/image-20241117114259966_hu14486896802311061655.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20241117114259966&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;190&#34;
+		data-flex-basis=&#34;456px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;全局锁和db锁存在死锁阶段，通过快速重试然后失败处理来打破状态&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/%E6%AF%8F%E6%97%A5%E5%85%AB%E8%82%A1/index.assets/image-20241117114244928.png&#34;
+	width=&#34;1418&#34;
+	height=&#34;770&#34;
+	srcset=&#34;https://example.com/p/%E6%AF%8F%E6%97%A5%E5%85%AB%E8%82%A1/index.assets/image-20241117114244928_hu5089890677670959133.png 480w, https://example.com/p/%E6%AF%8F%E6%97%A5%E5%85%AB%E8%82%A1/index.assets/image-20241117114244928_hu6270007950472462285.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20241117114244928&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;184&#34;
+		data-flex-basis=&#34;441px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;h3 id=&#34;q3-2at脏读问题&#34;&gt;Q3-2：AT脏读问题
+&lt;/h3&gt;&lt;h3 id=&#34;q4tcc模式&#34;&gt;Q4：TCC模式
+&lt;/h3&gt;&lt;h2 id=&#34;day8&#34;&gt;day8
+&lt;/h2&gt;&lt;blockquote&gt;
+&lt;p&gt;ELK技术&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&#34;day9&#34;&gt;day9
+&lt;/h2&gt;&lt;h3 id=&#34;q1redis中hash一个个拉取key中的数据太慢了如何批量拉取&#34;&gt;Q1：redis中hash一个个拉取key中的数据太慢了，如何批量拉取
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;redis的游标scan，减少往返成本&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&#34;q2原生的redis加锁存在哪些问题&#34;&gt;Q2：原生的redis加锁存在哪些问题
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;超时、误删、业务续期&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;strong&gt;1、锁误删&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;俩个线程&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;线程1获取锁执行完后准备释放&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;但是释放的操作被阻塞了&lt;/strong&gt;，导致锁被超时释放&lt;/li&gt;
+&lt;li&gt;此时线程2可以获取锁，然后获取成功，执行任务中&lt;/li&gt;
+&lt;li&gt;线程1此时醒来，继续释放锁，结果把2的锁给放掉&lt;/li&gt;
+&lt;li&gt;然后马上线程3就来获取&lt;/li&gt;
+&lt;li&gt;最后导致并发安全问题&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;如何解决：操作锁的时候判断线程标识是不是自己的，是才删除&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;SET lock thread1 NX/EX 10&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;NX：not exists&lt;/p&gt;
+&lt;p&gt;EX：exists&lt;/p&gt;
+&lt;h3 id=&#34;q3如何对接高德地图&#34;&gt;Q3：如何对接高德地图
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;先从高德地图拉取城市列表和它对应的编号，前端保存json便于解析，后端落库便于查询匹配，在前后端交互的时候就直接传城市编号&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;比如说前端现在地图选了一个点，对应有它的经纬度，然后向我们的公共服务模块发起请求调用高德地图返回对应的城市编号，然后再和后端交互的时候就用这个编号来交互&lt;/p&gt;
+&lt;p&gt;以新增地址簿为例，现在定位界面选择对应位置，然后与public服务交互获取对应城市编号，然后回显程序信息，最后新增落库的时候存入城市编码&lt;/p&gt;
+&lt;h2 id=&#34;day10&#34;&gt;day10
+&lt;/h2&gt;</description>
         </item>
         <item>
         <title>RabbitMQ</title>
@@ -6621,6 +7061,67 @@ spring 中使用编程式事务主要是&lt;code&gt;PlatformTransactionManager&l
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;    &lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description>
+        </item>
+        <item>
+        <title></title>
+        <link>https://example.com/p/</link>
+        <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+        
+        <guid>https://example.com/p/</guid>
+        <description>&lt;h1 id=&#34;服务配置&#34;&gt;服务配置
+&lt;/h1&gt;&lt;h2 id=&#34;yum换源&#34;&gt;yum换源
+&lt;/h2&gt;&lt;h2 id=&#34;portainer图形化&#34;&gt;portainer图形化
+&lt;/h2&gt;&lt;blockquote&gt;
+&lt;p&gt;[Centos7 安装Docker以及图形管理界面_centos7 docker图形化界面-CSDN博客](&lt;a class=&#34;link&#34; href=&#34;https://blog.csdn.net/u012511080/article/details/125397630?ops_request_misc=%7B%22request%5Fid%22%3A%227B732991-8575-4B8C-AC33-80E7E45A8230%22%2C%22scm%22%3A%2220140713.130102334..%22%7D&amp;amp;request_id=7B732991-8575-4B8C-AC33-80E7E45A8230&amp;amp;biz_id=0&amp;amp;utm_medium=distribute.pc_search_result.none-task-blog-2~all~baidu_landing_v2~default-1-125397630-null-null.142%5ev100%5epc_search_result_base9&amp;amp;utm_term=centos7&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://blog.csdn.net/u012511080/article/details/125397630?ops_request_misc=%7B%22request%5Fid%22%3A%227B732991-8575-4B8C-AC33-80E7E45A8230%22%2C%22scm%22%3A%2220140713.130102334..%22%7D&amp;request_id=7B732991-8575-4B8C-AC33-80E7E45A8230&amp;biz_id=0&amp;utm_medium=distribute.pc_search_result.none-task-blog-2~all~baidu_landing_v2~default-1-125397630-null-null.142^v100^pc_search_result_base9&amp;utm_term=centos7&lt;/a&gt; docker 图形化&amp;amp;spm=1018.2226.3001.4187)&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-gdscript3&#34; data-lang=&#34;gdscript3&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;docker&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;run&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;itd&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;p&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;9000&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;9000&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;v&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;/&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;var&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;/&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;run&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;/&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;docker&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;sock&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;/&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;var&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;/&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;run&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;/&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;docker&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;sock&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;--&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;name&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;portainer&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;portainer&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;/&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;portainer&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h2 id=&#34;mysql&#34;&gt;mysql
+&lt;/h2&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-gdscript3&#34; data-lang=&#34;gdscript3&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;docker&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;run&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;itd&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;--&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;name&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;mysql&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;v&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;/&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;usr&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;/&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;mysql&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;/&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;data&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;/&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;usr&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;/&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;mysql&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;/&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;data&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;v&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;/&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;var&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;/&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;log&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;/&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;mysql&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;/&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;var&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;/&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;log&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;/&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;mysql&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;p&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;3306&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;3306&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;e&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;MYSQL_ROOT_PASSWORD&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;mysql&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;mysql&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;mf&#34;&gt;8.0&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;26&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h2 id=&#34;nacos&#34;&gt;nacos
+&lt;/h2&gt;&lt;blockquote&gt;
+&lt;p&gt;nacos&lt;/p&gt;
+&lt;p&gt;543428095czj&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&#34;redis&#34;&gt;redis
+&lt;/h2&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;docker run -d --name redis -p 6379:6379 redis redis-server --requirepass redis
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h2 id=&#34;kibana&#34;&gt;kibana
+&lt;/h2&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;docker run --name kibana7.17.7 \
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;-e ELASTICSEARCH_HOSTS=http://38.6.165.92:9200 \
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;-p 5601:5601 \
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;-d kibana:7.17.7
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;</description>
         </item>

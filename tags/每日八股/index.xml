@@ -821,27 +821,82 @@
 &lt;h2 id=&#34;day6&#34;&gt;day6
 &lt;/h2&gt;&lt;blockquote&gt;
 &lt;p&gt;redis、mysql相关问题再来一遍&lt;/p&gt;
-&lt;p&gt;优惠卷&lt;/p&gt;
+&lt;p&gt;优惠卷流程问题&lt;/p&gt;
+&lt;p&gt;优惠卷细节问题（不要求非常精确，主要是辅助流程理解）&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;h3 id=&#34;q1mq怎么防止消息重复消费消息幂等性&#34;&gt;Q1：MQ怎么防止消息重复消费（消息幂等性）
 &lt;/h3&gt;&lt;h3 id=&#34;q2缓存一致性&#34;&gt;Q2：缓存一致性
 &lt;/h3&gt;&lt;h3 id=&#34;q3优惠卷方案中有几个定时任务&#34;&gt;Q3：优惠卷方案中有几个定时任务
 &lt;/h3&gt;&lt;blockquote&gt;
 &lt;p&gt;俩个，预热和同步&lt;/p&gt;
+&lt;p&gt;频次、xxljob相关问题&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;h3 id=&#34;q4优惠卷方案中表设计怎么样的&#34;&gt;Q4：优惠卷方案中表设计怎么样的
-&lt;/h3&gt;&lt;h3 id=&#34;q5优惠卷方案中redis的数据结构是怎么样的&#34;&gt;Q5：优惠卷方案中redis的数据结构是怎么样的
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;四张表，如果有分级优惠卷可以升级为五张或则加入根id字段&lt;/p&gt;
+&lt;p&gt;每张表都有什么关键字段&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;strong&gt;优惠卷活动表&lt;/strong&gt;：记录活动详情、库存&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;活动类型&lt;/li&gt;
+&lt;li&gt;发放开始、结束时间&lt;/li&gt;
+&lt;li&gt;库存&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;优惠卷表&lt;/strong&gt;：记录优惠卷为哪个用户拥有&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;活动id、用户id（优惠卷的拥有者）&lt;/li&gt;
+&lt;li&gt;优惠卷使用状态&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;优惠卷核销表&lt;/strong&gt;：记录哪个用户的哪个订单使用了哪个优惠卷&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;优惠卷id、用户id、活动id、订单号&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;优惠卷退回表&lt;/strong&gt;：记录优惠卷退回记录&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;优惠卷id、用户id、退回时间&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;q4-1优惠卷模块数据流是怎么样的&#34;&gt;Q4-1：优惠卷模块数据流是怎么样的
+&lt;/h3&gt;&lt;p&gt;&lt;img src=&#34;https://cdn.nlark.com/yuque/0/2024/png/1169676/1709539597954-02a38eed-e5b2-461f-8aeb-977bf645600a.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_51%2Ctext_5rK554K45bCP5rOi%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10%2Fformat%2Cwebp&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;whiteboard_exported_image (59).png&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;h3 id=&#34;q5优惠卷方案中redis的数据结构是怎么样的&#34;&gt;Q5：优惠卷方案中redis的数据结构是怎么样的
 &lt;/h3&gt;&lt;blockquote&gt;
 &lt;p&gt;四种key，一个String、三个Hash&lt;/p&gt;
+&lt;p&gt;大key、小key、value都是什么&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;p&gt;优惠卷活动信息&lt;/p&gt;
 &lt;p&gt;优惠卷活动库存&lt;/p&gt;
 &lt;p&gt;优惠卷成功队列&lt;/p&gt;
 &lt;p&gt;抢卷成功队列&lt;/p&gt;
 &lt;h3 id=&#34;q6优惠卷为了防止超卖超领是怎么做的&#34;&gt;Q6：优惠卷为了防止超卖超领是怎么做的
-&lt;/h3&gt;&lt;h3 id=&#34;q7lua脚本的逻辑是怎么样的&#34;&gt;Q7：lua脚本的逻辑是怎么样的
-&lt;/h3&gt;&lt;h3 id=&#34;q8为什么要让这三个key落在同一个redis节点上怎么实现&#34;&gt;Q8：为什么要让这三个key落在同一个redis节点上，怎么实现
-&lt;/h3&gt;&lt;h3 id=&#34;q9抢卷成功队列如何同步到数据库这里如果消息发送消费失败怎么办&#34;&gt;Q9：抢卷成功队列如何同步到数据库，这里如果消息发送、消费失败怎么办
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;预热、redis+lua&lt;/p&gt;
+&lt;p&gt;没有选择的方案&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&#34;q7lua脚本的逻辑是怎么样的&#34;&gt;Q7：lua脚本的逻辑是怎么样的
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;首先验证抢卷成功队列中是否有对应的用户id（抢卷成功队列大小key、value是怎么样的）&lt;/li&gt;
+&lt;li&gt;然后查询活动库存是否充足（库存大小key、value是怎么样的的），充足则继续&lt;/li&gt;
+&lt;li&gt;向成功队列插入数据&lt;/li&gt;
+&lt;li&gt;减库存&lt;/li&gt;
+&lt;li&gt;写入抢卷同步队列&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;每一步都对应一个错误代码，都是什么&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&#34;q8为什么要让这三个key落在同一个redis节点上怎么实现&#34;&gt;Q8：为什么要让这三个key落在同一个redis节点上，怎么实现
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;lua脚本报错，{同样内容}保证这三个key落到一个节点&lt;/p&gt;
+&lt;p&gt;redis分片集群的散列插槽&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&#34;q9抢卷成功队列如何同步到数据库这里如果消息发送消费失败怎么办&#34;&gt;Q9：抢卷成功队列如何同步到数据库，这里如果消息发送、消费失败怎么办
 &lt;/h3&gt;&lt;blockquote&gt;
 &lt;p&gt;MQ重试&lt;/p&gt;
 &lt;p&gt;开启本地重试&lt;/p&gt;
@@ -853,8 +908,163 @@
 &lt;p&gt;前端控制&lt;/p&gt;
 &lt;p&gt;后端判断&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;h3 id=&#34;q11&#34;&gt;Q11：
-&lt;/h3&gt;</description>
+&lt;h3 id=&#34;q11你们的优惠卷活动有做预约吗&#34;&gt;Q11：你们的优惠卷活动有做预约吗
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;预约方案怎么做&lt;/p&gt;
+&lt;p&gt;预约方案有什么好处&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.bilibili.com/video/BV1LHDFY4Eka/?spm_id_from=333.880.my_history.page.click&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;预约机制对秒杀系统的重要性_哔哩哔哩_bilibili&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&#34;qfinal优惠卷怎么组织语言回答&#34;&gt;QFinal：优惠卷怎么组织语言回答
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;上述诸多问题如何组织回答问题&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;strong&gt;相关如何组织问题的核心在于：如何抽象逻辑&lt;/strong&gt;（也是如何抽象出通解的过程）&lt;/p&gt;
+&lt;p&gt;对于当前优惠卷的问题，无非就是&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;定义系统的资源模型&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;资源的产出&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;资源的争抢&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;资源的使用&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;对于分布式环境下，争抢无疑是最需要重点关注的一点&lt;/p&gt;
+&lt;p&gt;资源模型&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;表结构、关键字段&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;资源产出&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;如何管理的问题：优惠卷管理问题&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;资源的争抢&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;争抢的应对
+&lt;ul&gt;
+&lt;li&gt;预热，系统的高效性保证：预热任务问题&lt;/li&gt;
+&lt;li&gt;争抢的正确性保证：分布式环境下资源分配串行化、一致性、高效性
+&lt;ul&gt;
+&lt;li&gt;高效性：redis缓存&lt;/li&gt;
+&lt;li&gt;串行化（正确性）：lua原子操作&lt;/li&gt;
+&lt;li&gt;一致性：异步同步&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;上述步骤中分离了数据，所以需要保障系统的一致性问题（资源分布带来的一致性挑战）：异步同步程序&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;资源的使用&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;订单、核销、退回&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;剩下的无非就是逐步细化这个问题的拆分&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&#34;day7&#34;&gt;day7
+&lt;/h2&gt;&lt;blockquote&gt;
+&lt;p&gt;分布式事务控制&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&#34;q1cap和base理论了解吗&#34;&gt;Q1：CAP和Base理论了解吗
+&lt;/h3&gt;&lt;h3 id=&#34;q1-1nacos作为注册中心是cp还是ap作为配置中心呢&#34;&gt;Q1-1：Nacos作为注册中心是CP还是AP，作为配置中心呢
+&lt;/h3&gt;&lt;p&gt;&lt;img src=&#34;https://example.com/p/%E6%AF%8F%E6%97%A5%E5%85%AB%E8%82%A1/index.assets/image-20241117094418870.png&#34;
+	width=&#34;787&#34;
+	height=&#34;269&#34;
+	srcset=&#34;https://example.com/p/%E6%AF%8F%E6%97%A5%E5%85%AB%E8%82%A1/index.assets/image-20241117094418870_hu14324993689648444282.png 480w, https://example.com/p/%E6%AF%8F%E6%97%A5%E5%85%AB%E8%82%A1/index.assets/image-20241117094418870_hu11370265517840344424.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20241117094418870&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;292&#34;
+		data-flex-basis=&#34;702px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;h3 id=&#34;q2seata的xa模式&#34;&gt;Q2：Seata的XA模式
+&lt;/h3&gt;&lt;h3 id=&#34;q3seata的at模式&#34;&gt;Q3：Seata的AT模式
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;和XA最大的区别&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;区别在于rm执行完先提交，通过生成undo_log（更新前后快照）来做恢复&lt;/p&gt;
+&lt;h3 id=&#34;q3-1at模式的脏写问题&#34;&gt;Q3-1：AT模式的脏写问题
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;提交和恢复不在一块，不再具有原子性&lt;/p&gt;
+&lt;p&gt;全局锁&lt;/p&gt;
+&lt;p&gt;非seata事务&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/%E6%AF%8F%E6%97%A5%E5%85%AB%E8%82%A1/index.assets/image-20241117114259966.png&#34;
+	width=&#34;776&#34;
+	height=&#34;408&#34;
+	srcset=&#34;https://example.com/p/%E6%AF%8F%E6%97%A5%E5%85%AB%E8%82%A1/index.assets/image-20241117114259966_hu18057114111707664139.png 480w, https://example.com/p/%E6%AF%8F%E6%97%A5%E5%85%AB%E8%82%A1/index.assets/image-20241117114259966_hu14486896802311061655.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20241117114259966&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;190&#34;
+		data-flex-basis=&#34;456px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;全局锁和db锁存在死锁阶段，通过快速重试然后失败处理来打破状态&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/%E6%AF%8F%E6%97%A5%E5%85%AB%E8%82%A1/index.assets/image-20241117114244928.png&#34;
+	width=&#34;1418&#34;
+	height=&#34;770&#34;
+	srcset=&#34;https://example.com/p/%E6%AF%8F%E6%97%A5%E5%85%AB%E8%82%A1/index.assets/image-20241117114244928_hu5089890677670959133.png 480w, https://example.com/p/%E6%AF%8F%E6%97%A5%E5%85%AB%E8%82%A1/index.assets/image-20241117114244928_hu6270007950472462285.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20241117114244928&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;184&#34;
+		data-flex-basis=&#34;441px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;h3 id=&#34;q3-2at脏读问题&#34;&gt;Q3-2：AT脏读问题
+&lt;/h3&gt;&lt;h3 id=&#34;q4tcc模式&#34;&gt;Q4：TCC模式
+&lt;/h3&gt;&lt;h2 id=&#34;day8&#34;&gt;day8
+&lt;/h2&gt;&lt;blockquote&gt;
+&lt;p&gt;ELK技术&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&#34;day9&#34;&gt;day9
+&lt;/h2&gt;&lt;h3 id=&#34;q1redis中hash一个个拉取key中的数据太慢了如何批量拉取&#34;&gt;Q1：redis中hash一个个拉取key中的数据太慢了，如何批量拉取
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;redis的游标scan，减少往返成本&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&#34;q2原生的redis加锁存在哪些问题&#34;&gt;Q2：原生的redis加锁存在哪些问题
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;超时、误删、业务续期&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;strong&gt;1、锁误删&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;俩个线程&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;线程1获取锁执行完后准备释放&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;但是释放的操作被阻塞了&lt;/strong&gt;，导致锁被超时释放&lt;/li&gt;
+&lt;li&gt;此时线程2可以获取锁，然后获取成功，执行任务中&lt;/li&gt;
+&lt;li&gt;线程1此时醒来，继续释放锁，结果把2的锁给放掉&lt;/li&gt;
+&lt;li&gt;然后马上线程3就来获取&lt;/li&gt;
+&lt;li&gt;最后导致并发安全问题&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;如何解决：操作锁的时候判断线程标识是不是自己的，是才删除&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;SET lock thread1 NX/EX 10&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;NX：not exists&lt;/p&gt;
+&lt;p&gt;EX：exists&lt;/p&gt;
+&lt;h3 id=&#34;q3如何对接高德地图&#34;&gt;Q3：如何对接高德地图
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;先从高德地图拉取城市列表和它对应的编号，前端保存json便于解析，后端落库便于查询匹配，在前后端交互的时候就直接传城市编号&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;比如说前端现在地图选了一个点，对应有它的经纬度，然后向我们的公共服务模块发起请求调用高德地图返回对应的城市编号，然后再和后端交互的时候就用这个编号来交互&lt;/p&gt;
+&lt;p&gt;以新增地址簿为例，现在定位界面选择对应位置，然后与public服务交互获取对应城市编号，然后回显程序信息，最后新增落库的时候存入城市编码&lt;/p&gt;
+&lt;h2 id=&#34;day10&#34;&gt;day10
+&lt;/h2&gt;</description>
         </item>
         
     </channel>

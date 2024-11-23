@@ -236,12 +236,32 @@
         <li><a href="#抢卷整体方案">抢卷整体方案</a></li>
       </ol>
     </li>
-    <li><a href="#优惠卷核销">优惠卷核销</a></li>
+    <li><a href="#抢卷结果同步将redis结果同步到mysql">抢卷结果同步（将redis结果同步到mysql）</a>
+      <ol>
+        <li><a href="#基本思路">基本思路</a></li>
+        <li><a href="#redisson分布式锁">Redisson分布式锁</a>
+          <ol>
+            <li><a href="#误删的原因">误删的原因</a></li>
+            <li><a href="#看门狗机制">看门狗机制</a></li>
+          </ol>
+        </li>
+        <li><a href="#数据同步组件以后看">数据同步组件（以后看）</a></li>
+      </ol>
+    </li>
+    <li><a href="#优惠卷核销">优惠卷核销</a>
+      <ol>
+        <li><a href="#获取可用优惠卷">获取可用优惠卷</a></li>
+        <li><a href="#优惠卷核销-1">优惠卷核销</a></li>
+        <li><a href="#分布式事务">分布式事务</a></li>
+        <li><a href="#cap原理">CAP原理</a></li>
+      </ol>
+    </li>
   </ol>
 
   <ol>
     <li><a href="#q1如果我要优惠卷折扣或满减是分阶段的怎么办">Q1：如果我要优惠卷折扣或满减是分阶段的怎么办</a></li>
     <li><a href="#q2定时更新活动状态任务执行频次高且如果根据q1的表结构活动表将是一个数据量较大的表可能会出现定时任务执行时间相对较长的情况其实小电商平台里基本不可能出现">Q2：定时更新活动状态任务执行频次高，且如果根据Q1的表结构活动表将是一个数据量较大的表，可能会出现定时任务执行时间相对较长的情况（其实小电商平台里基本不可能出现）</a></li>
+    <li><a href="#q3是否有高负载的风险">Q3：是否有高负载的风险？</a></li>
   </ol>
 </nav>
         </div>
@@ -469,14 +489,18 @@
 <ul>
 <li>使用redis的decr命令扣减库存，redis的命令具有原子性</li>
 </ul>
-<p><img src="https://cdn.nlark.com/yuque/0/2024/png/1169676/1709697721665-58a02af7-7a0f-4ffa-a2aa-9253b33c1f86.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_69%2Ctext_5rK554K45bCP5rOi%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10%2Fformat%2Cwebp%2Fresize%2Cw_811%2Climit_0"
-	
-	
-	
+<p><img src="/p/%E4%BC%98%E6%83%A0%E5%8D%B7/index.assets/1709697721665-58a02af7-7a0f-4ffa-a2aa-9253b33c1f86.png"
+	width="811"
+	height="463"
+	srcset="/p/%E4%BC%98%E6%83%A0%E5%8D%B7/index.assets/1709697721665-58a02af7-7a0f-4ffa-a2aa-9253b33c1f86_hu7648951743567544303.png 480w, /p/%E4%BC%98%E6%83%A0%E5%8D%B7/index.assets/1709697721665-58a02af7-7a0f-4ffa-a2aa-9253b33c1f86_hu11678255789925416637.png 1024w"
 	loading="lazy"
 	
 		alt="whiteboard_exported_image (77).png"
 	
+	
+		class="gallery-image" 
+		data-flex-grow="175"
+		data-flex-basis="420px"
 	
 ></p>
 </li>
@@ -533,11 +557,152 @@
 	
 	
 ></p>
-<h2 id="优惠卷核销">优惠卷核销
+<h2 id="抢卷结果同步将redis结果同步到mysql">抢卷结果同步（将redis结果同步到mysql）
+</h2><h3 id="基本思路">基本思路
+</h3><p>在抢卷的lua脚本中已经完成了同步队列的写入，同步要做的就是从redis中取出然后插入到mysql，最后删除redis对应的数据（双写一致）。</p>
+<p>性能？</p>
+<p>同步队列的key为：QUEUE:COUPON:SEIZE:SYNC:{活动id % 10}，<strong>最多有10个同步队列</strong></p>
+<p>使用多线程每个线程处理一个同步队列（也可以做负载均衡给其他的优惠卷服务器，本案例中使用的是多线程处理）</p>
+<p><strong>如何批量从redis中取数据</strong></p>
+<p><code>redisTemplate.opsForHash().scan(H key, ScanOptions options)</code>scan方法通过游标的方式实现从hash中批量获取数据（批处理减少了往返时间）</p>
+<h3 id="redisson分布式锁">Redisson分布式锁
+</h3><p>假如同步队列1中数据很多，定时任务第二轮调用的时候线程1还在处理队列1，但第二轮开始又会从同步队列1开始分配线程去处理，此时会导致**多个线程处理同一个队列的数据，造成重复</p>
+<p><strong>原生的redis加锁存在：超时、误删、业务续期的问题</strong></p>
+<p><strong>误删</strong></p>
+<p>SET lock thread1 NX EX 10</p>
+<p>写入锁的时候将线程存入value，然后在删除锁的时候判断标识是否为当前线程</p>
+<p><strong>超时释放</strong></p>
+<p>即使删除锁的时候判断，仍然会存在判断之后发生阻塞，导致超时释放，醒来后又再次误释放了</p>
+<h4 id="误删的原因">误删的原因
+</h4><ul>
+<li>超时释放（必须做，不然会死锁宕机）</li>
+<li>判断锁标识、删除锁俩个动作不是原子操作（读 - 写只要分开，高并发场景下就一定有问题）</li>
+</ul>
+<p>Redission分布式锁框架</p>
+<ul>
+<li>使用tryLock方法，传递三个参数
+<ul>
+<li>waitTime</li>
+<li>leaseTime</li>
+<li>TimeUnit</li>
+</ul>
+</li>
+<li>tryLock方法返回值
+<ul>
+<li>true</li>
+<li>false</li>
+</ul>
+</li>
+<li>释放锁
+<ul>
+<li>在try里执行tryLock，finally中释放锁</li>
+</ul>
+</li>
+</ul>
+<h4 id="看门狗机制">看门狗机制
+</h4><p>避免任务执行时间超过锁自动释放的时间时，<strong>锁释放了但任务还没有结束</strong>，有新的线程去获取锁。</p>
+<p>看门狗机制就是用于监测和维护锁的超时时间，确保任务执行完之前对锁自动续期。（存在问题，一直自动续期就成死锁了）。</p>
+<ul>
+<li>看门狗首先判断锁是否存在</li>
+<li>不存在将不续期，程序执行unlock()时会将它的延迟任务取消，此时看门狗线程结束任务</li>
+</ul>
+<h3 id="数据同步组件以后看">数据同步组件（以后看）
+</h3><h2 id="优惠卷核销">优惠卷核销
 </h2><ul>
 <li>下单时使用优惠卷，标记已使用或作废</li>
 <li>取消订单回退优惠卷</li>
+<li>使用优惠卷时查询可以使用的优惠卷列表
+<ul>
+<li>属于当前用户</li>
+<li>订单金额满足优惠卷的使用去接</li>
+<li>优惠卷没有过期、没有使用</li>
 </ul>
+</li>
+</ul>
+<h3 id="获取可用优惠卷">获取可用优惠卷
+</h3><p>调用链的编排</p>
+<p><img src="/p/%E4%BC%98%E6%83%A0%E5%8D%B7/index.assets/image-20241121092240784.png"
+	width="1009"
+	height="299"
+	srcset="/p/%E4%BC%98%E6%83%A0%E5%8D%B7/index.assets/image-20241121092240784_hu16346397756503986477.png 480w, /p/%E4%BC%98%E6%83%A0%E5%8D%B7/index.assets/image-20241121092240784_hu17923476262536255860.png 1024w"
+	loading="lazy"
+	
+		alt="image-20241121092240784"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="337"
+		data-flex-basis="809px"
+	
+></p>
+<p><img src="/p/%E4%BC%98%E6%83%A0%E5%8D%B7/index.assets/image-20241121092222535.png"
+	width="974"
+	height="185"
+	srcset="/p/%E4%BC%98%E6%83%A0%E5%8D%B7/index.assets/image-20241121092222535_hu8437825210757368541.png 480w, /p/%E4%BC%98%E6%83%A0%E5%8D%B7/index.assets/image-20241121092222535_hu7963896890833799704.png 1024w"
+	loading="lazy"
+	
+		alt="image-20241121092222535"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="526"
+		data-flex-basis="1263px"
+	
+></p>
+<p><strong>最终决定是否给用户优惠的是订单服务</strong>，所以应该由订单发起</p>
+<p>具体逻辑较为繁琐，反正就是从数据库取出可以使用的优惠卷，用户选完之后判断优惠金额，满减的和折扣的</p>
+<h3 id="优惠卷核销-1">优惠卷核销
+</h3><p><img src="/p/%E4%BC%98%E6%83%A0%E5%8D%B7/index.assets/image-20241121093153982.png"
+	width="965"
+	height="712"
+	srcset="/p/%E4%BC%98%E6%83%A0%E5%8D%B7/index.assets/image-20241121093153982_hu526413733025393269.png 480w, /p/%E4%BC%98%E6%83%A0%E5%8D%B7/index.assets/image-20241121093153982_hu12616436777187240555.png 1024w"
+	loading="lazy"
+	
+		alt="image-20241121093153982"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="135"
+		data-flex-basis="325px"
+	
+></p>
+<p>数据流</p>
+<p><img src="https://cdn.nlark.com/yuque/0/2024/png/1169676/1709717251919-097417e0-5f91-47d9-8e55-dcf23f981986.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_60%2Ctext_5rK554K45bCP5rOi%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10%2Fformat%2Cwebp%2Fresize%2Cw_937%2Climit_0"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image.png"
+	
+	
+></p>
+<p><strong>正向和逆向</strong></p>
+<h3 id="分布式事务">分布式事务
+</h3><ul>
+<li>本地事务</li>
+<li>分布式事务
+<ul>
+<li>跨服务</li>
+<li>跨数据源</li>
+</ul>
+</li>
+</ul>
+<p>以下单时核销优惠卷为例，订单服务<strong>先</strong>向优惠卷发起核销请求，核销成功后<strong>再</strong>写入订单。但假如优惠卷核销成功，但之后订单服务发生异常导致订单回滚，优惠卷实际上没有回滚，需要<strong>通过分布式事务来控制二者统一回滚</strong>。</p>
+<p>事务特性<strong>ACID</strong></p>
+<ul>
+<li>A：原子性</li>
+<li>C：一致性</li>
+<li>I：隔离性</li>
+<li>D：持久性</li>
+</ul>
+<h3 id="cap原理">CAP原理
+</h3><ul>
+<li>C：一致性</li>
+<li>A：可用性</li>
+<li>P：分区容错性</li>
+</ul>
+<p>CAP三点无法同时满足、默认满足P分布式容错</p>
 <h1 id="相关问题">相关问题
 </h1><h2 id="q1如果我要优惠卷折扣或满减是分阶段的怎么办">Q1：如果我要优惠卷折扣或满减是分阶段的怎么办
 </h2><blockquote>
@@ -565,6 +730,8 @@
     >半小时到秒级，京东零售定时任务优化怎么做的？本文通过一个真实的线上案例总结了针对海量数据批处理任务的一些通用优化方法，除 - 掘金 (juejin.cn)</a>多说些，因为<strong>一个健康的系统是不允许cpu常态占用高的</strong></p>
 <p>定位问题：任务执行时间长且CPU利用率高</p>
 </blockquote>
+<h2 id="q3是否有高负载的风险">Q3：是否有高负载的风险？
+</h2><p>当前抢卷是交由redis集群处理，对于优惠卷管理、结果同步到mysql是优惠卷服务器做的，相对来说热点事件做了分离，不容易产生高负载。并且对于整个抢卷模块来说，优先增加的是redis集群的机器（要应对高峰期的用户抢卷请求），因为redis是用来消费这些抢卷请求的，服务器本身只是做个请求转发，抢卷处理逻辑在redis，所以对于服务器的cpu负载是不高的（抢卷这里对优惠卷服务器是网络IO密集），但仍需要注意OOM，同时要考虑将优惠卷服务器和redis客户端luttce解耦，用异步回调的方式</p>
 
 </section>
 

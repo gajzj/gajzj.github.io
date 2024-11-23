@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html lang="zh-cn" dir="ltr">
     <head><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="SQL调优经历 业务背景（需要更换） 优惠卷活动的状态更新，这里我们有俩个定时任务\n定时更新优惠卷活动的状态为进行中、结束 定时扫表预热活动 数据库 数据表\n我们的优惠卷活动和别家电商的优惠卷不太一样，我们的优惠卷分为俩种类型：\n">
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="SQL调优经历 这是一个压测环境下的调优\n结合了非常多的高频面试问题点：\nSQL调优 线程池 redis集群 lua 数据表设计的权衡 定时任务 GC 一致性 MQ 业务背景（测试环境，需要补充具体的数据分配） 优惠卷活动的状态更新，这里我们有俩个定时任务（三个）\n">
 <title>sql调优经历</title>
 
 <link rel='canonical' href='https://example.com/p/sql%E8%B0%83%E4%BC%98%E7%BB%8F%E5%8E%86/'>
 
 <link rel="stylesheet" href="/scss/style.min.0304c6baf04e01a8fe70693791cb744d56a3578a3120a8796cefc66825aa39c7.css"><meta property='og:title' content="sql调优经历">
-<meta property='og:description' content="SQL调优经历 业务背景（需要更换） 优惠卷活动的状态更新，这里我们有俩个定时任务\n定时更新优惠卷活动的状态为进行中、结束 定时扫表预热活动 数据库 数据表\n我们的优惠卷活动和别家电商的优惠卷不太一样，我们的优惠卷分为俩种类型：\n">
+<meta property='og:description' content="SQL调优经历 这是一个压测环境下的调优\n结合了非常多的高频面试问题点：\nSQL调优 线程池 redis集群 lua 数据表设计的权衡 定时任务 GC 一致性 MQ 业务背景（测试环境，需要补充具体的数据分配） 优惠卷活动的状态更新，这里我们有俩个定时任务（三个）\n">
 <meta property='og:url' content='https://example.com/p/sql%E8%B0%83%E4%BC%98%E7%BB%8F%E5%8E%86/'>
 <meta property='og:site_name' content='GAJ-Blog'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2024-11-16T16:02:00&#43;08:00'/><meta property='article:modified_time' content='2024-11-16T16:02:00&#43;08:00'/>
 <meta name="twitter:title" content="sql调优经历">
-<meta name="twitter:description" content="SQL调优经历 业务背景（需要更换） 优惠卷活动的状态更新，这里我们有俩个定时任务\n定时更新优惠卷活动的状态为进行中、结束 定时扫表预热活动 数据库 数据表\n我们的优惠卷活动和别家电商的优惠卷不太一样，我们的优惠卷分为俩种类型：\n">
+<meta name="twitter:description" content="SQL调优经历 这是一个压测环境下的调优\n结合了非常多的高频面试问题点：\nSQL调优 线程池 redis集群 lua 数据表设计的权衡 定时任务 GC 一致性 MQ 业务背景（测试环境，需要补充具体的数据分配） 优惠卷活动的状态更新，这里我们有俩个定时任务（三个）\n">
     <link rel="shortcut icon" href="/favicon.ico" />
 
     </head>
@@ -221,7 +221,7 @@
         <div class="widget--toc">
             <nav id="TableOfContents">
   <ol>
-    <li><a href="#业务背景需要更换">业务背景（需要更换）</a></li>
+    <li><a href="#业务背景测试环境需要补充具体的数据分配">业务背景（测试环境，需要补充具体的数据分配）</a></li>
     <li><a href="#数据库">数据库</a></li>
     <li><a href="#问题现象">问题现象</a></li>
     <li><a href="#优化">优化</a>
@@ -229,8 +229,8 @@
         <li><a href="#s1分析数据源调大步长缩短任务执行时间">S1：分析数据源，调大步长缩短任务执行时间</a></li>
         <li><a href="#s2减少临时对象大小和无效日志避免ygc">S2：减少临时对象大小和无效日志，避免ygc</a></li>
         <li><a href="#s3基于游标查询数据源数据库分片批量更新降低交互次数避免空跑">S3：基于游标查询数据源，数据库分片批量更新，降低交互次数，避免空跑</a></li>
-        <li><a href="#s4异构数据源做了冗余">S4：异构数据源，做了冗余</a></li>
-        <li><a href="#s5负载均衡消除所有风险">S5：负载均衡，消除所有风险</a></li>
+        <li><a href="#s4异构数据源做了冗余当前的场景把关联表冗余进来绝对会更差">S4：异构数据源，做了冗余（当前的场景把关联表冗余进来绝对会更差）</a></li>
+        <li><a href="#s5负载均衡消除所有风险也可以不做">S5：负载均衡，消除所有风险（也可以不做）</a></li>
       </ol>
     </li>
     <li><a href="#优化效果汇总">优化效果汇总</a></li>
@@ -300,11 +300,27 @@
     
     
     <h1 id="sql调优经历">SQL调优经历
-</h1><h2 id="业务背景需要更换">业务背景（需要更换）
-</h2><p>优惠卷活动的状态更新，这里我们有俩个定时任务</p>
+</h1><blockquote>
+<p>这是一个压测环境下的调优</p>
+<p>结合了非常多的高频面试问题点：</p>
+<ul>
+<li>SQL调优</li>
+<li>线程池</li>
+<li>redis集群</li>
+<li>lua</li>
+<li>数据表设计的权衡</li>
+<li>定时任务</li>
+<li>GC</li>
+<li>一致性</li>
+<li>MQ</li>
+</ul>
+</blockquote>
+<h2 id="业务背景测试环境需要补充具体的数据分配">业务背景（测试环境，需要补充具体的数据分配）
+</h2><p>优惠卷活动的状态更新，这里我们有俩个定时任务（三个）</p>
 <ul>
 <li>定时更新优惠卷活动的状态为进行中、结束</li>
 <li>定时扫表预热活动</li>
+<li>定时从redis取优惠卷同步数据同步数据库</li>
 </ul>
 <h2 id="数据库">数据库
 </h2><p><strong>数据表</strong></p>
@@ -348,7 +364,7 @@
 <p><strong>阶段性结果</strong>执行时间减少到了30秒（假设），但cpu顶着100%跑</p>
 <h3 id="s2减少临时对象大小和无效日志避免ygc">S2：减少临时对象大小和无效日志，避免ygc
 </h3><p>想法：对事务总线负载（mq）到多台机器，但耗费资源</p>
-<p>于是我们分析cpu高在哪里，理论上这个任务是<strong>IO型任务</strong>，cpu利用率低，仔细观察发现<strong>机器不断多次ygc</strong>。G1的ygc比1.8的默认回收期更好资源（G1要兼顾mixgc回收）。我们这的任务其实更适合用默认的垃圾回收器（Parallel）</p>
+<p>于是我们分析cpu高在哪里，理论上这个任务是<strong>IO型任务</strong>，cpu利用率低，仔细观察发现<strong>机器不断多次ygc</strong>。G1的ygc比1.8的默认回收期更耗资源（G1要兼顾mixgc回收）。我们这的任务其实更适合用默认的垃圾回收器（Parallel）</p>
 <blockquote>
 <p>G1用于响应优先，默认的垃圾回收器则是吞吐量优先。</p>
 </blockquote>
@@ -377,16 +393,19 @@
 <p>基于游标查询导致每个步长都查出来比以前更多的数据，<strong>出现了长事务</strong>（这里不太契合场景，可以考虑把这个优化删掉）</p>
 <p>由于在批量更新的时候<strong>没有带分片键导致sql分发到了所有分片上</strong>， <strong>实际导致了长事务</strong></p>
 <p>于是我们<strong>按数据库分片对这些活动id进行分组</strong>，保证每个分组对应的单元id落到同一个分片（不太理解，是不是类似redis的hash插槽，让我们优惠卷的三个key落到一个redis结点，这里让对应的ids落到对应的数据库分片）</p>
-<p><strong>阶段性结果</strong>时间1秒，cpu50%。qpm降了很多</p>
+<blockquote>
+<p>结合优惠卷同步的来讲</p>
+</blockquote>
+<p><strong>阶段性结果</strong>时间2秒，cpu50%。qpm降了很多</p>
 <p>问题</p>
 <p>cpu还是较高</p>
-<h3 id="s4异构数据源做了冗余">S4：异构数据源，做了冗余
+<h3 id="s4异构数据源做了冗余当前的场景把关联表冗余进来绝对会更差">S4：异构数据源，做了冗余（当前的场景把关联表冗余进来绝对会更差）
 </h3><p>前面提到，分阶段优惠卷的关联关系用了一张关联表维护</p>
 <p>我们将整个管理表冗余到了活动表中，通过一种链表关系来维护分阶段的优惠活动，多了一个根活动的id，0时表示普通活动，具体id时表示对应的根活动id。</p>
 <blockquote>
 <p>要不还是倒过来把字段冗余出去一张表，但这样也不太好</p>
 </blockquote>
-<h3 id="s5负载均衡消除所有风险">S5：负载均衡，消除所有风险
+<h3 id="s5负载均衡消除所有风险也可以不做">S5：负载均衡，消除所有风险（也可以不做）
 </h3><p>任务拆分，交给mq负载到多台机器上（mq重试机制不可靠，需要解决重试频率、识别无效重试、防止重试叠加）</p>
 <blockquote>
 <p>mq的重试中，失败了只会投回队列，什么时候能再次消费不确定</p>

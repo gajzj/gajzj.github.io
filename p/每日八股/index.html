@@ -291,15 +291,37 @@
         <li><a href="#q2缓存一致性">Q2：缓存一致性</a></li>
         <li><a href="#q3优惠卷方案中有几个定时任务">Q3：优惠卷方案中有几个定时任务</a></li>
         <li><a href="#q4优惠卷方案中表设计怎么样的">Q4：优惠卷方案中表设计怎么样的</a></li>
+        <li><a href="#q4-1优惠卷模块数据流是怎么样的">Q4-1：优惠卷模块数据流是怎么样的</a></li>
         <li><a href="#q5优惠卷方案中redis的数据结构是怎么样的">Q5：优惠卷方案中redis的数据结构是怎么样的</a></li>
         <li><a href="#q6优惠卷为了防止超卖超领是怎么做的">Q6：优惠卷为了防止超卖超领是怎么做的</a></li>
         <li><a href="#q7lua脚本的逻辑是怎么样的">Q7：lua脚本的逻辑是怎么样的</a></li>
         <li><a href="#q8为什么要让这三个key落在同一个redis节点上怎么实现">Q8：为什么要让这三个key落在同一个redis节点上，怎么实现</a></li>
         <li><a href="#q9抢卷成功队列如何同步到数据库这里如果消息发送消费失败怎么办">Q9：抢卷成功队列如何同步到数据库，这里如果消息发送、消费失败怎么办</a></li>
         <li><a href="#q10通过定时任务修改活动状态有延迟怎么解决的">Q10：通过定时任务修改活动状态有延迟，怎么解决的</a></li>
-        <li><a href="#q11">Q11：</a></li>
+        <li><a href="#q11你们的优惠卷活动有做预约吗">Q11：你们的优惠卷活动有做预约吗</a></li>
+        <li><a href="#qfinal优惠卷怎么组织语言回答">QFinal：优惠卷怎么组织语言回答</a></li>
       </ol>
     </li>
+    <li><a href="#day7">day7</a>
+      <ol>
+        <li><a href="#q1cap和base理论了解吗">Q1：CAP和Base理论了解吗</a></li>
+        <li><a href="#q1-1nacos作为注册中心是cp还是ap作为配置中心呢">Q1-1：Nacos作为注册中心是CP还是AP，作为配置中心呢</a></li>
+        <li><a href="#q2seata的xa模式">Q2：Seata的XA模式</a></li>
+        <li><a href="#q3seata的at模式">Q3：Seata的AT模式</a></li>
+        <li><a href="#q3-1at模式的脏写问题">Q3-1：AT模式的脏写问题</a></li>
+        <li><a href="#q3-2at脏读问题">Q3-2：AT脏读问题</a></li>
+        <li><a href="#q4tcc模式">Q4：TCC模式</a></li>
+      </ol>
+    </li>
+    <li><a href="#day8">day8</a></li>
+    <li><a href="#day9">day9</a>
+      <ol>
+        <li><a href="#q1redis中hash一个个拉取key中的数据太慢了如何批量拉取">Q1：redis中hash一个个拉取key中的数据太慢了，如何批量拉取</a></li>
+        <li><a href="#q2原生的redis加锁存在哪些问题">Q2：原生的redis加锁存在哪些问题</a></li>
+        <li><a href="#q3如何对接高德地图">Q3：如何对接高德地图</a></li>
+      </ol>
+    </li>
+    <li><a href="#day10">day10</a></li>
   </ol>
 </nav>
         </div>
@@ -1173,27 +1195,82 @@
 <h2 id="day6">day6
 </h2><blockquote>
 <p>redis、mysql相关问题再来一遍</p>
-<p>优惠卷</p>
+<p>优惠卷流程问题</p>
+<p>优惠卷细节问题（不要求非常精确，主要是辅助流程理解）</p>
 </blockquote>
 <h3 id="q1mq怎么防止消息重复消费消息幂等性">Q1：MQ怎么防止消息重复消费（消息幂等性）
 </h3><h3 id="q2缓存一致性">Q2：缓存一致性
 </h3><h3 id="q3优惠卷方案中有几个定时任务">Q3：优惠卷方案中有几个定时任务
 </h3><blockquote>
 <p>俩个，预热和同步</p>
+<p>频次、xxljob相关问题</p>
 </blockquote>
 <h3 id="q4优惠卷方案中表设计怎么样的">Q4：优惠卷方案中表设计怎么样的
-</h3><h3 id="q5优惠卷方案中redis的数据结构是怎么样的">Q5：优惠卷方案中redis的数据结构是怎么样的
+</h3><blockquote>
+<p>四张表，如果有分级优惠卷可以升级为五张或则加入根id字段</p>
+<p>每张表都有什么关键字段</p>
+</blockquote>
+<p><strong>优惠卷活动表</strong>：记录活动详情、库存</p>
+<ul>
+<li>活动类型</li>
+<li>发放开始、结束时间</li>
+<li>库存</li>
+</ul>
+<p><strong>优惠卷表</strong>：记录优惠卷为哪个用户拥有</p>
+<ul>
+<li>活动id、用户id（优惠卷的拥有者）</li>
+<li>优惠卷使用状态</li>
+</ul>
+<p><strong>优惠卷核销表</strong>：记录哪个用户的哪个订单使用了哪个优惠卷</p>
+<ul>
+<li>优惠卷id、用户id、活动id、订单号</li>
+</ul>
+<p><strong>优惠卷退回表</strong>：记录优惠卷退回记录</p>
+<ul>
+<li>优惠卷id、用户id、退回时间</li>
+</ul>
+<h3 id="q4-1优惠卷模块数据流是怎么样的">Q4-1：优惠卷模块数据流是怎么样的
+</h3><p><img src="https://cdn.nlark.com/yuque/0/2024/png/1169676/1709539597954-02a38eed-e5b2-461f-8aeb-977bf645600a.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_51%2Ctext_5rK554K45bCP5rOi%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10%2Fformat%2Cwebp"
+	
+	
+	
+	loading="lazy"
+	
+		alt="whiteboard_exported_image (59).png"
+	
+	
+></p>
+<h3 id="q5优惠卷方案中redis的数据结构是怎么样的">Q5：优惠卷方案中redis的数据结构是怎么样的
 </h3><blockquote>
 <p>四种key，一个String、三个Hash</p>
+<p>大key、小key、value都是什么</p>
 </blockquote>
 <p>优惠卷活动信息</p>
 <p>优惠卷活动库存</p>
 <p>优惠卷成功队列</p>
 <p>抢卷成功队列</p>
 <h3 id="q6优惠卷为了防止超卖超领是怎么做的">Q6：优惠卷为了防止超卖超领是怎么做的
-</h3><h3 id="q7lua脚本的逻辑是怎么样的">Q7：lua脚本的逻辑是怎么样的
-</h3><h3 id="q8为什么要让这三个key落在同一个redis节点上怎么实现">Q8：为什么要让这三个key落在同一个redis节点上，怎么实现
-</h3><h3 id="q9抢卷成功队列如何同步到数据库这里如果消息发送消费失败怎么办">Q9：抢卷成功队列如何同步到数据库，这里如果消息发送、消费失败怎么办
+</h3><blockquote>
+<p>预热、redis+lua</p>
+<p>没有选择的方案</p>
+</blockquote>
+<h3 id="q7lua脚本的逻辑是怎么样的">Q7：lua脚本的逻辑是怎么样的
+</h3><ul>
+<li>首先验证抢卷成功队列中是否有对应的用户id（抢卷成功队列大小key、value是怎么样的）</li>
+<li>然后查询活动库存是否充足（库存大小key、value是怎么样的的），充足则继续</li>
+<li>向成功队列插入数据</li>
+<li>减库存</li>
+<li>写入抢卷同步队列</li>
+</ul>
+<blockquote>
+<p>每一步都对应一个错误代码，都是什么</p>
+</blockquote>
+<h3 id="q8为什么要让这三个key落在同一个redis节点上怎么实现">Q8：为什么要让这三个key落在同一个redis节点上，怎么实现
+</h3><blockquote>
+<p>lua脚本报错，{同样内容}保证这三个key落到一个节点</p>
+<p>redis分片集群的散列插槽</p>
+</blockquote>
+<h3 id="q9抢卷成功队列如何同步到数据库这里如果消息发送消费失败怎么办">Q9：抢卷成功队列如何同步到数据库，这里如果消息发送、消费失败怎么办
 </h3><blockquote>
 <p>MQ重试</p>
 <p>开启本地重试</p>
@@ -1205,8 +1282,163 @@
 <p>前端控制</p>
 <p>后端判断</p>
 </blockquote>
-<h3 id="q11">Q11：
-</h3>
+<h3 id="q11你们的优惠卷活动有做预约吗">Q11：你们的优惠卷活动有做预约吗
+</h3><blockquote>
+<p>预约方案怎么做</p>
+<p>预约方案有什么好处</p>
+<p><a class="link" href="https://www.bilibili.com/video/BV1LHDFY4Eka/?spm_id_from=333.880.my_history.page.click"  target="_blank" rel="noopener"
+    >预约机制对秒杀系统的重要性_哔哩哔哩_bilibili</a></p>
+</blockquote>
+<h3 id="qfinal优惠卷怎么组织语言回答">QFinal：优惠卷怎么组织语言回答
+</h3><blockquote>
+<p>上述诸多问题如何组织回答问题</p>
+</blockquote>
+<p><strong>相关如何组织问题的核心在于：如何抽象逻辑</strong>（也是如何抽象出通解的过程）</p>
+<p>对于当前优惠卷的问题，无非就是</p>
+<ul>
+<li>
+<p>定义系统的资源模型</p>
+</li>
+<li>
+<p>资源的产出</p>
+</li>
+<li>
+<p>资源的争抢</p>
+</li>
+<li>
+<p>资源的使用</p>
+</li>
+</ul>
+<p>对于分布式环境下，争抢无疑是最需要重点关注的一点</p>
+<p>资源模型</p>
+<ul>
+<li>表结构、关键字段</li>
+</ul>
+<p>资源产出</p>
+<ul>
+<li>如何管理的问题：优惠卷管理问题</li>
+</ul>
+<p>资源的争抢</p>
+<ul>
+<li>争抢的应对
+<ul>
+<li>预热，系统的高效性保证：预热任务问题</li>
+<li>争抢的正确性保证：分布式环境下资源分配串行化、一致性、高效性
+<ul>
+<li>高效性：redis缓存</li>
+<li>串行化（正确性）：lua原子操作</li>
+<li>一致性：异步同步</li>
+</ul>
+</li>
+<li>上述步骤中分离了数据，所以需要保障系统的一致性问题（资源分布带来的一致性挑战）：异步同步程序</li>
+</ul>
+</li>
+</ul>
+<p>资源的使用</p>
+<ul>
+<li>订单、核销、退回</li>
+</ul>
+<blockquote>
+<p>剩下的无非就是逐步细化这个问题的拆分</p>
+</blockquote>
+<h2 id="day7">day7
+</h2><blockquote>
+<p>分布式事务控制</p>
+</blockquote>
+<h3 id="q1cap和base理论了解吗">Q1：CAP和Base理论了解吗
+</h3><h3 id="q1-1nacos作为注册中心是cp还是ap作为配置中心呢">Q1-1：Nacos作为注册中心是CP还是AP，作为配置中心呢
+</h3><p><img src="/p/%E6%AF%8F%E6%97%A5%E5%85%AB%E8%82%A1/index.assets/image-20241117094418870.png"
+	width="787"
+	height="269"
+	srcset="/p/%E6%AF%8F%E6%97%A5%E5%85%AB%E8%82%A1/index.assets/image-20241117094418870_hu14324993689648444282.png 480w, /p/%E6%AF%8F%E6%97%A5%E5%85%AB%E8%82%A1/index.assets/image-20241117094418870_hu11370265517840344424.png 1024w"
+	loading="lazy"
+	
+		alt="image-20241117094418870"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="292"
+		data-flex-basis="702px"
+	
+></p>
+<h3 id="q2seata的xa模式">Q2：Seata的XA模式
+</h3><h3 id="q3seata的at模式">Q3：Seata的AT模式
+</h3><blockquote>
+<p>和XA最大的区别</p>
+</blockquote>
+<p>区别在于rm执行完先提交，通过生成undo_log（更新前后快照）来做恢复</p>
+<h3 id="q3-1at模式的脏写问题">Q3-1：AT模式的脏写问题
+</h3><blockquote>
+<p>提交和恢复不在一块，不再具有原子性</p>
+<p>全局锁</p>
+<p>非seata事务</p>
+</blockquote>
+<p><img src="/p/%E6%AF%8F%E6%97%A5%E5%85%AB%E8%82%A1/index.assets/image-20241117114259966.png"
+	width="776"
+	height="408"
+	srcset="/p/%E6%AF%8F%E6%97%A5%E5%85%AB%E8%82%A1/index.assets/image-20241117114259966_hu18057114111707664139.png 480w, /p/%E6%AF%8F%E6%97%A5%E5%85%AB%E8%82%A1/index.assets/image-20241117114259966_hu14486896802311061655.png 1024w"
+	loading="lazy"
+	
+		alt="image-20241117114259966"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="190"
+		data-flex-basis="456px"
+	
+></p>
+<p>全局锁和db锁存在死锁阶段，通过快速重试然后失败处理来打破状态</p>
+<p><img src="/p/%E6%AF%8F%E6%97%A5%E5%85%AB%E8%82%A1/index.assets/image-20241117114244928.png"
+	width="1418"
+	height="770"
+	srcset="/p/%E6%AF%8F%E6%97%A5%E5%85%AB%E8%82%A1/index.assets/image-20241117114244928_hu5089890677670959133.png 480w, /p/%E6%AF%8F%E6%97%A5%E5%85%AB%E8%82%A1/index.assets/image-20241117114244928_hu6270007950472462285.png 1024w"
+	loading="lazy"
+	
+		alt="image-20241117114244928"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="184"
+		data-flex-basis="441px"
+	
+></p>
+<h3 id="q3-2at脏读问题">Q3-2：AT脏读问题
+</h3><h3 id="q4tcc模式">Q4：TCC模式
+</h3><h2 id="day8">day8
+</h2><blockquote>
+<p>ELK技术</p>
+</blockquote>
+<h2 id="day9">day9
+</h2><h3 id="q1redis中hash一个个拉取key中的数据太慢了如何批量拉取">Q1：redis中hash一个个拉取key中的数据太慢了，如何批量拉取
+</h3><blockquote>
+<p>redis的游标scan，减少往返成本</p>
+</blockquote>
+<h3 id="q2原生的redis加锁存在哪些问题">Q2：原生的redis加锁存在哪些问题
+</h3><blockquote>
+<p>超时、误删、业务续期</p>
+</blockquote>
+<p><strong>1、锁误删</strong></p>
+<p>俩个线程</p>
+<ul>
+<li>线程1获取锁执行完后准备释放</li>
+<li><strong>但是释放的操作被阻塞了</strong>，导致锁被超时释放</li>
+<li>此时线程2可以获取锁，然后获取成功，执行任务中</li>
+<li>线程1此时醒来，继续释放锁，结果把2的锁给放掉</li>
+<li>然后马上线程3就来获取</li>
+<li>最后导致并发安全问题</li>
+</ul>
+<p>如何解决：操作锁的时候判断线程标识是不是自己的，是才删除</p>
+<p><code>SET lock thread1 NX/EX 10</code></p>
+<p>NX：not exists</p>
+<p>EX：exists</p>
+<h3 id="q3如何对接高德地图">Q3：如何对接高德地图
+</h3><blockquote>
+<p>先从高德地图拉取城市列表和它对应的编号，前端保存json便于解析，后端落库便于查询匹配，在前后端交互的时候就直接传城市编号</p>
+</blockquote>
+<p>比如说前端现在地图选了一个点，对应有它的经纬度，然后向我们的公共服务模块发起请求调用高德地图返回对应的城市编号，然后再和后端交互的时候就用这个编号来交互</p>
+<p>以新增地址簿为例，现在定位界面选择对应位置，然后与public服务交互获取对应城市编号，然后回显程序信息，最后新增落库的时候存入城市编码</p>
+<h2 id="day10">day10
+</h2>
 </section>
 
 
