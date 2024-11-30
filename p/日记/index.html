@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html lang="zh-cn" dir="ltr">
     <head><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="SQL调优经历 这是一个压测环境下的调优\n结合了非常多的高频面试问题点：\nSQL调优 线程池 redis集群 lua 数据表设计的权衡 定时任务 GC 一致性 MQ 业务背景（测试环境，需要补充具体的数据分配） 优惠卷活动的状态更新，这里我们有俩个定时任务（三个）\n">
-<title>sql调优经历</title>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="2024 11.30 进度 昨天一趟深圳，本意是拿下另外两场10-15的岗位，结果是临时加在早上的面试通过并且晚上就给了结果。给的是10.5，主要是想着以约面试多为优先，结果是我现在的能力已经不需要靠面试数量来做提升了，所以报的很随意。包括我都没拿过工资的人，实在是没什么概念。包括这周大概10场面试，俩份offer，5个二面有些地域原因没法接，基本上来说面试太过容易。但主要原因还是因为我对自己的定位没那么明确，基本上10k以上的就都约，自我认知不足。\n">
+<title>日记</title>
 
-<link rel='canonical' href='https://example.com/p/sql%E8%B0%83%E4%BC%98%E7%BB%8F%E5%8E%86/'>
+<link rel='canonical' href='https://example.com/p/%E6%97%A5%E8%AE%B0/'>
 
-<link rel="stylesheet" href="/scss/style.min.0304c6baf04e01a8fe70693791cb744d56a3578a3120a8796cefc66825aa39c7.css"><meta property='og:title' content="sql调优经历">
-<meta property='og:description' content="SQL调优经历 这是一个压测环境下的调优\n结合了非常多的高频面试问题点：\nSQL调优 线程池 redis集群 lua 数据表设计的权衡 定时任务 GC 一致性 MQ 业务背景（测试环境，需要补充具体的数据分配） 优惠卷活动的状态更新，这里我们有俩个定时任务（三个）\n">
-<meta property='og:url' content='https://example.com/p/sql%E8%B0%83%E4%BC%98%E7%BB%8F%E5%8E%86/'>
+<link rel="stylesheet" href="/scss/style.min.0304c6baf04e01a8fe70693791cb744d56a3578a3120a8796cefc66825aa39c7.css"><meta property='og:title' content="日记">
+<meta property='og:description' content="2024 11.30 进度 昨天一趟深圳，本意是拿下另外两场10-15的岗位，结果是临时加在早上的面试通过并且晚上就给了结果。给的是10.5，主要是想着以约面试多为优先，结果是我现在的能力已经不需要靠面试数量来做提升了，所以报的很随意。包括我都没拿过工资的人，实在是没什么概念。包括这周大概10场面试，俩份offer，5个二面有些地域原因没法接，基本上来说面试太过容易。但主要原因还是因为我对自己的定位没那么明确，基本上10k以上的就都约，自我认知不足。\n">
+<meta property='og:url' content='https://example.com/p/%E6%97%A5%E8%AE%B0/'>
 <meta property='og:site_name' content='GAJ-Blog'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2024-11-16T16:02:00&#43;08:00'/><meta property='article:modified_time' content='2024-11-16T16:02:00&#43;08:00'/>
-<meta name="twitter:title" content="sql调优经历">
-<meta name="twitter:description" content="SQL调优经历 这是一个压测环境下的调优\n结合了非常多的高频面试问题点：\nSQL调优 线程池 redis集群 lua 数据表设计的权衡 定时任务 GC 一致性 MQ 业务背景（测试环境，需要补充具体的数据分配） 优惠卷活动的状态更新，这里我们有俩个定时任务（三个）\n">
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2024-09-12T16:02:00&#43;08:00'/><meta property='article:modified_time' content='2024-09-12T16:02:00&#43;08:00'/>
+<meta name="twitter:title" content="日记">
+<meta name="twitter:description" content="2024 11.30 进度 昨天一趟深圳，本意是拿下另外两场10-15的岗位，结果是临时加在早上的面试通过并且晚上就给了结果。给的是10.5，主要是想着以约面试多为优先，结果是我现在的能力已经不需要靠面试数量来做提升了，所以报的很随意。包括我都没拿过工资的人，实在是没什么概念。包括这周大概10场面试，俩份offer，5个二面有些地域原因没法接，基本上来说面试太过容易。但主要原因还是因为我对自己的定位没那么明确，基本上10k以上的就都约，自我认知不足。\n">
     <link rel="shortcut icon" href="/favicon.ico" />
 
     </head>
@@ -221,19 +221,8 @@
         <div class="widget--toc">
             <nav id="TableOfContents">
   <ol>
-    <li><a href="#业务背景测试环境需要补充具体的数据分配">业务背景（测试环境，需要补充具体的数据分配）</a></li>
-    <li><a href="#数据库">数据库</a></li>
-    <li><a href="#问题现象">问题现象</a></li>
-    <li><a href="#优化">优化</a>
-      <ol>
-        <li><a href="#s1分析数据源调大步长缩短任务执行时间">S1：分析数据源，调大步长缩短任务执行时间</a></li>
-        <li><a href="#s2减少临时对象大小和无效日志避免ygc">S2：减少临时对象大小和无效日志，避免ygc</a></li>
-        <li><a href="#s3基于游标查询数据源数据库分片批量更新降低交互次数避免空跑">S3：基于游标查询数据源，数据库分片批量更新，降低交互次数，避免空跑</a></li>
-        <li><a href="#s4异构数据源做了冗余当前的场景把关联表冗余进来绝对会更差">S4：异构数据源，做了冗余（当前的场景把关联表冗余进来绝对会更差）</a></li>
-        <li><a href="#s5负载均衡消除所有风险也可以不做">S5：负载均衡，消除所有风险（也可以不做）</a></li>
-      </ol>
-    </li>
-    <li><a href="#优化效果汇总">优化效果汇总</a></li>
+    <li><a href="#2024">2024</a></li>
+    <li><a href="#1130">11.30</a></li>
   </ol>
 </nav>
         </div>
@@ -261,7 +250,7 @@
 
     <div class="article-title-wrapper">
         <h2 class="article-title">
-            <a href="/p/sql%E8%B0%83%E4%BC%98%E7%BB%8F%E5%8E%86/">sql调优经历</a>
+            <a href="/p/%E6%97%A5%E8%AE%B0/">日记</a>
         </h2>
     
         
@@ -283,7 +272,7 @@
   <path d="M3 11h16" />
   <path d="M18 16.496v1.504l1 1" />
 </svg>
-                <time class="article-time--published">11-16,  2024</time>
+                <time class="article-time--published">09-12,  2024</time>
             </div>
         
 
@@ -299,123 +288,19 @@
     <section class="article-content">
     
     
-    <h1 id="sql调优经历">SQL调优经历
-</h1><blockquote>
-<p>这是一个压测环境下的调优</p>
-<p>结合了非常多的高频面试问题点：</p>
-<ul>
-<li>SQL调优</li>
-<li>线程池</li>
-<li>redis集群</li>
-<li>lua</li>
-<li>数据表设计的权衡</li>
-<li>定时任务</li>
-<li>GC</li>
-<li>一致性</li>
-<li>MQ</li>
+    <h2 id="2024">2024
+</h2><h2 id="1130">11.30
+</h2><ul>
+<li>进度</li>
 </ul>
-</blockquote>
-<h2 id="业务背景测试环境需要补充具体的数据分配">业务背景（测试环境，需要补充具体的数据分配）
-</h2><p>优惠卷活动的状态更新，这里我们有俩个定时任务（三个）</p>
+<p>昨天一趟深圳，本意是拿下另外两场10-15的岗位，结果是临时加在早上的面试通过并且晚上就给了结果。给的是10.5，主要是想着以约面试多为优先，结果是我现在的能力已经不需要靠面试数量来做提升了，所以报的很随意。<del>包括我都没拿过工资的人，实在是没什么概念</del>。包括这周大概10场面试，俩份offer，5个二面有些地域原因没法接，基本上来说面试太过容易。但主要原因还是因为我对自己的定位没那么明确，基本上10k以上的就都约，自我认知不足。</p>
+<p>面试于我就像是游戏打榜一样简单（当然有输有赢，但），一场面试总结一场，写下笔记之后就在脑子里，所以真的是没难度（<del>主要是脑子好，大学四年高强度锻炼了我的临时记忆效率</del>）。仅以面试的效果来看，我认为我的面试表现上限很高，但其实准备做的不够充足，包括我的简历实在是太抽象，10条里面8条redis（<del>终于知道为什么面试官都逮着redis疯狂问我</del>）但问的有水平的面试官还是只有那位广州耕耘的二面，其他的面试官的发问都还是八股文（仅限在redis这块）。</p>
+<p>但我还是决定先入职，确实虽然是这半年一步步努力过来，但这半个月来的所作所为太虚，虽说提升了面试沟通表达能力，但说实话半个月只能说是把我本有的，荒废四年的能力重新发挥。实际的提升相对来说不大，还是得靠在工作中锻炼吧。</p>
 <ul>
-<li>定时更新优惠卷活动的状态为进行中、结束</li>
-<li>定时扫表预热活动</li>
-<li>定时从redis取优惠卷同步数据同步数据库</li>
+<li>面试</li>
 </ul>
-<h2 id="数据库">数据库
-</h2><p><strong>数据表</strong></p>
-<p>我们的优惠卷活动和别家电商的优惠卷不太一样，我们的优惠卷分为俩种类型：</p>
-<ul>
-<li>普通满减、折扣优惠卷</li>
-<li>分阶段满减、折扣优惠卷（越买越优惠）</li>
-</ul>
-<p>所以这里我们的优惠卷<strong>存在一个关联表</strong>，用于关联这种分阶段优惠的优惠阶段</p>
-<p>定位问题：优惠卷定时任务耗时长、cpu占用高的解决</p>
-<p><strong>数据库</strong>（这个活动表不会有这么大的数据量）</p>
-<p>64分片，一主一从，分片键是活动id</p>
-<p><strong>数据源</strong></p>
-<ul>
-<li>平台的优惠活动</li>
-<li>商家的店铺优惠活动</li>
-</ul>
-<p><strong>机器配置和垃圾回收器</strong></p>
-<p>单台机器用的8C16G（相关配置需要修改）</p>
-<p>-Xms8192m -Xmx8192m -XX:MaxMetaspaceSize=1024m -XX:MetaspaceSize=1024m -XX:MaxDirectMemorySize=1966m -XX:+<strong>UseG1GC</strong> -XX:<strong>MaxGCPauseMillis</strong>=200 -XX:<strong>ParallelGCThreads</strong>=8</p>
-<p><strong>定时更新活动状态逻辑</strong>（需要换个更复杂的场景）</p>
-<p>根据活动的状态</p>
-<ul>
-<li>将待生效的活动根据活动的时间（开始时间、结束时间）更新为进行中</li>
-<li>将待生效的、进行中的活动根据活动时间更新为结束</li>
-</ul>
-<h2 id="问题现象">问题现象
-</h2><p>我们的定时任务间隔一分钟，执行时间很长，40秒，cpu占用80%，虽然前端做了倒计时，但占用率太高不健康。</p>
-<blockquote>
-<p>按照这个问题假设估计我们数据量有可能会达到千万级</p>
-</blockquote>
-<h2 id="优化">优化
-</h2><h3 id="s1分析数据源调大步长缩短任务执行时间">S1：分析数据源，调大步长缩短任务执行时间
-</h3><p>（一次任务中分多步处理，而不是直接全部搜出来到内存，与云岚存在差异）</p>
-<p>数据源表里数据非常稀疏</p>
-<ul>
-<li>程序问题：（落入了别的来源的数据）</li>
-<li>历史问题：（）</li>
-</ul>
-<p>所以为了避免每次处理的数据较少，调大了步长，避免空跑</p>
-<p><strong>阶段性结果</strong>执行时间减少到了30秒（假设），但cpu顶着100%跑</p>
-<h3 id="s2减少临时对象大小和无效日志避免ygc">S2：减少临时对象大小和无效日志，避免ygc
-</h3><p>想法：对事务总线负载（mq）到多台机器，但耗费资源</p>
-<p>于是我们分析cpu高在哪里，理论上这个任务是<strong>IO型任务</strong>，cpu利用率低，仔细观察发现<strong>机器不断多次ygc</strong>。G1的ygc比1.8的默认回收期更耗资源（G1要兼顾mixgc回收）。我们这的任务其实更适合用默认的垃圾回收器（Parallel）</p>
-<blockquote>
-<p>G1用于响应优先，默认的垃圾回收器则是吞吐量优先。</p>
-</blockquote>
-<p>那么不断ygc肯定是我们<strong>产生了大量的临时对象导致的</strong></p>
-<p><strong>（1）去掉无效日志</strong></p>
-<p>java在序列化的时候会产生比原来的对象占用更多内存的临时变量</p>
-<p><strong>（2）减少临时对象占用的内存</strong></p>
-<p>代码对象的个数不能减少，于是我们减小了对象的大小，为这个定时任务写了专用的接口，每个接口<strong>只查我们需要的字段</strong></p>
-<p><strong>阶段性结果</strong>时间减少到了10秒（假设），cpu降到50%</p>
-<p>但每次任务执行，都给数据库带来了<strong>很高的qpm增长，有隐患</strong></p>
-<p>问题待解决</p>
-<ul>
-<li>减少交互次数</li>
-<li>降低任务执行时间</li>
-</ul>
-<p>仍有很大的优化空间</p>
-<h3 id="s3基于游标查询数据源数据库分片批量更新降低交互次数避免空跑">S3：基于游标查询数据源，数据库分片批量更新，降低交互次数，避免空跑
-</h3><p>分析这么大的调用量用在了哪里，发现：活动表的<strong>MaxAutoPk非常大</strong>（10亿，太夸张了这个场景根本不能满足），所以即使调大了步长，交互次数仍然很多，<strong>继续调大步长会导致某个数据密集导致负载不均衡</strong></p>
-<p><strong>（1）使用mysql的游标查询</strong></p>
-<ul>
-<li>表中要有唯一键，且基于唯一键查询排序（升序）</li>
-<li>取件查询满足查询条件记录越稀疏越有效</li>
-</ul>
-<p><strong>（2）深度分页引起慢sql</strong>基于游标查询的sql不会有这个问题，每次直接定位到区间开始</p>
-<p><strong>（3）按数据库分片进行批量更新</strong></p>
-<p>基于游标查询导致每个步长都查出来比以前更多的数据，<strong>出现了长事务</strong>（这里不太契合场景，可以考虑把这个优化删掉）</p>
-<p>由于在批量更新的时候<strong>没有带分片键导致sql分发到了所有分片上</strong>， <strong>实际导致了长事务</strong></p>
-<p>于是我们<strong>按数据库分片对这些活动id进行分组</strong>，保证每个分组对应的单元id落到同一个分片（不太理解，是不是类似redis的hash插槽，让我们优惠卷的三个key落到一个redis结点，这里让对应的ids落到对应的数据库分片）</p>
-<blockquote>
-<p>结合优惠卷同步的来讲</p>
-</blockquote>
-<p><strong>阶段性结果</strong>时间2秒，cpu50%。qpm降了很多</p>
-<p>问题</p>
-<p>cpu还是较高</p>
-<h3 id="s4异构数据源做了冗余当前的场景把关联表冗余进来绝对会更差">S4：异构数据源，做了冗余（当前的场景把关联表冗余进来绝对会更差）
-</h3><p>前面提到，分阶段优惠卷的关联关系用了一张关联表维护</p>
-<p>我们将整个管理表冗余到了活动表中，通过一种链表关系来维护分阶段的优惠活动，多了一个根活动的id，0时表示普通活动，具体id时表示对应的根活动id。</p>
-<blockquote>
-<p>要不还是倒过来把字段冗余出去一张表，但这样也不太好</p>
-</blockquote>
-<h3 id="s5负载均衡消除所有风险也可以不做">S5：负载均衡，消除所有风险（也可以不做）
-</h3><p>任务拆分，交给mq负载到多台机器上（mq重试机制不可靠，需要解决重试频率、识别无效重试、防止重试叠加）</p>
-<blockquote>
-<p>mq的重试中，失败了只会投回队列，什么时候能再次消费不确定</p>
-<p>1、本地重试机制固定间隔重试，可以应对简单场景（也可以递增间隔重试、基于业务优先级重试）</p>
-<p>2、引入定时任务框架（Quartz、xxljob），但这里就任务套任务了不好</p>
-<p>3、结合分布式调度系统（zookeeper、etcd），利用zk的watcher机制来监控结点状态</p>
-<p>4、最终补偿机制：人工</p>
-</blockquote>
-<h2 id="优化效果汇总">优化效果汇总
-</h2><p>毫秒级，cpu占用增加1%</p>
+<p>面试应当是二者双方的一种技术交流，不应该只限于单方面的发问。所以那种由HR拿套八股文问的就实在是没有价值，我并不需要通过这种方式来做单方面的输出。</p>
+<p>今天正式决定下星期先去入职，能接收民教网的情况下就打算先暂时做到明年。</p>
 
 </section>
 
@@ -464,12 +349,12 @@
             
                 
 <article class="">
-    <a href="/p/%E6%97%A5%E8%AE%B0/">
+    <a href="/p/sql%E8%B0%83%E4%BC%98%E7%BB%8F%E5%8E%86/">
         
         
 
         <div class="article-details">
-            <h2 class="article-title">日记</h2>
+            <h2 class="article-title">sql调优经历</h2>
         </div>
     </a>
 </article>
