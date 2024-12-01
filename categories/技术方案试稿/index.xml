@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>技术方案试稿 on GAJ-Blog</title>
+        <link>https://example.com/categories/%E6%8A%80%E6%9C%AF%E6%96%B9%E6%A1%88%E8%AF%95%E7%A8%BF/</link>
+        <description>Recent content in 技术方案试稿 on GAJ-Blog</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>gajzj</copyright>
+        <lastBuildDate>Sun, 01 Dec 2024 08:02:00 +0800</lastBuildDate><atom:link href="https://example.com/categories/%E6%8A%80%E6%9C%AF%E6%96%B9%E6%A1%88%E8%AF%95%E7%A8%BF/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>技术方案试稿</title>
+        <link>https://example.com/p/%E6%8A%80%E6%9C%AF%E6%96%B9%E6%A1%88%E8%AF%95%E7%A8%BF/</link>
+        <pubDate>Sun, 01 Dec 2024 08:02:00 +0800</pubDate>
+        
+        <guid>https://example.com/p/%E6%8A%80%E6%9C%AF%E6%96%B9%E6%A1%88%E8%AF%95%E7%A8%BF/</guid>
+        <description>&lt;h1 id=&#34;技术方案试稿&#34;&gt;技术方案试稿
+&lt;/h1&gt;&lt;blockquote&gt;
+&lt;p&gt;统计学、正态分布、漏斗&lt;/p&gt;
+&lt;p&gt;改方案自定语言：&lt;/p&gt;
+&lt;p&gt;迷彩、注册机&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&#34;初稿&#34;&gt;初稿
+&lt;/h2&gt;&lt;blockquote&gt;
+&lt;p&gt;24.11.30&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;数字大屏，实时监控，不依赖上游用户的页面请求&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/%E6%8A%80%E6%9C%AF%E6%96%B9%E6%A1%88%E8%AF%95%E7%A8%BF/index.assets/%E7%88%AC%E5%8F%96%E7%BD%91%E7%AB%99%E4%BF%A1%E6%81%AF%E6%8A%80%E6%9C%AF%E6%96%B9%E6%A1%88.png&#34;
+	width=&#34;1229&#34;
+	height=&#34;1150&#34;
+	srcset=&#34;https://example.com/p/%E6%8A%80%E6%9C%AF%E6%96%B9%E6%A1%88%E8%AF%95%E7%A8%BF/index.assets/%E7%88%AC%E5%8F%96%E7%BD%91%E7%AB%99%E4%BF%A1%E6%81%AF%E6%8A%80%E6%9C%AF%E6%96%B9%E6%A1%88_hu10925659010043558619.png 480w, https://example.com/p/%E6%8A%80%E6%9C%AF%E6%96%B9%E6%A1%88%E8%AF%95%E7%A8%BF/index.assets/%E7%88%AC%E5%8F%96%E7%BD%91%E7%AB%99%E4%BF%A1%E6%81%AF%E6%8A%80%E6%9C%AF%E6%96%B9%E6%A1%88_hu14283761237711050546.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;爬取网站信息技术方案&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;106&#34;
+		data-flex-basis=&#34;256px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;h3 id=&#34;方案详情&#34;&gt;方案详情
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;MQ做用户请求的削峰填谷&lt;/li&gt;
+&lt;li&gt;client拦截器用漏斗做限流&lt;/li&gt;
+&lt;li&gt;redis存用户列表&lt;/li&gt;
+&lt;li&gt;触发账号切换的时机&lt;/li&gt;
+&lt;li&gt;针对反爬机制
+&lt;ul&gt;
+&lt;li&gt;用户行为伪装&lt;/li&gt;
+&lt;li&gt;多用户切换反用户追踪
+&lt;ul&gt;
+&lt;li&gt;切换时机
+&lt;ul&gt;
+&lt;li&gt;随机值触发用户&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;通过IP代理反IP追踪&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;疑问&#34;&gt;疑问
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;拦截器内部如何实现限流、是否会和MQ的限流重叠&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;多个client资源耗用较大，是否能够存在单个client也能做到多个代理IP&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;增强&lt;strong&gt;迷彩&lt;/strong&gt;强度&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;进一步增加假用户数量，通过自动化&lt;strong&gt;注册机&lt;/strong&gt;为系统输入更多账户&lt;/li&gt;
+&lt;li&gt;随机时间触发用户的强制冷却&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;数据&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;获取汇总信息，如统计酒店数量&lt;/p&gt;
+&lt;p&gt;多数据源的情况下，做&lt;strong&gt;抽样、平方和分析&lt;/strong&gt;判断抽样的置信度，借此加速多个数据源的查询&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;一个向量，值是正态分布的情况下，如何抽样能够保证抽样能够代表原样本&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;获取详细信息，如&lt;/p&gt;
+&lt;p&gt;不同数据源的数据可能会在格式上已经数据细节层次有较大差异，要对数据源做具体分析，来决定多数据源下展示的核心数据&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;需要落库的数据&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;伪装用户列表&lt;/li&gt;
+&lt;li&gt;具体统计信息&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;组件&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;组件选取是否合理？&lt;/li&gt;
+&lt;li&gt;成本？&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;监控频率根据淡季、旺季会有不同&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;再版&#34;&gt;再版
+&lt;/h2&gt;&lt;blockquote&gt;
+&lt;p&gt;24.12.1&lt;/p&gt;
+&lt;p&gt;引入注册机、数据抽样、指数沉默&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/%E6%8A%80%E6%9C%AF%E6%96%B9%E6%A1%88%E8%AF%95%E7%A8%BF/index.assets/%E6%9C%AA%E5%91%BD%E5%90%8D%E6%96%87%E4%BB%B6.png&#34;
+	width=&#34;1835&#34;
+	height=&#34;835&#34;
+	srcset=&#34;https://example.com/p/%E6%8A%80%E6%9C%AF%E6%96%B9%E6%A1%88%E8%AF%95%E7%A8%BF/index.assets/%E6%9C%AA%E5%91%BD%E5%90%8D%E6%96%87%E4%BB%B6_hu11526155016463365904.png 480w, https://example.com/p/%E6%8A%80%E6%9C%AF%E6%96%B9%E6%A1%88%E8%AF%95%E7%A8%BF/index.assets/%E6%9C%AA%E5%91%BD%E5%90%8D%E6%96%87%E4%BB%B6_hu5499182868732727623.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;未命名文件&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;219&#34;
+		data-flex-basis=&#34;527px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;h3 id=&#34;补充点&#34;&gt;补充点
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;目标网页的响应落库&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;如果监控数据落库可以采取canal、durid分析工具来做数据的监控展示？&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;监控目标网站，已经不要直接请求目标，而是根据出入端点动态建模生成一个代理对象（更新频率3-5日）&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;做好防腐&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>
